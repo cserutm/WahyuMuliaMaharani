@@ -15,7 +15,7 @@
 {{-- Navigasi --}}
 <nav class="flex flex-col space-y-2 px-6">
     <!-- Home / AlPro -->
-    <a href="#" class="flex items-center space-x-2 text-blue-600 font-semibold">
+    <a href="{{ route('dashboard') }}" class="flex items-center space-x-2 text-blue-600 font-semibold">
         <!-- Ikon Home (Baru) -->
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
              viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -26,7 +26,8 @@
     </a>
 
     <!-- Materi -->
-    <a href="#" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
+    <a href="{{ route('materi.index') }}" 
+    class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
         <!-- Ikon Document Text (ganti Book) -->
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
              viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -68,6 +69,7 @@
         {{-- Konten Utama --}}
         <main class="flex-1 p-10 overflow-y-auto">
             {{-- Banner --}}
+            <a href="{{ route('materi.video') }}" class="block">
             <div class="bg-blue-100 rounded-2xl p-6 flex justify-between items-center mb-10">
                 <div>
                     <h1 class="text-2xl font-bold text-gray-800">
@@ -83,13 +85,19 @@
                 </div>
                 <img src="{{ asset('images/banner.svg') }}" class="w-64" alt="Banner">
             </div>
+</a>
 
             {{-- Menu Card --}}
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-                <div class="bg-gradient-to-br from-blue-100 to-pink-50 p-6 rounded-2xl shadow hover:shadow-lg transition text-center">
-                    <img src="{{ asset('images/materi.svg') }}" class="w-16 mx-auto mb-4" alt="Materi">
-                    <h3 class="font-semibold text-gray-700">Materi</h3>
-                </div>
+                <a href="{{ route('materi.index') }}" class="block">
+                 <div class="bg-gradient-to-br from-blue-100 to-pink-50 p-6 rounded-2xl shadow hover:shadow-lg transition text-center cursor-pointer">
+                  <img src="{{ asset('images/materi.svg') }}" 
+                 class="w-16 mx-auto mb-4" 
+                 alt="Materi">
+                 <h3 class="font-semibold text-gray-700">Materi</h3>
+                 </div>
+            </a>
+
                 <div class="bg-gradient-to-br from-purple-100 to-blue-50 p-6 rounded-2xl shadow hover:shadow-lg transition text-center">
                     <img src="{{ asset('images/leaderboard.svg') }}" class="w-16 mx-auto mb-4" alt="Leaderboard">
                     <h3 class="font-semibold text-gray-700">Leaderboard</h3>
@@ -103,7 +111,7 @@
             {{-- Lanjutkan Membaca --}}
 <section class="mt-24 px-6"> {{-- mt-24 untuk memberi jarak dari navbar fixed --}}
     <h2 class="font-bold text-gray-800 mb-4">Lanjutkan Membaca</h2>
-
+    <a href="{{ route('materi.teks') }}" class="block">
     <div class="bg-white rounded-xl shadow-md p-4 flex items-center space-x-6">
         <img src="{{ asset('images/code.jpg') }}" 
              class="w-32 h-20 rounded-lg object-cover" 
@@ -131,6 +139,7 @@
             </div>
         </div>
     </div>
+</a>
 </section>
 
         </main>
