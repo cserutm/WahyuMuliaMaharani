@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MateriController;
+use App\Http\Controllers\EvaluasiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,6 +31,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/materi/video', [MateriController::class, 'materiVideo'])->name('materi.video');     
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/evaluasi', [EvaluasiController::class, 'index'])->name('evaluasi.index');
+    Route::get('/evaluasi/{id}', [EvaluasiController::class, 'show'])->name('evaluasi.show');
+    Route::post('/evaluasi/{id}', [EvaluasiController::class, 'submit'])->name('evaluasi.submit');
+
 
 });
 
