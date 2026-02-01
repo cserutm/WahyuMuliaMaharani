@@ -20,20 +20,20 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard-siswa', function () {
+    return view('dashboard-siswa');
+})->middleware(['auth', 'verified'])->name('dashboard-siswa');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::get('/materi', [MateriController::class, 'index'])->name('materi.index');
-    Route::get('/materi/teks', [MateriController::class, 'materiTeks'])->name('materi.teks');
-    Route::get('/materi/video', [MateriController::class, 'materiVideo'])->name('materi.video');     
+    Route::get('/siswa/materi', [MateriController::class, 'index'])->name('siswa.materi.index');
+    Route::get('siswa/materi/teks', [MateriController::class, 'materiTeks'])->name('siswa.materi.teks');
+    Route::get('siswa/materi/video', [MateriController::class, 'materiVideo'])->name('siswa.materi.video');     
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/evaluasi', [EvaluasiController::class, 'index'])->name('evaluasi.index');
-    Route::get('/evaluasi/{id}', [EvaluasiController::class, 'show'])->name('evaluasi.show');
-    Route::post('/evaluasi/{id}', [EvaluasiController::class, 'submit'])->name('evaluasi.submit');
+    Route::get('siswa/evaluasi', [EvaluasiController::class, 'index'])->name('siswa.evaluasi.index');
+    Route::get('siswa/evaluasi/{id}', [EvaluasiController::class, 'show'])->name('siswa.evaluasi.show');
+    Route::post('siswa/evaluasi/{id}', [EvaluasiController::class, 'submit'])->name('siswa.evaluasi.submit');
 
 
 });

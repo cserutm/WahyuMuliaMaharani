@@ -4,6 +4,10 @@
             Materi Video
         </h2>
     </x-slot>
+    {{-- Layout --}}
+    <div class="flex min-h-screen bg-gray-50 text-gray-800">
+        {{-- sidebar --}}
+      @include('layouts.sidebar')
 
     <main class="p-10">
 
