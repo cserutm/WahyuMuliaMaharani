@@ -10,8 +10,8 @@
         {{-- sidebar --}}
       @include('layouts.sidebar')
 
-    <main class="p-10">
-
+    <main id="materiContent"
+          class="flex-1 p-10 overflow-y-auto h-screen">
         <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-md p-8">
 
             <h1 class="text-2xl font-bold mb-4">
@@ -33,4 +33,25 @@
         </div>
 
     </main>
+</div>
+   <script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    window.addEventListener('scroll', function () {
+        const scrollTop = window.scrollY;
+        const documentHeight = document.documentElement.scrollHeight;
+        const windowHeight = window.innerHeight;
+
+        const scrollable = documentHeight - windowHeight;
+        if (scrollable <= 0) return;
+
+        const progress = Math.round((scrollTop / scrollable) * 100);
+
+        localStorage.setItem('materi_progress', progress);
+    });
+
+});
+</script>
+
+
 </x-app-layout>

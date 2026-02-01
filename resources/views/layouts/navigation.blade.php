@@ -69,7 +69,7 @@
     <div :class="{'block': open, 'hidden': ! open}" 
     class="hidden sm:hidden absolute top-16 left-0 right-0 z-40 bg-white shadow-md">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard-siswa')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link :href="route('dashboard-siswa')" :active="request()->routeIs('dashboard-siswa')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
         </div>
