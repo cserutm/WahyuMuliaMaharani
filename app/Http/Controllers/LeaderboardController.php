@@ -18,6 +18,6 @@ class LeaderboardController extends Controller
             ->orderByDesc('total_score')
             ->get();
 
-        return view('siswa.leaderboard', compact('leaderboard'));
+        return view('leaderboard', compact('leaderboard'));
     }
 }

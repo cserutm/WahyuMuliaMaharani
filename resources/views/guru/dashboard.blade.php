@@ -8,7 +8,7 @@
     {{-- Layout --}}
     <div class="flex min-h-screen bg-gray-50 text-gray-800">
      {{-- sidebar --}}
-      @include('layouts.sidebar')
+      @include('guru.sidebar')
 
         {{-- Konten Utama --}}
         <main class="flex-1 p-10 overflow-y-auto">

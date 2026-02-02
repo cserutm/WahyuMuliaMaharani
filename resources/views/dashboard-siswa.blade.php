@@ -41,7 +41,7 @@
         </div>
     </a>
 
-    <a href="{{ route('siswa.leaderboard') }}" class="h-full">
+    <a href="{{ route('leaderboard') }}" class="h-full">
         <div class="h-full bg-gradient-to-br from-purple-100 to-blue-50 p-6 rounded-2xl shadow hover:shadow-lg transition text-center flex flex-col justify-center">
             <img src="{{ asset('images/leaderboard.svg') }}" class="w-16 h-16 mx-auto mb-4" alt="Leaderboard">
             <h3 class="font-semibold text-gray-700">Leaderboard</h3>

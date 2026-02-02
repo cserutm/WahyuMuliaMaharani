@@ -21,15 +21,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard-siswa', function () {
-    return view('dashboard-siswa');
-})->middleware(['auth', 'role:siswa'])->name('dashboard-siswa');
-
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard');
+
+Route::get('/dashboard-siswa', function () {
+    return view('dashboard-siswa');
+})->middleware(['auth', 'role:siswa'])->name('dashboard-siswa');
 
     Route::get('/siswa/materi', [MateriController::class, 'index'])->name('siswa.materi.index');
     Route::get('siswa/materi/teks', [MateriController::class, 'materiTeks'])->name('siswa.materi.teks');
@@ -38,13 +38,14 @@ Route::middleware('auth')->group(function () {
     Route::get('siswa/evaluasi', [EvaluasiController::class, 'index'])->name('siswa.evaluasi.index');
     Route::get('siswa/evaluasi/{id}', [EvaluasiController::class, 'show'])->name('siswa.evaluasi.show');
     Route::post('siswa/evaluasi/{id}', [EvaluasiController::class, 'submit'])->name('siswa.evaluasi.submit');
-    Route::get('siswa/leaderboard', [LeaderboardController::class, 'index'])->name('siswa.leaderboard');
-
-
+    
 });
 
 Route::get('/guru/dashboard', function () {
     return view('guru.dashboard');
 })->middleware(['auth', 'role:guru'])->name('guru.dashboard');
+
+
+
 
 require __DIR__.'/auth.php';
