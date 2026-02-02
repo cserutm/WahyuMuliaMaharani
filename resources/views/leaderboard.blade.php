@@ -9,15 +9,21 @@
     {{-- Layout --}}
     <div class="flex min-h-screen bg-gray-50 text-gray-800">
 
-        {{-- Sidebar --}}
-       
-            @include('layouts.sidebar')
+   
+        {{-- SIDEBAR DINAMIS --}}
+
+    @if(auth()->user()->role === 'siswa')
+        @include('layouts.sidebar')
+    @elseif(auth()->user()->role === 'guru')
+        @include('guru.sidebar')
+    @endif
       
 
         {{-- Konten --}}
         <main class="flex-1 p-10 overflow-y-auto">
 
-            <div class="bg-white rounded-3xl shadow-xl p-8 w-full max-w-3xl mx-auto">
+            <div class="bg-gradient-to-br from-blue-100 to-pink-50 p-6 rounded-2xl shadow text-center block
+              transform transition duration-300 hover:shadow-xl hover:-translate-y-1 active:scale-95">
 
                 <h3 class="text-xl font-bold mb-6 text-center">
                     🏆 Peringkat Siswa
@@ -26,8 +32,8 @@
                 <table class="w-full border-collapse">
                     <thead>
                         <tr class="border-b text-gray-600">
-                            <th class="py-3 text-left">Rank</th>
-                            <th class="py-3 text-left">Nama</th>
+                            <th class="py-3 text-center">Rank</th>
+                            <th class="py-3 text-center">Nama</th>
                             <th class="py-3 text-center">Total Kuis</th>
                             <th class="py-3 text-right">Total Nilai</th>
                         </tr>

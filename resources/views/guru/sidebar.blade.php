@@ -28,7 +28,7 @@
     </a>
 
     <!-- Evaluasi -->
-    <a href="#" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
+    <a href="{{ route('guru.kelolakuis') }}" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
         <!-- Ikon Clock -->
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
              viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -36,6 +36,17 @@
                   d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         <span>Kelola Kuis</span>
+    </a>
+
+    <!-- Lihat Nilai-->
+    <a href="{{ route('guru.nilai') }}" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
+        <!-- Ikon -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+       <path stroke-linecap="round" stroke-linejoin="round"
+             d="M9 17v-2m3 2v-4m3 4v-6M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
+   </svg>
+        <span>Lihat Nilai</span>
     </a>
 
     <!-- Leaderboard -->

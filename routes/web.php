@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\EvaluasiController;
 use App\Http\Controllers\LeaderboardController;
+use App\Http\Controllers\NilaiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,11 +40,15 @@ Route::get('/dashboard-siswa', function () {
     Route::get('siswa/evaluasi/{id}', [EvaluasiController::class, 'show'])->name('siswa.evaluasi.show');
     Route::post('siswa/evaluasi/{id}', [EvaluasiController::class, 'submit'])->name('siswa.evaluasi.submit');
     
-});
 
-Route::get('/guru/dashboard', function () {
+
+    Route::get('/guru/dashboard', function () {
     return view('guru.dashboard');
-})->middleware(['auth', 'role:guru'])->name('guru.dashboard');
+    })->middleware(['auth', 'role:guru'])->name('guru.dashboard');
+
+    Route::get('/guru/nilai_siswa', [NilaiController::class, 'nilai'])->name('guru.nilai');
+    Route::get('/guru/kelola_Quiz', [NilaiController::class, 'nilai'])->name('guru.kelolakuis');
+    });
 
 
 
