@@ -14,7 +14,7 @@
 
         {{-- Konten Utama --}}
         <main class="flex-1 p-10 overflow-y-auto">
-            <div class="bg-gradient-to-br from-blue-100 to-pink-50 p-6 rounded-2xl shadow text-center block
+            <div class="bg-white p-6 rounded-2xl shadow text-center block
               transform transition duration-300 hover:shadow-xl hover:-translate-y-1 active:scale-95">
 
                 <h3 class="text-xl font-bold mb-6">

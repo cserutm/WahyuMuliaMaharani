@@ -16,7 +16,7 @@
     </a>
 
     <!-- Materi -->
-    <a href="#" 
+    <a href="{{ route('guru.materi.index') }}" 
     class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
         <!-- Ikon Document Text (ganti Book) -->
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
@@ -28,7 +28,7 @@
     </a>
 
     <!-- Evaluasi -->
-    <a href="{{ route('guru.kelolakuis') }}" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
+    <a href="{{ route('guru.quiz.index') }}" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
         <!-- Ikon Clock -->
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
              viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

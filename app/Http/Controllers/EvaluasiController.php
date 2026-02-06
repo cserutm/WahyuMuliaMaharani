@@ -12,14 +12,23 @@ class EvaluasiController extends Controller
     // 1️⃣ Halaman card kuis
     public function index()
     {
-        $quizzes = Quiz::withCount('questions')->get();
+        $quizzes = Quiz::where('status','aktif')
+        ->withCount('questions')->get();
         return view('siswa.evaluasi.index', compact('quizzes'));
     }
 
     // 2️⃣ Halaman soal
     public function show($id)
     {
-        $quiz = Quiz::with('questions')->findOrFail($id);
+       $quiz = Quiz::with(['questions' => function ($q) {
+    $q->inRandomOrder();
+    }])->finOrfail($id);
+
+            if ($quiz->status !== 'aktif') {
+        return redirect()
+            ->route('siswa.evaluasi.index')
+            ->with('error', 'Kuis belum tersedia');
+    }
 
         $already = QuizAttempt::where('user_id', auth()->id())
             ->where('quiz_id', $quiz->id)

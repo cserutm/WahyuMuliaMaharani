@@ -5,6 +5,9 @@ use App\Http\Controllers\MateriController;
 use App\Http\Controllers\EvaluasiController;
 use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\NilaiController;
+use App\Http\Controllers\Guru\QuizController;
+use App\Http\Controllers\Guru\KelolaMateriController;
+use App\Http\Controllers\Guru\QuestionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,13 +44,21 @@ Route::get('/dashboard-siswa', function () {
     Route::post('siswa/evaluasi/{id}', [EvaluasiController::class, 'submit'])->name('siswa.evaluasi.submit');
     
 
-
+    
     Route::get('/guru/dashboard', function () {
     return view('guru.dashboard');
-    })->middleware(['auth', 'role:guru'])->name('guru.dashboard');
-
+})->middleware(['auth', 'role:guru'])->name('guru.dashboard');
+    
     Route::get('/guru/nilai_siswa', [NilaiController::class, 'nilai'])->name('guru.nilai');
-    Route::get('/guru/kelola_Quiz', [NilaiController::class, 'nilai'])->name('guru.kelolakuis');
+    Route::get('/guru/kelola_quiz',[QuizController::class, 'index'])->name('guru.quiz.index');
+    Route::post('/guru/kelola_quiz', [QuizController::class, 'store'])->name('guru.quiz.store');
+    Route::get('/guru/kelola_quiz/{id}/edit', [QuizController::class, 'edit'])->name('guru.quiz.edit');
+    Route::put('/guru/kelola_quiz/{id}', [QuizController::class, 'update'])->name('guru.quiz.update');
+    Route::get('/kelola_quiz/create', [QuizController::class, 'create'])->name('guru.quiz.create');
+    Route::delete('/guru/kelola_quiz/{id}', [QuizController::class, 'destroy'])->name('guru.quiz.destroy');
+
+    Route::get('/guru/kelola_materi',[KelolaMateriController::class, 'index'])->name('guru.materi.index');
+    Route::post('/guru/kelola_materi', [KelolamateriController::class, 'store'])->name('guru.materi.store'); 
     });
 
 

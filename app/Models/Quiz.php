@@ -13,7 +13,8 @@ class Quiz extends Model
 
     protected $fillable = [
         'judul',
-        'kelas'
+        'kelas',
+        'status'
     ];
 
     public function questions()
