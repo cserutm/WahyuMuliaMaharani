@@ -8,6 +8,7 @@ use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\Guru\QuizController;
 use App\Http\Controllers\Guru\KelolaMateriController;
 use App\Http\Controllers\Guru\QuestionController;
+use App\Http\Controllers\Guru\ModulController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -57,8 +58,38 @@ Route::get('/dashboard-siswa', function () {
     Route::get('/kelola_quiz/create', [QuizController::class, 'create'])->name('guru.quiz.create');
     Route::delete('/guru/kelola_quiz/{id}', [QuizController::class, 'destroy'])->name('guru.quiz.destroy');
 
+    /*
     Route::get('/guru/kelola_materi',[KelolaMateriController::class, 'index'])->name('guru.materi.index');
-    Route::post('/guru/kelola_materi', [KelolamateriController::class, 'store'])->name('guru.materi.store'); 
+    Route::post('/guru/kelola_materi', [KelolaMateriController::class, 'store'])->name('guru.materi.store'); 
+    Route::get('/guru/kelola_materi/create', [KelolaMateriController::class, 'create'])->name('guru.materi.create');
+    Route::get('/guru/kelola_materi/{id}/edit', [KelolaMateriController::class, 'edit'])->name('guru.materi.edit');
+    Route::put('/guru/kelola_materi/{id}', [KelolaMateriController::class, 'update'])->name('guru.materi.update');
+    Route::delete('/guru/kelola_materi/{id}', [KelolaMateriController::class, 'destroy'])->name('guru.materi.destroy');
+    */
+   Route::get('/guru/materi', [ModulController::class, 'index'])
+    ->name('guru.modul.index');
+
+Route::post('/guru/materi', [ModulController::class, 'store'])
+    ->name('guru.modul.store');
+
+Route::get('/guru/materi/{id}/edit', [ModulController::class, 'edit'])
+    ->name('guru.modul.edit');
+
+    Route::put('/guru/materi/{id}', [ModulController::class, 'update'])
+    ->name('guru.modul.update');
+
+
+Route::get('/guru/materi/{id}', [ModulController::class, 'show'])
+    ->name('guru.modul.show');
+
+
+    Route::delete('/guru/materi/{id}', [ModulController::class, 'destroy'])
+    ->name('guru.modul.destroy');
+
+    Route::get('/guru/materi/{id}/download', [ModulController::class, 'download'])
+    ->name('guru.modul.download');
+
+
     });
 
 

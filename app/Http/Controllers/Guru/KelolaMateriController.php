@@ -29,22 +29,35 @@ class KelolaMateriController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'judul' => 'required',
-            'tipe' => 'required',
-            'deskripi' => 'required',
-            'konten' => 'required',
-            'gambar' => 'required',
-            'video_url' => 'required'
+{
+    $request->validate([
+        'judul' => 'required',
+        'tipe' => 'required',
+        'deskripsi' => 'required',
+        'konten' => 'required_if:tipe,teks',
+         'gambar' => 'nullable|image',
+        'video_url' => 'required_if:tipe,video'
+    
+    ]);
 
+    $gambarPath = null;
 
-        ]);
-
-        Materi::create($request->all());
-
-        return redirect()->route('guru.materi.index')->with('success', 'Materi berhasil ditambahkan');
+    if ($request->hasFile('gambar')) {
+        $gambarPath = $request->file('gambar')->store('materi', 'public');
     }
+
+    Materi::create([
+        'judul' => $request->judul,
+        'tipe' => $request->tipe,
+        'deskripsi' => $request->deskripsi,
+        'konten' => $request->tipe == 'teks' ? $request->konten : null,
+        'gambar' => $gambarPath,
+        'video_url' => $request->tipe == 'video' ? $request->video_url : null,
+    ]);
+
+    return redirect()->route('guru.materi.index')
+        ->with('success', 'Materi berhasil ditambahkan');
+}
 
     /**
      * Display the specified resource.
@@ -60,7 +73,7 @@ class KelolaMateriController extends Controller
     public function edit($id)
     {
          $materis = Materi::findOrFail($id);
-        return view('guru.materi.edit', compact('edit'));
+        return view('guru.materi.edit', compact('materis'));
     }
 
     /**

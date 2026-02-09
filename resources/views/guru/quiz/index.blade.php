@@ -78,7 +78,7 @@
                          H9v-2.828l8.586-8.586z" />
             </svg>
 
-            {{-- teks muncul di desktop, hilang di HP --}}
+      
             <span class="hidden sm:inline">Edit</span>
         </a>
 

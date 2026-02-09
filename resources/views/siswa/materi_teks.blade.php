@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const scrollTop = window.scrollY;
         const documentHeight = document.documentElement.scrollHeight;
         const windowHeight = window.innerHeight;
+        
 
         const scrollable = documentHeight - windowHeight;
         if (scrollable <= 0) return;
