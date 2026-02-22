@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('modul', function (Blueprint $table) {
+        Schema::create('video', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
             $table->text('deskripsi');
             $table->text('tujuan_pembelajaran');
-            $table->string('file_materi'); 
+            $table->string('video_url'); 
             $table->timestamps();
         });
     }
@@ -24,10 +24,11 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('modul', function (Blueprint $table) {
+       
+        Schema::table('video', function (Blueprint $table) {
         });
-        Schema::dropIfExists('modul');
+        Schema::dropIfExists('video');
     }
 };

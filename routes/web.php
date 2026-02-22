@@ -9,6 +9,10 @@ use App\Http\Controllers\Guru\QuizController;
 use App\Http\Controllers\Guru\KelolaMateriController;
 use App\Http\Controllers\Guru\QuestionController;
 use App\Http\Controllers\Guru\ModulController;
+use App\Http\Controllers\Guru\VideoController;
+use App\Http\Controllers\Guru\MateriGuruController;
+use App\Http\Controllers\Guru\KuisController;
+use App\Http\Controllers\Guru\PertanyaanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,6 +55,8 @@ Route::get('/dashboard-siswa', function () {
 })->middleware(['auth', 'role:guru'])->name('guru.dashboard');
     
     Route::get('/guru/nilai_siswa', [NilaiController::class, 'nilai'])->name('guru.nilai');
+
+    /*
     Route::get('/guru/kelola_quiz',[QuizController::class, 'index'])->name('guru.quiz.index');
     Route::post('/guru/kelola_quiz', [QuizController::class, 'store'])->name('guru.quiz.store');
     Route::get('/guru/kelola_quiz/{id}/edit', [QuizController::class, 'edit'])->name('guru.quiz.edit');
@@ -58,36 +64,76 @@ Route::get('/dashboard-siswa', function () {
     Route::get('/kelola_quiz/create', [QuizController::class, 'create'])->name('guru.quiz.create');
     Route::delete('/guru/kelola_quiz/{id}', [QuizController::class, 'destroy'])->name('guru.quiz.destroy');
 
-    /*
-    Route::get('/guru/kelola_materi',[KelolaMateriController::class, 'index'])->name('guru.materi.index');
-    Route::post('/guru/kelola_materi', [KelolaMateriController::class, 'store'])->name('guru.materi.store'); 
-    Route::get('/guru/kelola_materi/create', [KelolaMateriController::class, 'create'])->name('guru.materi.create');
-    Route::get('/guru/kelola_materi/{id}/edit', [KelolaMateriController::class, 'edit'])->name('guru.materi.edit');
-    Route::put('/guru/kelola_materi/{id}', [KelolaMateriController::class, 'update'])->name('guru.materi.update');
-    Route::delete('/guru/kelola_materi/{id}', [KelolaMateriController::class, 'destroy'])->name('guru.materi.destroy');
-    */
-   Route::get('/guru/materi', [ModulController::class, 'index'])
+*/
+    Route::get('/guru/materi', [MateriGuruController::class, 'index'])
+    ->name('guru.materi');
+    Route::get('/guru/materi_file', [ModulController::class, 'index'])
     ->name('guru.modul.index');
-
-Route::post('/guru/materi', [ModulController::class, 'store'])
+    Route::post('/guru/materi_file', [ModulController::class, 'store'])
     ->name('guru.modul.store');
-
-Route::get('/guru/materi/{id}/edit', [ModulController::class, 'edit'])
+    Route::get('/guru/materi_file/{id}/edit', [ModulController::class, 'edit'])
     ->name('guru.modul.edit');
-
-    Route::put('/guru/materi/{id}', [ModulController::class, 'update'])
+    Route::put('/guru/materi_file/{id}', [ModulController::class, 'update'])
     ->name('guru.modul.update');
-
-
-Route::get('/guru/materi/{id}', [ModulController::class, 'show'])
+    Route::get('/guru/materi_file/{id}', [ModulController::class, 'show'])
     ->name('guru.modul.show');
-
-
-    Route::delete('/guru/materi/{id}', [ModulController::class, 'destroy'])
+    Route::delete('/guru/materi_file/{id}', [ModulController::class, 'destroy'])
     ->name('guru.modul.destroy');
-
-    Route::get('/guru/materi/{id}/download', [ModulController::class, 'download'])
+    Route::get('/guru/materi_file/{id}/download', [ModulController::class, 'download'])
     ->name('guru.modul.download');
+
+
+
+
+    Route::get('/guru/materi_video', [VideoController::class, 'index'])
+    ->name('guru.video.index');
+    Route::post('/guru/materi_video', [VideoController::class, 'store'])
+    ->name('guru.video.store');
+    Route::get('/guru/materi_video/{id}/edit', [VideoController::class, 'edit'])
+    ->name('guru.video.edit');
+    Route::put('/guru/materi_video/{id}', [VideoController::class, 'update'])
+    ->name('guru.video.update');
+    Route::get('/guru/materi_video/{id}', [VideoController::class, 'show'])
+    ->name('guru.video.show');
+    Route::delete('/guru/materi_video/{id}', [VideoController::class, 'destroy'])
+    ->name('guru.video.destroy');
+
+    Route::get('/guru/kuis', [KuisController::class, 'index'])
+    ->name('guru.kuis.index');
+     Route::post('/guru/kuis', [KuisController::class, 'store'])
+    ->name('guru.kuis.store');
+     Route::get('/guru/kuis/{id}/edit', [KuisController::class, 'edit'])
+    ->name('guru.kuis.edit');
+     Route::put('/guru/kuis/{id}', [KuisController::class, 'update'])
+    ->name('guru.kuis.update');
+    Route::get('/guru/kuis/{id}', [KuisController::class, 'show'])
+    ->name('guru.kuis.show');
+    Route::delete('/guru/kuis/{id}', [KuisController::class, 'destroy'])
+    ->name('guru.kuis.destroy');
+
+     
+    Route::get('/guru/kuis/{kuis_id}/pertanyaan', 
+    [PertanyaanController::class, 'index']
+)->name('guru.kuis.pertanyaan.index');
+
+Route::post('/guru/kuis/{kuis_id}/pertanyaan', 
+    [PertanyaanController::class, 'store']
+)->name('guru.kuis.pertanyaan.store');
+
+Route::get('/guru/kuis/{kuis_id}/pertanyaan/{id}/edit', 
+    [PertanyaanController::class, 'edit']
+)->name('guru.kuis.pertanyaan.edit');
+
+Route::put('/guru/kuis/{kuis_id}/pertanyaan/{id}', 
+    [PertanyaanController::class, 'update']
+)->name('guru.kuis.pertanyaan.update');
+
+Route::delete('/guru/kuis/{kuis_id}/pertanyaan/{id}', 
+    [PertanyaanController::class, 'destroy']
+)->name('guru.kuis.pertanyaan.destroy');
+
+    
+
 
 
     });

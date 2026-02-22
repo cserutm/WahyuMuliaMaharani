@@ -11,23 +11,24 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('modul', function (Blueprint $table) {
+        Schema::create('kuis', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
-            $table->text('deskripsi');
-            $table->text('tujuan_pembelajaran');
-            $table->string('file_materi'); 
+            $table->string('kelas');
+            $table->enum('status', ['draft', 'aktif', 'nonaktif']);
             $table->timestamps();
+        
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('modul', function (Blueprint $table) {
+        
+        Schema::table('kuis', function (Blueprint $table) {
         });
-        Schema::dropIfExists('modul');
+        Schema::dropIfExists('kuis');
     }
 };

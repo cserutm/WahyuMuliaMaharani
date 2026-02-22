@@ -20,16 +20,15 @@
         openEdit:false,
         editId:null
     }">
- 
 
-            {{-- Header Konten (Judul + Tombol) --}}
+     {{-- Header Konten (Judul + Tombol) --}}
             <div class="flex items-center justify-between mb-6">
-                <h1 class="text-2xl font-bold text-gray-800">Kelola Materi File</h1>
+                <h1 class="text-2xl font-bold text-gray-800">Kelola Materi Video</h1>
 
                 <button
            @click="open = true; tipe = ''; $nextTick(() => $refs.form.reset())"
 
-            class="inline-flex items-center gap-2 px-3 py-1 bg-blue-600 text-white rounded-lg">
+            class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg">
              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
                          viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -37,12 +36,9 @@
                     </svg>
              Tambah Materi
                 </button>
-
-
-                
             </div>
 
-            {{-- Table --}}
+              {{-- Table --}}
             <div class="bg-white rounded-xl shadow overflow-x-auto">
                 <table class="w-full text-sm">
                     <thead class="bg-gray-100">
@@ -55,11 +51,11 @@
 </thead>
 
                     <tbody class="divide-y">
-                        @forelse ($modul as $index => $item)
+                        @forelse ($videos as $index => $video)
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-3">{{ $index + 1 }}</td>
-                                <td class="px-6 py-3">{{ $item->judul }}</td>
-                                <td class="px-6 py-3">{{ $item->deskripsi }}</td>
+                                <td class="px-6 py-3">{{ $video->judul }}</td>
+                                <td class="px-6 py-3">{{ $video->deskripsi }}</td>
 
 
                               
@@ -68,7 +64,7 @@
                                 <td class="px-4 py-3">
                                     <div class="flex justify-center items-center gap-3">
                                   
-                                        <a href="{{ route('guru.modul.show', $item->id) }}"
+                                        <a href="{{ route('guru.video.show', $video->id) }}"
                                              class="flex items-center gap-1 text-green-600 hover:text-green-800">
                                             <svg xmlns="http://www.w3.org/2000/svg"
          class="w-4 h-4 sm:w-5 sm:h-5"
@@ -89,11 +85,11 @@
     </svg>
                                           <span class="hidden sm:inline">Detail</span>
                                         </a>
-                                        </a>
+                                       
 
                                         {{-- Edit --}}
                                          <button 
-                            @click="openEdit=true; editId={{ $item->id }}"
+                            @click="openEdit=true; editId={{ $video->id }}"
                                            class="flex items-center gap-1 text-blue-600 hover:text-blue-800">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                  class="w-4 h-4 sm:w-5 sm:h-5"
@@ -114,7 +110,7 @@
                                         </button>
 
                                         {{-- Hapus --}}
-                                        <form action="{{ route('guru.modul.destroy', $item->id) }}"
+                                        <form action="{{ route('guru.video.destroy', $video->id) }}"
                                               method="POST"
                                               onsubmit="return confirm('Yakin hapus materi ini?')">
                                             @csrf
@@ -151,7 +147,7 @@
                         @endforelse
                     </tbody>
                 </table>
-                {{-- MODAL CREATE --}}
+                  {{-- MODAL CREATE --}}
 <div
     x-cloak
     x-show ="open"
@@ -164,7 +160,7 @@
 
         <h2 class="text-xl font-bold mb-4">Tambah Materi</h2>
         <form x-ref="form"
-      action="{{ route('guru.modul.store') }}"
+      action="{{ route('guru.video.store') }}"
       method="POST"
       enctype="multipart/form-data"
       class="space-y-4">
@@ -182,9 +178,9 @@
           class="w-full rounded-lg border-gray-300"
           placeholder="Tujuan Pembelajaran"></textarea>
 
-<label class="block text-sm font-medium">Upload File Materi (PDF / Word)</label>
-<input type="file" name="file_materi"
-       accept=".pdf,.doc,.docx"
+<label class="block text-sm font-medium">Upload Video URL </label>
+<input type="url" name="video_url"
+       accept="url"
        class="w-full">
 
 <div class="flex justify-end gap-3">
@@ -201,39 +197,42 @@
 </form>
     </div>
 </div>
-
-     {{-- MODAL EDIT --}}
+  {{-- MODAL EDIT --}}
 <div
     x-cloak
     x-show="openEdit"
     class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 
-    <div
+    @foreach($videos as $video)
+
+ <div
         @click.away="openEdit=false"
         class="bg-white w-full max-w-xl rounded-2xl shadow-xl p-6">
 
         <h2 class="text-xl font-bold mb-4">Edit Materi</h2>
-            @foreach($modul as $item)
-        <form
-            action="{{ route('guru.modul.update', $item->id) }}"
-           
+
+ <form
+            action="{{ route('guru.video.update', $video->id) }}"
             method="POST"
             enctype="multipart/form-data"
             class="space-y-4">
             @csrf
             @method('PUT')
 
+
+
+
             <input type="text" name="judul"
-                value="{{ $item->judul }}"
+                value="{{ $video->judul }}"
                 class="w-full rounded-lg border-gray-300">
 
             <textarea name="deskripsi" rows="2"
-                class="w-full rounded-lg border-gray-300">{{ $item->deskripsi }}</textarea>
+                class="w-full rounded-lg border-gray-300">{{ $video->deskripsi }}</textarea>
 
             <textarea name="tujuan_pembelajaran" rows="2"
-                class="w-full rounded-lg border-gray-300">{{ $item->tujuan_pembelajaran }}</textarea>
+                class="w-full rounded-lg border-gray-300">{{ $video->tujuan_pembelajaran }}</textarea>
 
-            <input type="file" name="file_materi"
+            <input type="url" name="video_url"
                 class="w-full">
 
             <div class="flex justify-end gap-3">
@@ -248,15 +247,13 @@
                     Update
                 </button>
             </div>
-        </form> @endforeach
-
+        </form>
     </div>
+    @endforeach
+</div>
 </div>
 
 
-            </div>
-
-        </main>
-    </div>
-
+</main>
+</div>
 </x-app-layout>

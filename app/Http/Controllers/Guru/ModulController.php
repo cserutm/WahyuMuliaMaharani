@@ -56,6 +56,8 @@ class ModulController extends Controller
         return view('guru.modul.edit', compact('modul'));
     }
 
+
+
     public function show($id)
     {
         $modul = modul::findOrFail($id);
