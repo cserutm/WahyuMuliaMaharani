@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Quiz;
+use App\Models\Kuis;
 use App\Models\QuizAttempt;
 
 
@@ -12,26 +12,26 @@ class EvaluasiController extends Controller
     // 1️⃣ Halaman card kuis
     public function index()
     {
-        $quizzes = Quiz::where('status','aktif')
-        ->withCount('questions')->get();
-        return view('siswa.evaluasi.index', compact('quizzes'));
+        $kuis = Kuis::where('status','aktif')
+        ->withCount('pertanyaan')->get();
+        return view('siswa.evaluasi.index', compact('kuis'));
     }
 
     // 2️⃣ Halaman soal
     public function show($id)
     {
-       $quiz = Quiz::with(['questions' => function ($q) {
+       $kuis = Kuis::with(['Pertanyaan' => function ($q) {
     $q->inRandomOrder();
-    }])->finOrfail($id);
+    }])->findOrfail($id);
 
-            if ($quiz->status !== 'aktif') {
+            if ($kuis->status !== 'aktif') {
         return redirect()
             ->route('siswa.evaluasi.index')
             ->with('error', 'Kuis belum tersedia');
     }
 
         $already = QuizAttempt::where('user_id', auth()->id())
-            ->where('quiz_id', $quiz->id)
+            ->where('kuis_id', $kuis->id)
             ->exists();
 
         if ($already) {
@@ -40,16 +40,16 @@ class EvaluasiController extends Controller
                 ->with('error', 'Kuis ini sudah pernah dikerjakan');
         }
 
-        return view('siswa.evaluasi.show', compact('quiz'));
+        return view('siswa.evaluasi.show', compact('kuis'));
     }
 
     // 3️⃣ Proses jawaban & tampilkan hasil
     public function submit(Request $request, $id)
 {
-    $quiz = Quiz::with('questions')->findOrFail($id);
+    $kuis = Kuis::with('pertanyaan')->findOrFail($id);
 
      $already = QuizAttempt::where('user_id', auth()->id())
-            ->where('quiz_id', $quiz->id)
+            ->where('kuis_id', $kuis->id)
             ->exists();
 
         if ($already) {
@@ -58,9 +58,9 @@ class EvaluasiController extends Controller
 
 
     $correct = 0;
-    $total = $quiz->questions->count();
+    $total = $kuis->pertanyaan->count();
 
-    foreach ($quiz->questions as $q) {
+    foreach ($kuis->pertanyaan as $q) {
         if (($request->jawaban[$q->id] ?? null) == $q->jawaban_benar) {
             $correct++;
         }
@@ -70,7 +70,7 @@ class EvaluasiController extends Controller
 
     QuizAttempt::create([
             'user_id' => auth()->id(),
-            'quiz_id' => $quiz->id,
+            'kuis_id' => $kuis->id,
             'score'   => $score,
             'correct' => $correct,
             'total'   => $total,

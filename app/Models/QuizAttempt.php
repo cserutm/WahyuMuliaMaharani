@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class QuizAttempt extends Model
 {
+    protected $table = 'quizattempts';
     protected $fillable = [
         'user_id',
-        'quiz_id',
+        'kuis_id',
         'score',
         'submitted_at'
     ];
@@ -20,8 +21,8 @@ class QuizAttempt extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function quiz()
+    public function Kuis()
     {
-        return $this->belongsTo(Quiz::class);
+        return $this->belongsTo(Kuis::class);
     }
 }

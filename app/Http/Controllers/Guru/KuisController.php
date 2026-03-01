@@ -13,7 +13,7 @@ class KuisController extends Controller
      */
     public function index()
     {
-         $kuis = kuis::orderBy('id', 'asc')->get();
+         $kuis = Kuis::orderBy('id', 'asc')->get();
         return view('guru.kuis.index', compact('kuis'));
     }
 

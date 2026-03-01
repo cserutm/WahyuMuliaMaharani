@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\MateriController;
 use App\Http\Controllers\EvaluasiController;
 use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\NilaiController;
@@ -13,6 +12,8 @@ use App\Http\Controllers\Guru\VideoController;
 use App\Http\Controllers\Guru\MateriGuruController;
 use App\Http\Controllers\Guru\KuisController;
 use App\Http\Controllers\Guru\PertanyaanController;
+use App\Http\Controllers\GuruDashboardController;
+use App\Http\Controllers\SiswaMateriController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,31 +41,30 @@ Route::get('/dashboard-siswa', function () {
     return view('dashboard-siswa');
 })->middleware(['auth', 'role:siswa'])->name('dashboard-siswa');
 
-    Route::get('/siswa/materi', [MateriController::class, 'index'])->name('siswa.materi.index');
-    Route::get('siswa/materi/teks', [MateriController::class, 'materiTeks'])->name('siswa.materi.teks');
-    Route::get('siswa/materi/video', [MateriController::class, 'materiVideo'])->name('siswa.materi.video');  
+    Route::get('/siswa/materi', [SiswaMateriController::class, 'index'])->name('siswa.materi.index');
+    Route::get('siswa/materi/file', [SiswaMateriController::class, 'modul'])->name('siswa.materi.modul');
+    Route::get('siswa/materi_file/{id}/download', [SiswaMateriController::class, 'download'])
+    ->name('siswa.modul.download');
+    Route::get('siswa/materi/video', [SiswaMateriController::class, 'video'])->name('siswa.materi.video');  
 
     Route::get('siswa/evaluasi', [EvaluasiController::class, 'index'])->name('siswa.evaluasi.index');
     Route::get('siswa/evaluasi/{id}', [EvaluasiController::class, 'show'])->name('siswa.evaluasi.show');
     Route::post('siswa/evaluasi/{id}', [EvaluasiController::class, 'submit'])->name('siswa.evaluasi.submit');
     
 
-    
+   /* 
     Route::get('/guru/dashboard', function () {
     return view('guru.dashboard');
 })->middleware(['auth', 'role:guru'])->name('guru.dashboard');
+*/
+
+Route::get('/guru/dashboard', [GuruDashboardController::class, 'index'])
+    ->middleware(['auth', 'role:guru'])
+    ->name('guru.dashboard');
     
     Route::get('/guru/nilai_siswa', [NilaiController::class, 'nilai'])->name('guru.nilai');
 
-    /*
-    Route::get('/guru/kelola_quiz',[QuizController::class, 'index'])->name('guru.quiz.index');
-    Route::post('/guru/kelola_quiz', [QuizController::class, 'store'])->name('guru.quiz.store');
-    Route::get('/guru/kelola_quiz/{id}/edit', [QuizController::class, 'edit'])->name('guru.quiz.edit');
-    Route::put('/guru/kelola_quiz/{id}', [QuizController::class, 'update'])->name('guru.quiz.update');
-    Route::get('/kelola_quiz/create', [QuizController::class, 'create'])->name('guru.quiz.create');
-    Route::delete('/guru/kelola_quiz/{id}', [QuizController::class, 'destroy'])->name('guru.quiz.destroy');
 
-*/
     Route::get('/guru/materi', [MateriGuruController::class, 'index'])
     ->name('guru.materi');
     Route::get('/guru/materi_file', [ModulController::class, 'index'])

@@ -18,4 +18,8 @@ class Kuis extends Model
 {
     return $this->hasMany(Pertanyaan::class, 'kuis_id');
 }
+public function quizAttempts()
+{
+    return $this->hasMany(\App\Models\QuizAttempt::class);
+}
 }

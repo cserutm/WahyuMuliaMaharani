@@ -13,20 +13,20 @@
         {{-- Konten Utama --}}
         <main class="flex-1 p-10 overflow-y-auto">
        <h2 class="text-xl font-bold mb-4">
-    Kuis: {{ $quiz->judul }}
+    Kuis: {{ $kuis->judul }}
 </h2>
 
-<form action="{{ route('siswa.evaluasi.submit', $quiz->id) }}" method="POST">
+<form action="{{ route('siswa.evaluasi.submit', $kuis->id) }}" method="POST">
 @csrf
 
-@foreach($quiz->questions as $q)
+@foreach($kuis->pertanyaan as $q)
 <div class="mb-4 p-4 bg-white rounded shadow">
     <p class="font-semibold">{{ $q->soal }}</p>
 
-    <label><input type="radio" name="jawaban[{{ $q->id }}]" value="A"> {{ $q->opsi_a }}</label><br>
-    <label><input type="radio" name="jawaban[{{ $q->id }}]" value="B"> {{ $q->opsi_b }}</label><br>
-    <label><input type="radio" name="jawaban[{{ $q->id }}]" value="C"> {{ $q->opsi_c }}</label><br>
-    <label><input type="radio" name="jawaban[{{ $q->id }}]" value="D"> {{ $q->opsi_d }}</label>
+    <label><input type="radio" name="jawaban[{{ $q->id }}]" value="a"> {{ $q->opsi_a }}</label><br>
+    <label><input type="radio" name="jawaban[{{ $q->id }}]" value="b"> {{ $q->opsi_b }}</label><br>
+    <label><input type="radio" name="jawaban[{{ $q->id }}]" value="c"> {{ $q->opsi_c }}</label><br>
+    <label><input type="radio" name="jawaban[{{ $q->id }}]" value="d"> {{ $q->opsi_d }}</label>
 </div>
 @endforeach
 

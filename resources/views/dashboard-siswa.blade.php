@@ -2,7 +2,7 @@
     {{-- Header slot --}}
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Dashboard Siswa') }}
         </h2>
     </x-slot>
     {{-- Layout --}}
@@ -58,59 +58,9 @@
 </div>
 
 
-           {{-- Lanjutkan Membaca --}}
-<section class="mt-24 px-4 sm:px-6">
-    <h2 class="font-bold text-gray-800 mb-4">Lanjutkan Membaca</h2>
 
-    <a href="{{ route('siswa.materi.teks') }}" class="block">
-        <div class="bg-white rounded-xl shadow-md p-4
-                    flex flex-col sm:flex-row
-                    sm:items-center
-                    gap-4 sm:gap-6">
-
-            {{-- Gambar --}}
-            <img src="{{ asset('images/code.jpg') }}"
-                 class="w-full sm:w-32 h-40 sm:h-20
-                        rounded-lg object-cover"
-                 alt="Preview">
-
-            {{-- Konten --}}
-            <div class="flex-1">
-                <span class="inline-block bg-blue-100 text-blue-700
-                             text-xs font-semibold px-2 py-1 rounded">
-                    Materi
-                </span>
-
-                <h3 class="text-base sm:text-lg font-semibold text-gray-800 mt-2">
-                    Materi Algoritma dan Pemrograman
-                </h3>
-
-                @auth
-                    <p class="text-xs sm:text-sm text-gray-500 mt-1">
-                        {{ Auth::user()->name }} • {{ Auth::user()->email }}
-                    </p>
-                @endauth
-
-                {{-- Progress Bar --}}
-               <div class="mt-3 w-full bg-gray-200 rounded-full h-2">
-                <div id="progressBar" class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: 0%">
-                 </div>
-                </div>
-
-        </div>
-    </a>
-</section>
         </main>
 </div>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const bar = document.getElementById('progressBar');
-    if (!bar) return;
-
-    const progress = localStorage.getItem('materi_progress') ?? 0;
-    bar.style.width = progress + '%';
-});
-</script>
 
 
 </x-app-layout>

@@ -49,7 +49,7 @@
 
                                     {{-- Nama kuis --}}
                                     <td class="py-3 px-3 text-left">
-                                        {{ $attempt->quiz->judul ?? '-' }}
+                                        {{ $attempt->kuis->judul ?? '-' }}
                                     </td>
 
                                     {{-- Nilai --}}
@@ -59,7 +59,7 @@
 
                                     {{-- Waktu --}}
                                     <td class="py-3 px-3 text-right text-gray-500 whitespace-nowrap">
-                                        {{ \Carbon\Carbon::parse($attempt->submitted_at)->format('d M Y H:i') }}
+                                       {{ $attempt->created_at->format('d M Y H:i') }}
                                     </td>
                                 </tr>
                             @empty
