@@ -1,20 +1,10 @@
 <x-app-layout>
-    {{-- Header --}}
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Evaluasi
-        </h2>
-    </x-slot>
+   
+    {{-- Sidebar --}}
+    @include('layouts.sidebar')
 
-    {{-- Layout --}}
-    <div class="flex min-h-screen bg-gray-50 text-gray-800">
-
-        {{-- Sidebar --}}
-            @include('layouts.sidebar')
-        
-
-        {{-- Konten Utama --}}
-        <main class="flex-1 p-10 overflow-y-auto">
+    {{-- Konten Utama --}}
+        <main class="ml-64 pt-16 px-10 pb-16 min-h-screen bg-gray-100">
 
             {{-- Flash Message --}}
             @if(session('error'))
@@ -33,78 +23,139 @@
 
     @forelse($kuis as $index => $item)
 
-        @php
-            $already = \App\Models\QuizAttempt::where('user_id', auth()->id())
-                ->where('kuis_id', $item->id)
-                ->exists();
-        @endphp
+@php
+    $already = \App\Models\QuizAttempt::where('user_id', auth()->id())
+        ->where('kuis_id', $item->id)
+        ->exists();
+@endphp
 
-        <div class="bg-white rounded-2xl shadow p-5
-                    flex flex-col gap-4
-                    sm:flex-row sm:items-center sm:justify-between
-                    hover:shadow-lg transition">
+<div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6
+            hover:shadow-md hover:border-blue-200
+            transition-all duration-300">
 
-            {{-- Kiri --}}
-            <div class="flex items-center space-x-4">
-                <div class="w-24 h-16 sm:w-32 sm:h-20 bg-blue-300 rounded-xl"></div>
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
 
-                <div>
-                    <p class="text-sm text-gray-500">
-                        Kuis {{ $index + 1 }}
-                    </p>
+        {{-- Info --}}
+        <div class="flex items-start gap-4">
 
-                    <h3 class="font-semibold text-base sm:text-lg text-gray-800">
-                        {{ $item->judul }}
-                    </h3>
-
-                    <div class="flex flex-wrap text-sm text-gray-500 gap-x-4 mt-1">
-                        <span>📘 Kelas {{ $item->kelas }}</span>
-                        <span>📝 {{ $item->pertanyaan_count }} Soal</span>
-                    </div>
-                </div>
+            {{-- Icon minimalis --}}
+            <div class="bg-blue-50 text-blue-600 p-3 rounded-xl">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     fill="none" viewBox="0 0 24 24"
+                     stroke-width="1.8" stroke="currentColor"
+                     class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M9 12h6m-6 4h6M7 4h10a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2z"/>
+                </svg>
             </div>
 
-            {{-- Button --}}
-            @if($already)
-                <span class="w-full sm:w-auto text-center
-                               px-4 py-2 bg-gray-300 text-gray-600
-                               rounded-full text-sm cursor-not-allowed">
-                    Sudah dikerjakan
-                </span>
-            @else
-                <a href="{{ route('siswa.evaluasi.show', $item->id) }}"
-                   class="w-full sm:w-auto text-center
-                          px-4 py-2 bg-blue-500 text-white
-                          rounded-full text-sm
-                          hover:bg-blue-600 transition">
-                    Kerjakan Kuis
-                </a>
-            @endif
+            <div>
+                <p class="text-xs uppercase tracking-wide text-gray-400">
+                    Evaluasi {{ $index + 1 }}
+                </p>
 
+                <h3 class="font-semibold text-lg text-gray-800 mt-1">
+                    {{ $item->judul }}
+                </h3>
+
+                <div class="flex flex-wrap text-sm text-gray-500 gap-4 mt-2">
+                    <span>Kelas {{ $item->kelas }}</span>
+                    <span>{{ $item->pertanyaan_count }} Soal</span>
+                </div>
+            </div>
         </div>
 
-    @empty
+        {{-- Button --}}
+        @if($already)
+            <span class="inline-flex items-center justify-center
+                         px-5 py-2 text-sm
+                         bg-gray-100 text-gray-500
+                         rounded-full cursor-not-allowed">
+                Sudah Dikerjakan
+            </span>
+        @else
+            <a href="{{ route('siswa.evaluasi.show', $item->id) }}"
+               class="inline-flex items-center gap-2
+                      px-6 py-2.5 text-sm
+                      bg-blue-600 text-white
+                      rounded-full
+                      hover:bg-blue-700
+                      transition-all duration-300">
 
-        {{-- 🔥 Tampilan Jika Tidak Ada Kuis --}}
-        <div class="bg-white rounded-2xl shadow p-10 text-center">
-            <div class="text-5xl mb-4">📭</div>
-            <h3 class="text-xl font-semibold text-gray-700">
-                Kuis Belum Tersedia
-            </h3>
-            <p class="text-gray-500 mt-2">
-                Saat ini belum ada kuis aktif yang dapat dikerjakan.
-                Silakan tunggu informasi dari guru.
-            </p>
-        </div>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     fill="none" viewBox="0 0 24 24"
+                     stroke-width="1.8" stroke="currentColor"
+                     class="w-4 h-4">
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M9 5l7 7-7 7"/>
+                </svg>
+
+                Kerjakan
+            </a>
+        @endif
+
+    </div>
+</div>
+
+@empty
+
+        <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-12 text-center">
+
+    <div class="mx-auto w-16 h-16 bg-blue-50 text-blue-600
+                rounded-2xl flex items-center justify-center mb-5">
+
+        <svg xmlns="http://www.w3.org/2000/svg"
+             fill="none" viewBox="0 0 24 24"
+             stroke-width="1.8" stroke="currentColor"
+             class="w-8 h-8">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M3 7h18M3 12h18M3 17h18"/>
+        </svg>
+    </div>
+
+    <h3 class="text-lg font-semibold text-gray-800">
+        Belum Ada Evaluasi
+    </h3>
+
+    <p class="text-gray-500 mt-2">
+        Evaluasi akan muncul setelah guru mengaktifkannya.
+    </p>
+</div>
 
     @endforelse
+    <div class="mt-8 flex justify-end">
+    <a href="{{ url()->previous() }}"
+       class="inline-flex items-center gap-2
+              px-5 py-2.5 text-sm
+              bg-white border border-gray-300
+              text-gray-600
+              rounded-full
+              hover:bg-gray-50 hover:border-gray-400
+              transition-all duration-300">
 
+        <svg xmlns="http://www.w3.org/2000/svg"
+             viewBox="0 0 24 24"
+             fill="none"
+             stroke="currentColor"
+             stroke-width="1.8"
+             class="w-4 h-4">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15 18l-6-6 6-6"/>
+        </svg>
+
+        <span>Kembali</span>
+    </a>
 </div>
+
+
 
            
 
            
         </main>
 
-    </div>
+
 </x-app-layout>

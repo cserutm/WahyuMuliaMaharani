@@ -1,79 +1,118 @@
 <x-app-layout>
-    {{-- Header slot --}}
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Evaluasi') }}
-        </h2>
-    </x-slot>
+   
+    {{-- Sidebar --}}
+    @include('layouts.sidebar')
 
-    {{-- Layout --}}
-    <div class="flex min-h-screen bg-gray-50 text-gray-800">
-
-        {{-- sidebar --}}
-      @include('layouts.sidebar')
-
-        {{-- Konten Utama --}}
-        <main class="flex-1 p-10 overflow-y-auto flex justify-center items-start">
+    {{-- Konten Utama --}}
+   <main class="ml-64 pt-16 px-10 pb-16 min-h-screen bg-gray-100">
 
     @php
         $color = $score >= 80 ? 'blue' : ($score >= 70 ? 'green' : ($score >= 50 ? 'yellow' : 'red'));
 
         if($score >= 80){
-            $badge = "Excellent ⭐";
-            $message = "Luar biasa! Kamu sangat menguasai materi!";
+            $badge = "Excellent";
+            $message = "Luar biasa! Kamu sangat menguasai materi.";
         } elseif($score >= 70){
-            $badge = "Good 👍";
-            $message = "Bagus! Pertahankan semangat belajarmu!";
+            $badge = "Good Job";
+            $message = "Bagus! Pertahankan semangat belajarmu.";
         } elseif($score >= 50){
-            $badge = "Keep Trying 💪";
-            $message = "Lumayan! Tingkatkan lagi ya!";
+            $badge = "Keep Improving";
+            $message = "Lumayan! Tingkatkan lagi ya.";
         } else {
-            $badge = "Don't Give Up 🔥";
-            $message = "Jangan menyerah, pelajari materi lagi!";
+            $badge = "Keep Trying";
+            $message = "Jangan menyerah, pelajari materi lagi.";
         }
     @endphp
 
-    <div class="bg-white rounded-3xl shadow-xl p-10 w-full max-w-lg text-center">
+    <div class="max-w-md mx-auto">
 
-        {{-- Lingkaran Nilai --}}
-        <div class="flex justify-center mb-6">
-            <div class="w-48 h-48 rounded-full border-8 flex flex-col items-center justify-center text-white border-blue-200 bg-blue-500">
-        <p class="text-sm">Nilai Kamu</p>
+        <div class="bg-white border border-gray-200 
+                    rounded-3xl shadow-sm p-10 text-center">
 
-        <h2 class="text-4xl font-bold">
-            {{ $score ?? 0 }}/100
-        </h2>
-    </div>
-</div>
+            {{-- Score Circle --}}
+            <div class="flex justify-center mb-8">
+                <div class="w-40 h-40 rounded-full 
+                            flex flex-col items-center justify-center
+                            border-8
+                            {{ $color == 'blue' ? 'border-blue-100 bg-blue-50 text-blue-600' : '' }}
+                            {{ $color == 'green' ? 'border-green-100 bg-green-50 text-green-600' : '' }}
+                            {{ $color == 'yellow' ? 'border-yellow-100 bg-yellow-50 text-yellow-600' : '' }}
+                            {{ $color == 'red' ? 'border-red-100 bg-red-50 text-red-600' : '' }}">
 
+                    <p class="text-sm text-gray-500">Nilai</p>
 
-        {{-- Ringkasan --}}
-        <div class="bg-gray-50 border rounded-xl p-4 mb-5 text-sm">
-            <p class="text-gray-700 font-semibold mb-2 text-center">Ringkasan Hasil</p>
-            <div class="space-y-1 text-gray-700 text-center">
-                <p>Jawaban Benar: <span class="font-semibold">{{ $correct }}</span></p>
-                <p>Total Soal: <span class="font-semibold">{{ $total }}</span></p>
+                    <h2 class="text-4xl font-bold">
+                        {{ $score ?? 0 }}
+                    </h2>
+
+                    <p class="text-xs text-gray-400">/ 100</p>
+                </div>
             </div>
+
+            {{-- Summary --}}
+            <div class="bg-gray-50 border border-gray-200 
+                        rounded-2xl p-5 mb-6">
+
+                <p class="text-sm font-semibold text-gray-700 mb-3">
+                    Ringkasan Hasil
+                </p>
+
+                <div class="flex justify-between text-sm text-gray-600">
+                    <span>Jawaban Benar</span>
+                    <span class="font-semibold">{{ $correct }}</span>
+                </div>
+
+                <div class="flex justify-between text-sm text-gray-600 mt-2">
+                    <span>Total Soal</span>
+                    <span class="font-semibold">{{ $total }}</span>
+                </div>
+
+            </div>
+
+            {{-- Badge --}}
+            <h3 class="text-lg font-semibold
+                {{ $color == 'blue' ? 'text-blue-600' : '' }}
+                {{ $color == 'green' ? 'text-green-600' : '' }}
+                {{ $color == 'yellow' ? 'text-yellow-600' : '' }}
+                {{ $color == 'red' ? 'text-red-600' : '' }}">
+                {{ $badge }}
+            </h3>
+
+            <p class="text-gray-600 mt-2 text-sm">
+                {{ $message }}
+            </p>
+
+            {{-- Button --}}
+            <div class="mt-8 flex justify-center">
+                <a href="{{ route('siswa.evaluasi.index') }}"
+                   class="inline-flex items-center gap-2
+                          px-6 py-2.5 text-sm
+                          bg-white border border-gray-300
+                          text-gray-600
+                          rounded-full
+                          hover:bg-gray-50 hover:border-gray-400
+                          transition">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         class="w-4 h-4">
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M15 18l-6-6 6-6"/>
+                    </svg>
+
+                    Kembali ke Evaluasi
+                </a>
+            </div>
+
         </div>
 
-        {{-- Badge & Pesan --}}
-        <h3 class="text-xl font-semibold
-            {{ $color == 'blue' ? 'text-blue-600' : '' }}
-            {{ $color == 'green' ? 'text-green-600' : '' }}
-            {{ $color == 'yellow' ? 'text-yellow-600' : '' }}
-            {{ $color == 'red' ? 'text-red-600' : '' }}">
-            {{ $badge }}
-        </h3>
-        <p class="text-gray-600 mt-2">{{ $message }}</p>
-
-        {{-- Tombol --}}
-        <a href="{{ route('siswa.evaluasi.index') }}"
-           class="inline-block mt-6 px-4 py-1.5 text-sm bg-blue-500 text-white rounded-full hover:bg-blue-600 transition">
-            Kembali
-        </a>
-
     </div>
+
 </main>
 
-</div>
+
 </x-app-layout>

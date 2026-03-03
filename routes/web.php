@@ -14,6 +14,7 @@ use App\Http\Controllers\Guru\KuisController;
 use App\Http\Controllers\Guru\PertanyaanController;
 use App\Http\Controllers\GuruDashboardController;
 use App\Http\Controllers\SiswaMateriController;
+use App\Http\Controllers\DashboardSiswaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,9 +38,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard');
 
-Route::get('/dashboard-siswa', function () {
-    return view('dashboard-siswa');
-})->middleware(['auth', 'role:siswa'])->name('dashboard-siswa');
+
+Route::get('/siswa/dashboard', [DashboardSiswaController::class, 'index'])
+    ->middleware(['auth', 'role:siswa'])
+    ->name('dashboard-siswa');
 
     Route::get('/siswa/materi', [SiswaMateriController::class, 'index'])->name('siswa.materi.index');
     Route::get('siswa/materi/file', [SiswaMateriController::class, 'modul'])->name('siswa.materi.modul');

@@ -1,66 +1,163 @@
 <x-app-layout>
-    {{-- Header slot --}}
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard Siswa') }}
-        </h2>
-    </x-slot>
-    {{-- Layout --}}
-    <div class="flex min-h-screen bg-gray-50 text-gray-800">
-     {{-- sidebar --}}
-      @include('layouts.sidebar')
 
-        {{-- Konten Utama --}}
-        <main class="flex-1 p-10 overflow-y-auto">
-            {{-- Banner --}}
-            <a href="{{ route('siswa.materi.video') }}" class="block">
-            <div class="bg-blue-100 rounded-2xl p-6 flex justify-between items-center mb-10">
+    {{-- Sidebar --}}
+    @include('layouts.sidebar')
+
+    {{-- Konten Utama --}}
+    <main class="ml-64 pt-16 px-10 pb-16 min-h-screen bg-gray-50">
+
+    <div class="max-w-7xl mx-auto space-y-10">
+
+        {{-- Banner --}}
+        <div class="bg-white border border-gray-200 
+                    rounded-2xl p-8 shadow-sm">
+
+            <div class="flex items-center justify-between">
+
                 <div>
-                    <h1 class="text-2xl font-bold text-gray-800">
-                        Selamat Datang di Media Pembelajaran
-                    </h1>
-                    <p class="text-blue-800 text-lg font-semibold">
+                    <div class="bg-gray-100 inline-block px-4 py-1 
+                                rounded-full text-xs font-semibold 
+                                text-gray-600 mb-4">
+                        Media Pembelajaran
+                    </div>
+
+                    <h1 class="text-2xl font-semibold text-gray-800">
                         Algoritma dan Pemrograman
+                    </h1>
+
+                    <p class="text-gray-600 mt-2">
+                        Akses materi dan evaluasi untuk meningkatkan pemahamanmu.
                     </p>
-                    <button class="mt-4 flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full shadow">
-                        <i class="fa-solid fa-play"></i>
-                        <span>Lihat Video</span>
-                    </button>
                 </div>
-                <img src="{{ asset('images/banner.svg') }}" class="w-64" alt="Banner">
+
+                {{-- Icon Education --}}
+                <div class="hidden sm:flex items-center justify-center 
+                            w-16 h-16 bg-blue-50 rounded-xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" 
+                         class="w-8 h-8 text-blue-600"
+                         fill="none" viewBox="0 0 24 24" 
+                         stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M12 14l9-5-9-5-9 5 9 5z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M12 14l6.16-3.422A12.083 12.083 0 0112 20.055
+                                 a12.083 12.083 0 01-6.16-9.477L12 14z"/>
+                    </svg>
+                </div>
+
             </div>
-</a>
 
-           {{-- Menu Card --}}
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10 items-stretch">
-
-    <a href="{{ route('siswa.materi.index') }}" class="h-full">
-        <div class="h-full bg-gradient-to-br from-blue-100 to-pink-50 p-6 rounded-2xl shadow hover:shadow-lg transition text-center flex flex-col justify-center">
-            <img src="{{ asset('images/materi.svg') }}" class="w-16 h-16 mx-auto mb-4" alt="Materi">
-            <h3 class="font-semibold text-gray-700">Materi</h3>
         </div>
-    </a>
 
-    <a href="{{ route('leaderboard') }}" class="h-full">
-        <div class="h-full bg-gradient-to-br from-purple-100 to-blue-50 p-6 rounded-2xl shadow hover:shadow-lg transition text-center flex flex-col justify-center">
-            <img src="{{ asset('images/leaderboard.svg') }}" class="w-16 h-16 mx-auto mb-4" alt="Leaderboard">
-            <h3 class="font-semibold text-gray-700">Leaderboard</h3>
+        {{-- Menu Cards --}}
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+
+            {{-- Materi --}}
+            <a href="{{ route('siswa.materi.index') }}">
+                <div class="bg-white border border-gray-200
+                            rounded-2xl p-6
+                            shadow-sm hover:shadow-md
+                            transition duration-300">
+
+                    <div class="flex items-center justify-between">
+
+                        <div>
+                            <h3 class="font-semibold text-gray-800 text-lg">
+                                Materi
+                            </h3>
+
+                            <p class="text-sm text-gray-500 mt-1">
+                                {{ $totalMateri ?? 0 }} Materi tersedia
+                            </p>
+                        </div>
+
+                        <div class="w-12 h-12 bg-gray-100 
+                                    rounded-lg flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" 
+                                 class="w-6 h-6 text-blue-600"
+                                 fill="none" viewBox="0 0 24 24" 
+                                 stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M7 8h10M7 12h6m2 8H7a2 2 0 01-2-2V6a2 2 0 012-2h7l4 4v12a2 2 0 01-2 2z"/>
+                            </svg>
+                        </div>
+
+                    </div>
+                </div>
+            </a>
+
+            {{-- Evaluasi --}}
+            <a href="{{ route('siswa.evaluasi.index') }}">
+                <div class="bg-white border border-gray-200
+                            rounded-2xl p-6
+                            shadow-sm hover:shadow-md
+                            transition duration-300">
+
+                    <div class="flex items-center justify-between">
+
+                        <div>
+                            <h3 class="font-semibold text-gray-800 text-lg">
+                                Evaluasi
+                            </h3>
+
+                            <p class="text-sm text-gray-500 mt-1">
+                                {{ $totalKuis ?? 0 }} Kuis tersedia
+                            </p>
+                        </div>
+
+                        <div class="w-12 h-12 bg-gray-100 
+                                    rounded-lg flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" 
+                                 class="w-6 h-6 text-blue-600"
+                                 fill="none" viewBox="0 0 24 24" 
+                                 stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5
+                                         a2 2 0 012-2h5l5 5v11a2 2 0 01-2 2z"/>
+                            </svg>
+                        </div>
+
+                    </div>
+                </div>
+            </a>
+
+            {{-- Leaderboard --}}
+            <a href="{{ route('leaderboard') }}">
+                <div class="bg-white border border-gray-200
+                            rounded-2xl p-6
+                            shadow-sm hover:shadow-md
+                            transition duration-300">
+
+                    <div class="flex items-center justify-between">
+
+                        <div>
+                            <h3 class="font-semibold text-gray-800 text-lg">
+                                Leaderboard
+                            </h3>
+
+                            <p class="text-sm text-gray-500 mt-1">
+                                Lihat peringkat siswa
+                            </p>
+                        </div>
+
+                        <div class="w-12 h-12 bg-gray-100 
+                                    rounded-lg flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" 
+                                 class="w-6 h-6 text-blue-600"
+                                 fill="none" viewBox="0 0 24 24" 
+                                 stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M8 21h8m-4-4v4m5-10a5 5 0 01-10 0V4h10v7z"/>
+                            </svg>
+                        </div>
+
+                    </div>
+                </div>
+            </a>
+
         </div>
-    </a>
 
-    <a href="{{ route('siswa.evaluasi.index') }}" class="h-full">
-        <div class="h-full bg-gradient-to-br from-pink-100 to-purple-50 p-6 rounded-2xl shadow hover:shadow-lg transition text-center flex flex-col justify-center">
-            <img src="{{ asset('images/evaluasi.svg') }}" class="w-16 h-16 mx-auto mb-4" alt="Evaluasi">
-            <h3 class="font-semibold text-gray-700">Evaluasi</h3>
-        </div>
-    </a>
+    </div>
 
-</div>
-
-
-
-        </main>
-</div>
-
-
+</main>
 </x-app-layout>

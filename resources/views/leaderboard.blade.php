@@ -1,72 +1,73 @@
 <x-app-layout>
-    {{-- Header slot --}}
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Materi') }}
-        </h2>
-    </x-slot>
+ 
+    {{-- Sidebar --}}
+    @include('layouts.sidebar')
 
-    {{-- Layout --}}
-    <div class="flex min-h-screen bg-gray-50 text-gray-800">
+    {{-- Konten Utama --}}
+    <main class="ml-64 pt-16 px-10 pb-16 min-h-screen bg-gray-50">
 
-   
-        {{-- SIDEBAR DINAMIS --}}
+            <div class="bg-white p-8 rounded-2xl shadow-sm">
 
-    @if(auth()->user()->role === 'siswa')
-        @include('layouts.sidebar')
-    @elseif(auth()->user()->role === 'guru')
-        @include('guru.sidebar')
-    @endif
-      
+    <h3 class="text-xl font-semibold text-blue-900 mb-6">
+        Peringkat Siswa
+    </h3>
 
-        {{-- Konten --}}
-        <main class="flex-1 p-10 overflow-y-auto">
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left">
+            <thead class="bg-gray-100 text-blue-900 uppercase tracking-wider text-xs">
+                <tr>
+                    <th class="px-6 py-3">Rank</th>
+                    <th class="px-6 py-3">Nama</th>
+                    <th class="px-6 py-3 text-center">Total Kuis</th>
+                    <th class="px-6 py-3 text-right">Total Nilai</th>
+                </tr>
+            </thead>
 
-            <div class="bg-gradient-to-br from-blue-100 to-pink-50 p-6 rounded-2xl shadow text-center block
-              transform transition duration-300 hover:shadow-xl hover:-translate-y-1 active:scale-95">
+            <tbody class="divide-y divide-gray-200">
+                @foreach($leaderboard as $index => $row)
+                <tr class="hover:bg-gray-50 transition">
 
-                <h3 class="text-xl font-bold mb-6 text-center">
-                    🏆 Peringkat Siswa
-                </h3>
+                    {{-- Rank --}}
+                    <td class="px-6 py-4 font-semibold">
+                        @if($index === 0)
+                            <span class="px-3 py-1 text-xs font-semibold bg-yellow-100 text-yellow-700 rounded-full">
+                                #1
+                            </span>
+                        @elseif($index === 1)
+                            <span class="px-3 py-1 text-xs font-semibold bg-gray-200 text-gray-700 rounded-full">
+                                #2
+                            </span>
+                        @elseif($index === 2)
+                            <span class="px-3 py-1 text-xs font-semibold bg-orange-100 text-orange-700 rounded-full">
+                                #3
+                            </span>
+                        @else
+                            {{ $index + 1 }}
+                        @endif
+                    </td>
 
-                <table class="w-full border-collapse">
-                    <thead>
-                        <tr class="border-b text-gray-600">
-                            <th class="py-3 text-center">Rank</th>
-                            <th class="py-3 text-center">Nama</th>
-                            <th class="py-3 text-center">Total Kuis</th>
-                            <th class="py-3 text-right">Total Nilai</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($leaderboard as $index => $row)
-                        <tr class="border-b hover:bg-gray-50">
-                            <td class="py-3 font-semibold">
-                                @if($index === 0) 🥇
-                                @elseif($index === 1) 🥈
-                                @elseif($index === 2) 🥉
-                                @else {{ $index + 1 }}
-                                @endif
-                            </td>
+                    {{-- Nama --}}
+                    <td class="px-6 py-4 font-medium text-blue-900">
+                        {{ $row->user->name }}
+                    </td>
 
-                            <td class="py-3">
-                                {{ $row->user->name }}
-                            </td>
+                    {{-- Total Kuis --}}
+                    <td class="px-6 py-4 text-center text-gray-700">
+                        {{ $row->total_quiz }}
+                    </td>
 
-                            <td class="py-3 text-center">
-                                {{ $row->total_quiz }}
-                            </td>
+                    {{-- Total Nilai --}}
+                    <td class="px-6 py-4 text-right font-semibold text-blue-900">
+                        {{ $row->total_score }}
+                    </td>
 
-                            <td class="py-3 text-right font-bold text-blue-600">
-                                {{ $row->total_score }}
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
-            </div>
-
-        </main>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
+
+</div>
+        </main>
+
 </x-app-layout>

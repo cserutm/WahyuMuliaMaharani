@@ -27,9 +27,9 @@
             </header>
         @endif
 
-        <main>
-            {{ $slot }}
-        </main>
+        <main class="pt-16">
+    {{ $slot }}
+</main>
     </div>
 </body>
 </html>
