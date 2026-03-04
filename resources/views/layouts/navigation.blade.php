@@ -1,14 +1,28 @@
 <nav x-data="{ open: false }" 
- class="bg-white/95 backdrop-blur-sm border-b border-gray-100 fixed top-0 left-0 right-0 z-50 h-16">
+ class="bg-white/95 backdrop-blur-sm border-b border-gray-100 fixed top-0 left-0 right-0 z-50 h-16 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
 
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                      <x-application-logo class="w-8" />
-                    </a>
-                </div>
+               <div class="shrink-0 flex items-center gap-4">
+
+    {{-- Logo --}}
+    <x-application-logo class="w-8" />
+
+    {{-- Divider --}}
+    <div class="h-8 w-px bg-gray-200"></div>
+
+    {{-- System Title --}}
+    <div class="leading-tight">
+        <p class="text-xs uppercase tracking-widest text-blue-600 font-semibold">
+            Media Pembelajaran
+        </p>
+        <h1 class="text-sm sm:text-base font-bold text-gray-800">
+            Materi Algoritma dan Pemrograman
+        </h1>
+    </div>
+
+</div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
@@ -20,7 +34,20 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
+                            <div class="flex items-center gap-3">
+
+    <img 
+    src="{{ Auth::user()->foto 
+            ? asset('storage/' . Auth::user()->foto) 
+            : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) 
+        }}"
+    class="w-9 h-9 rounded-full object-cover border border-gray-200 shadow-sm">
+
+    <div class="text-sm font-medium text-gray-700">
+        {{ Auth::user()->name }}
+    </div>
+
+</div>
 
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">

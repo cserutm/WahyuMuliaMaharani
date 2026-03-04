@@ -80,50 +80,141 @@
     {{-- ===================== --}}
     @if(!empty($labels) && count($labels) > 0)
 
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        <script>
-            const labels = @json($labels ?? []);
-            const averageScores = @json($averageScores ?? []);
-            const totalAttempts = @json($totalAttempts ?? []);
+<script>
+    const labels = @json($labels ?? []);
+    const averageScores = @json($averageScores ?? []);
+    const totalAttempts = @json($totalAttempts ?? []);
 
-            new Chart(document.getElementById('averageChart'), {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Rata-rata Nilai',
-                        data: averageScores,
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100
-                        }
+    // =============================
+    // 🔹 GRADIENT FUNCTION
+    // =============================
+    function createGradient(ctx, color1, color2) {
+        const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+        gradient.addColorStop(0, color1);
+        gradient.addColorStop(1, color2);
+        return gradient;
+    }
+
+    // =============================
+    // 🔹 AVERAGE SCORE (BAR)
+    // =============================
+    const avgCtx = document.getElementById('averageChart').getContext('2d');
+
+    const avgGradient = createGradient(
+        avgCtx,
+        "rgba(59, 130, 246, 0.8)",   // biru
+        "rgba(99, 102, 241, 0.3)"    // indigo
+    );
+
+    new Chart(avgCtx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Rata-rata Nilai',
+                data: averageScores,
+                backgroundColor: avgGradient,
+                borderRadius: 10,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: "#374151",
+                        font: { size: 13 }
                     }
-                }
-            });
-
-            new Chart(document.getElementById('attemptChart'), {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Jumlah Siswa',
-                        data: totalAttempts,
-                        borderWidth: 2,
-                        tension: 0.3
-                    }]
                 },
-                options: {
-                    responsive: true
+                tooltip: {
+                    backgroundColor: "#111827",
+                    titleColor: "#fff",
+                    bodyColor: "#fff",
+                    padding: 12,
+                    cornerRadius: 8
                 }
-            });
-        </script>
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { color: "#6B7280" }
+                },
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    grid: {
+                        color: "rgba(0,0,0,0.05)"
+                    },
+                    ticks: { color: "#6B7280" }
+                }
+            }
+        }
+    });
+
+    // =============================
+    // 🔹 PARTISIPASI SISWA (LINE)
+    // =============================
+    const attemptCtx = document.getElementById('attemptChart').getContext('2d');
+
+    const attemptGradient = createGradient(
+        attemptCtx,
+        "rgba(16, 185, 129, 0.5)",   // emerald
+        "rgba(16, 185, 129, 0.05)"
+    );
+
+    new Chart(attemptCtx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Jumlah Siswa',
+                data: totalAttempts,
+                borderColor: "#10B981", // emerald
+                backgroundColor: attemptGradient,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 5,
+                pointBackgroundColor: "#fff",
+                pointBorderColor: "#10B981",
+                pointBorderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: "#374151",
+                        font: { size: 13 }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: "#111827",
+                    titleColor: "#fff",
+                    bodyColor: "#fff",
+                    padding: 12,
+                    cornerRadius: 8
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { color: "#6B7280" }
+                },
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: "rgba(0,0,0,0.05)"
+                    },
+                    ticks: { color: "#6B7280" }
+                }
+            }
+        }
+    });
+</script>
 
     @endif
 

@@ -6,7 +6,7 @@
     {{-- Logo / Section Title --}}
     <div class="mb-8">
         <h2 class="text-xs uppercase tracking-widest text-blue-300 font-semibold">
-            Menu Utama 
+            Menu Utama Siswa
         </h2>
     </div>
 

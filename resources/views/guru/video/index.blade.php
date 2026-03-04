@@ -1,152 +1,174 @@
 <x-app-layout>
 
-    {{-- Header --}}
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Kelola Materi') }}
-        </h2>
-    </x-slot>
-
-    {{-- Layout Utama --}}
-    <div class="flex min-h-screen bg-gray-50 text-gray-800">
+    <div class="flex">
 
         {{-- Sidebar --}}
         @include('guru.sidebar')
 
         {{-- Konten --}}
-        <main class="flex-1 p-10 overflow-y-auto"
-        x-data="{
-        open:false,
-        openEdit:false,
-        editId:null
-    }">
+        <main class="flex-1 ml-64 p-10 space-y-10"
+              x-data="{ open:false, openEdit:false, editId:null }">
 
-     {{-- Header Konten (Judul + Tombol) --}}
-            <div class="flex items-center justify-between mb-6">
-                <h1 class="text-2xl font-bold text-gray-800">Kelola Materi Video</h1>
+            {{-- Header --}}
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800">
+                        Kelola Materi Video
+                    </h1>
+                    <p class="text-sm text-gray-500">
+                        Kelola dan atur video pembelajaran siswa
+                    </p>
+                </div>
 
+                {{-- Tombol Tambah --}}
                 <button
-           @click="open = true; tipe = ''; $nextTick(() => $refs.form.reset())"
+                    @click="open = true; $nextTick(() => $refs.form?.reset())"
+                    class="inline-flex items-center gap-2
+                           px-4 py-2
+                           bg-white border border-blue-200
+                           text-blue-600
+                           rounded-xl shadow-sm
+                           hover:bg-blue-50 transition">
 
-            class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg">
-             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
-                         viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M12 4v16m8-8H4" />
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         class="w-5 h-5">
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M12 4v16m8-8H4"/>
                     </svg>
-             Tambah Materi
+
+                    <span>Tambah Materi</span>
                 </button>
             </div>
 
-              {{-- Table --}}
-            <div class="bg-white rounded-xl shadow overflow-x-auto">
-                <table class="w-full text-sm">
-                    <thead class="bg-gray-100">
-    <tr class="text-gray-600">
-        <th class="px-6 py-3 text-left">No</th>
-        <th class="px-6 py-3 text-left">Judul</th>
-        <th class="px-6 py-3 text-left">Deskripsi</th>
-        <th class="px-6 py-3 text-center">Aksi</th>
-    </tr>
-</thead>
+            {{-- Card Table --}}
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
 
-                    <tbody class="divide-y">
-                        @forelse ($videos as $index => $video)
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-3">{{ $index + 1 }}</td>
-                                <td class="px-6 py-3">{{ $video->judul }}</td>
-                                <td class="px-6 py-3">{{ $video->deskripsi }}</td>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
 
+                        <thead class="bg-gradient-to-r from-blue-50 to-blue-100">
+                            <tr class="text-gray-700">
+                                <th class="px-6 py-4 text-left">No</th>
+                                <th class="px-6 py-4 text-left">Judul</th>
+                                <th class="px-6 py-4 text-left">Deskripsi</th>
+                                <th class="px-6 py-4 text-center">Aksi</th>
+                            </tr>
+                        </thead>
 
-                              
+                        <tbody class="divide-y">
 
-                                {{-- Aksi --}}
-                                <td class="px-4 py-3">
-                                    <div class="flex justify-center items-center gap-3">
-                                  
-                                        <a href="{{ route('guru.video.show', $video->id) }}"
-                                             class="flex items-center gap-1 text-green-600 hover:text-green-800">
-                                            <svg xmlns="http://www.w3.org/2000/svg"
-         class="w-4 h-4 sm:w-5 sm:h-5"
-         fill="none"
-         viewBox="0 0 24 24"
-         stroke="currentColor">
-        <path stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        <path stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M2.458 12C3.732 7.943 7.523 5 12 5
-                 c4.477 0 8.268 2.943 9.542 7
-                 -1.274 4.057-5.065 7-9.542 7
-                 -4.477 0-8.268-2.943-9.542-7z" />
-    </svg>
-                                          <span class="hidden sm:inline">Detail</span>
-                                        </a>
-                                       
+                            @forelse ($videos as $index => $video)
+                                <tr class="hover:bg-gray-50 transition">
 
-                                        {{-- Edit --}}
-                                         <button 
-                            @click="openEdit=true; editId={{ $video->id }}"
-                                           class="flex items-center gap-1 text-blue-600 hover:text-blue-800">
-                                            <svg xmlns="http://www.w3.org/2000/svg"
-                 class="w-4 h-4 sm:w-5 sm:h-5"
-                 fill="none"
-                 viewBox="0 0 24 24"
-                 stroke="currentColor">
-                <path stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M11 5H6a2 2 0 00-2 2v11
-                         a2 2 0 002 2h11a2 2 0 002-2v-5
-                         m-1.414-9.414
-                         a2 2 0 112.828 2.828L11.828 15
-                         H9v-2.828l8.586-8.586z" />
-            </svg>
+                                    <td class="px-6 py-4 text-gray-500">
+                                        {{ $index + 1 }}
+                                    </td>
 
-                                            <span class="hidden sm:inline">Edit</span>
-                                        </button>
+                                    <td class="px-6 py-4 font-semibold">
+                                        {{ $video->judul }}
+                                    </td>
 
-                                        {{-- Hapus --}}
-                                        <form action="{{ route('guru.video.destroy', $video->id) }}"
-                                              method="POST"
-                                              onsubmit="return confirm('Yakin hapus materi ini?')">
-                                            @csrf
-                                            @method('DELETE')
+                                    <td class="px-6 py-4 text-gray-600">
+                                        {{ $video->deskripsi }}
+                                    </td>
 
-                                            <button type="submit"
-                                                class="flex items-center gap-1 text-red-600 hover:text-red-800">
-                                                 <svg xmlns="http://www.w3.org/2000/svg"
-                     class="w-4 h-4 sm:w-5 sm:h-5"
-                     fill="none"
-                     viewBox="0 0 24 24"
-                     stroke="currentColor">
-                    <path stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862
-                             a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7
-                             h6m2 0H7m2-3h6a1 1 0 011 1v1H8V5
-                             a1 1 0 011-1z" />
-                </svg>
-                                                <span class="hidden sm:inline">Hapus</span>
+                                    {{-- Aksi --}}
+                                    <td class="px-6 py-4">
+                                        <div class="flex justify-center items-center gap-3">
+
+                                            {{-- Detail --}}
+                                            <a href="{{ route('guru.video.show', $video->id) }}"
+                                               class="p-2 rounded-full bg-green-100 text-green-600
+                                                      hover:bg-green-200 transition shadow-sm">
+
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                     class="w-4 h-4"
+                                                     fill="none"
+                                                     viewBox="0 0 24 24"
+                                                     stroke="currentColor">
+                                                    <path stroke-linecap="round"
+                                                          stroke-linejoin="round"
+                                                          stroke-width="2"
+                                                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                    <path stroke-linecap="round"
+                                                          stroke-linejoin="round"
+                                                          stroke-width="2"
+                                                          d="M2.458 12C3.732 7.943 7.523 5 12 5
+                                                             c4.477 0 8.268 2.943 9.542 7
+                                                             -1.274 4.057-5.065 7-9.542 7
+                                                             -4.477 0-8.268-2.943-9.542-7z"/>
+                                                </svg>
+                                            </a>
+
+                                            {{-- Edit --}}
+                                            <button
+                                                @click="openEdit=true; editId={{ $video->id }}"
+                                                class="p-2 rounded-full bg-blue-100 text-blue-600
+                                                       hover:bg-blue-200 transition shadow-sm">
+
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                     class="w-4 h-4"
+                                                     fill="none"
+                                                     viewBox="0 0 24 24"
+                                                     stroke="currentColor">
+                                                    <path stroke-linecap="round"
+                                                          stroke-linejoin="round"
+                                                          stroke-width="2"
+                                                          d="M11 5H6a2 2 0 00-2 2v11
+                                                             a2 2 0 002 2h11a2 2 0 002-2v-5
+                                                             m-1.414-9.414
+                                                             a2 2 0 112.828 2.828L11.828 15
+                                                             H9v-2.828l8.586-8.586z"/>
+                                                </svg>
                                             </button>
-                                        </form>
 
-                                    </div>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="px-6 py-10 text-center text-gray-500">
-                                    Belum ada materi
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                                            {{-- Hapus --}}
+                                            <form action="{{ route('guru.video.destroy', $video->id) }}"
+                                                  method="POST"
+                                                  onsubmit="return confirm('Yakin hapus materi ini?')">
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button type="submit"
+                                                    class="p-2 rounded-full bg-red-100 text-red-600
+                                                           hover:bg-red-200 transition shadow-sm">
+
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                         class="w-4 h-4"
+                                                         fill="none"
+                                                         viewBox="0 0 24 24"
+                                                         stroke="currentColor">
+                                                        <path stroke-linecap="round"
+                                                              stroke-linejoin="round"
+                                                              stroke-width="2"
+                                                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862
+                                                                 a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6"/>
+                                                    </svg>
+                                                </button>
+                                            </form>
+
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            @empty
+                                <tr>
+                                    <td colspan="4"
+                                        class="px-6 py-10 text-center text-gray-400">
+                                        Belum ada materi
+                                    </td>
+                                </tr>
+                            @endforelse
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
                   {{-- MODAL CREATE --}}
 <div
     x-cloak
@@ -251,7 +273,36 @@
     </div>
     @endforeach
 </div>
+
+ {{-- Button Kembali (Clean Style) --}}
+        <div class="mt-10 flex justify-end">
+            <a href="{{ url()->previous() }}"
+               class="inline-flex items-center gap-2
+                      px-5 py-2.5 text-sm
+                      bg-white border border-gray-300
+                      text-gray-600
+                      rounded-full
+                      hover:bg-gray-50 hover:border-gray-400
+                      transition">
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.8"
+                     class="w-4 h-4">
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M15 18l-6-6 6-6"/>
+                </svg>
+
+                <span>Kembali</span>
+            </a>
 </div>
+
+</div>
+
+
 
 
 </main>

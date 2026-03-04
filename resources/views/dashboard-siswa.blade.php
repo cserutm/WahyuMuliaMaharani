@@ -1,7 +1,9 @@
 <x-app-layout>
 
+
     {{-- Sidebar --}}
     @include('layouts.sidebar')
+
 
     {{-- Konten Utama --}}
     <main class="ml-64 pt-16 px-10 pb-16 min-h-screen bg-gray-50">

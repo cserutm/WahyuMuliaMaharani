@@ -1,11 +1,12 @@
 <x-app-layout>
+
     <div class="flex">
  
     {{-- Sidebar --}}
     @include('guru.sidebar')
 
     {{-- Konten Utama --}}
-    <main class="ml-64 pt-16 px-10 pb-16 min-h-screen bg-gray-50">
+   <main class="flex-1 ml-64 p-10">
 
             <div class="bg-white p-8 rounded-2xl shadow-sm">
 
