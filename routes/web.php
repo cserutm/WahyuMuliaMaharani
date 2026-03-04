@@ -36,7 +36,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard');
 
 
 Route::get('/siswa/dashboard', [DashboardSiswaController::class, 'index'])
@@ -52,13 +51,13 @@ Route::get('/siswa/dashboard', [DashboardSiswaController::class, 'index'])
     Route::get('siswa/evaluasi', [EvaluasiController::class, 'index'])->name('siswa.evaluasi.index');
     Route::get('siswa/evaluasi/{id}', [EvaluasiController::class, 'show'])->name('siswa.evaluasi.show');
     Route::post('siswa/evaluasi/{id}', [EvaluasiController::class, 'submit'])->name('siswa.evaluasi.submit');
+
+    Route::prefix('siswa')->name('siswa.')->middleware(['auth'])->group(function () {
+    Route::get('/leaderboard', [LeaderboardController::class, 'siswa'])
+        ->name('leaderboard');
+});
     
 
-   /* 
-    Route::get('/guru/dashboard', function () {
-    return view('guru.dashboard');
-})->middleware(['auth', 'role:guru'])->name('guru.dashboard');
-*/
 
 Route::get('/guru/dashboard', [GuruDashboardController::class, 'index'])
     ->middleware(['auth', 'role:guru'])
@@ -133,6 +132,11 @@ Route::put('/guru/kuis/{kuis_id}/pertanyaan/{id}',
 Route::delete('/guru/kuis/{kuis_id}/pertanyaan/{id}', 
     [PertanyaanController::class, 'destroy']
 )->name('guru.kuis.pertanyaan.destroy');
+
+Route::prefix('guru')->name('guru.')->middleware(['auth'])->group(function () {
+    Route::get('/leaderboard', [LeaderboardController::class, 'guru'])
+        ->name('leaderboard');
+});
 
     
 

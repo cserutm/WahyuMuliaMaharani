@@ -67,9 +67,9 @@
         </a>
 
         <!-- Leaderboard -->
-        <a href="{{ route('leaderboard') }}"
+        <a href="{{ route('siswa.leaderboard') }}"
            class="group flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all duration-200
-           {{ request()->routeIs('leaderboard') 
+           {{ request()->routeIs('siswa.leaderboard') 
                 ? 'bg-white/10 text-white font-semibold'
                 : 'text-blue-100 hover:bg-white/5 hover:text-white' }}">
 

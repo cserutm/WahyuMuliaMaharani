@@ -1,78 +1,69 @@
 <x-app-layout>
 
-    {{-- Header --}}
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Dashboard Guru
-        </h2>
-    </x-slot>
-
-    <div class="flex min-h-screen bg-gray-50 text-gray-800">
+    <div class="flex">
 
         {{-- Sidebar --}}
         @include('guru.sidebar')
 
         {{-- Konten --}}
-        <main class="flex-1 p-10 overflow-y-auto space-y-8">
+        <main class="flex-1 ml-64 p-10 space-y-10">
 
             {{-- ===================== --}}
-            {{-- 🔵 STATISTIK --}}
+            {{-- 🔹 STATISTIK --}}
             {{-- ===================== --}}
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-                <div class="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition">
-                    <p class="text-gray-500 text-sm">Total Kuis</p>
-                    <h2 class="text-3xl font-bold text-blue-600 mt-2">
-                        {{ $totalKuis }}
+                <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+                    <p class="text-sm text-gray-400">Total Kuis</p>
+                    <h2 class="text-3xl font-semibold mt-3">
+                        {{ $totalKuis ?? 0 }}
                     </h2>
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition">
-                    <p class="text-gray-500 text-sm">Total Siswa</p>
-                    <h2 class="text-3xl font-bold text-green-600 mt-2">
-                        {{ $totalSiswa }}
+                <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+                    <p class="text-sm text-gray-400">Total Siswa</p>
+                    <h2 class="text-3xl font-semibold mt-3">
+                        {{ $totalSiswa ?? 0 }}
                     </h2>
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition">
-                    <p class="text-gray-500 text-sm">Total Pengerjaan</p>
-                    <h2 class="text-3xl font-bold text-purple-600 mt-2">
-                        {{ $totalAttempt }}
+                <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+                    <p class="text-sm text-gray-400">Total Pengerjaan</p>
+                    <h2 class="text-3xl font-semibold mt-3">
+                        {{ $totalAttempt ?? 0 }}
                     </h2>
                 </div>
 
             </div>
 
             {{-- ===================== --}}
-            {{-- 📊 ANALISIS GRAFIK --}}
+            {{-- 🔹 GRAFIK --}}
             {{-- ===================== --}}
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-                {{-- Grafik Rata-rata Nilai --}}
-                <div class="bg-white p-6 rounded-2xl shadow">
-                    <h3 class="text-lg font-semibold mb-4">
-                        📈 Rata-rata Nilai Per Kuis
+                <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+                    <h3 class="text-lg font-semibold mb-6">
+                        Rata-rata Nilai per Kuis
                     </h3>
 
-                    @if(count($labels) > 0)
+                    @if(!empty($labels) && count($labels) > 0)
                         <canvas id="averageChart"></canvas>
                     @else
-                        <div class="text-center py-10 text-gray-500">
-                            Belum ada data kuis untuk dianalisis.
+                        <div class="text-gray-500 text-center py-10">
+                            Belum ada data kuis.
                         </div>
                     @endif
                 </div>
 
-                {{-- Grafik Jumlah Partisipasi --}}
-                <div class="bg-white p-6 rounded-2xl shadow">
-                    <h3 class="text-lg font-semibold mb-4">
-                        👥 Partisipasi Siswa
+                <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+                    <h3 class="text-lg font-semibold mb-6">
+                        Partisipasi Siswa
                     </h3>
 
-                    @if(count($labels) > 0)
+                    @if(!empty($labels) && count($labels) > 0)
                         <canvas id="attemptChart"></canvas>
                     @else
-                        <div class="text-center py-10 text-gray-500">
+                        <div class="text-gray-500 text-center py-10">
                             Belum ada aktivitas siswa.
                         </div>
                     @endif
@@ -85,18 +76,17 @@
     </div>
 
     {{-- ===================== --}}
-    {{-- 📊 CHART JS --}}
+    {{-- 🔹 CHART JS --}}
     {{-- ===================== --}}
-    @if(count($labels) > 0)
+    @if(!empty($labels) && count($labels) > 0)
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
         <script>
-            const labels = @json($labels);
-            const averageScores = @json($averageScores);
-            const totalAttempts = @json($totalAttempts);
+            const labels = @json($labels ?? []);
+            const averageScores = @json($averageScores ?? []);
+            const totalAttempts = @json($totalAttempts ?? []);
 
-            // Grafik 1 - Bar
             new Chart(document.getElementById('averageChart'), {
                 type: 'bar',
                 data: {
@@ -118,7 +108,6 @@
                 }
             });
 
-            // Grafik 2 - Line
             new Chart(document.getElementById('attemptChart'), {
                 type: 'line',
                 data: {
@@ -134,7 +123,6 @@
                     responsive: true
                 }
             });
-
         </script>
 
     @endif

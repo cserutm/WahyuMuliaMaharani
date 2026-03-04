@@ -1,46 +1,79 @@
  
-        {{-- Sidebar --}}
-        <aside class="w-64 bg-white shadow-lg flex flex-col justify-between">
-            <div>
-{{-- Navigasi --}}
-<nav class="flex flex-col space-y-2 px-6">
-    <!-- Home / AlPro -->
-    <a href="{{ route('guru.dashboard') }}" class="flex items-center space-x-2 text-blue-600 font-semibold">
-        <!-- Ikon Home (Baru) -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
-             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M3 12l9-9 9 9M4 10v10a1 1 0 001 1h5m4 0h5a1 1 0 001-1V10" />
-        </svg>
-        <span>Dashboard</span>
-    </a>
+       {{-- Sidebar --}}
+<aside class="fixed top-16 left-0 w-64 h-[calc(100vh-4rem)] 
+               bg-blue-900 text-blue-50 
+               px-6 py-6 overflow-y-auto">
+
+    {{-- Logo / Section Title --}}
+    <div class="mb-8">
+        <h2 class="text-xs uppercase tracking-widest text-blue-300 font-semibold">
+            Menu Utama 
+        </h2>
+    </div>
+
+    <nav class="space-y-2">
+        
+   <!-- Dashboard -->
+        <a href="{{ route('guru.dashboard') }}"
+           class="group flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all duration-200
+           {{ request()->routeIs('dashboard') 
+                ? 'bg-white/10 text-white font-semibold'
+                : 'text-blue-100 hover:bg-white/5 hover:text-white' }}">
+
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                 class="w-5 h-5 opacity-80 group-hover:opacity-100"
+                 fill="none" viewBox="0 0 24 24" 
+                 stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M3 12l9-9 9 9M4 10v10a1 1 0 001 1h5m4 0h5a1 1 0 001-1V10" />
+            </svg>
+
+            <span>Dashboard</span>
+        </a>
 
     <!-- Materi -->
-    <a href="{{ route('guru.materi') }}" 
-    class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
-        <!-- Ikon Document Text (ganti Book) -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
-             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M7 8h10M7 12h6m2 8H7a2 2 0 01-2-2V6a2 2 0 012-2h7l4 4v12a2 2 0 01-2 2z" />
-        </svg>
-        <span>Kelola Materi</span>
-    </a>
+        <a href="{{ route('guru.materi') }}"
+           class="group flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all duration-200
+           {{ request()->routeIs('guru.materi.*') 
+                ? 'bg-white/10 text-white font-semibold'
+                : 'text-blue-100 hover:bg-white/5 hover:text-white' }}">
 
-    <!-- Evaluasi -->
-    <a href="{{ route('guru.kuis.index') }}" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
-        <!-- Ikon Clock -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
-             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        <span>Kelola Kuis</span>
-    </a>
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                 class="w-5 h-5 opacity-80 group-hover:opacity-100"
+                 fill="none" viewBox="0 0 24 24" 
+                 stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M7 8h10M7 12h6m2 8H7a2 2 0 01-2-2V6a2 2 0 012-2h7l4 4v12a2 2 0 01-2 2z" />
+            </svg>
+
+            <span>Kelola Materi</span>
+        </a>
+
+      <!-- Evaluasi -->
+        <a href="{{ route('guru.kuis.index') }}"
+           class="group flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all duration-200
+           {{ request()->routeIs('guru.kuis.*') 
+                ? 'bg-white/10 text-white font-semibold'
+                : 'text-blue-100 hover:bg-white/5 hover:text-white' }}">
+
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                 class="w-5 h-5 opacity-80 group-hover:opacity-100"
+                 fill="none" viewBox="0 0 24 24" 
+                 stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+
+            <span>Kelola Evaluasi</span>
+        </a>
+
 
     <!-- Lihat Nilai-->
-    <a href="{{ route('guru.nilai') }}" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
-        <!-- Ikon -->
+    <a href="{{ route('guru.nilai') }}"
+           class="group flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all duration-200
+           {{ request()->routeIs('guru.nilai') 
+                ? 'bg-white/10 text-white font-semibold'
+                : 'text-blue-100 hover:bg-white/5 hover:text-white' }}">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
        <path stroke-linecap="round" stroke-linejoin="round"
@@ -49,9 +82,11 @@
         <span>Lihat Nilai</span>
     </a>
 
-    <!-- Leaderboard -->
-    <a href="{{ route('leaderboard') }}" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
-        <!-- Ikon Trophy -->
+   <a href="{{ route('guru.leaderboard') }}"
+           class="group flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all duration-200
+           {{ request()->routeIs('guru.leaderboard') 
+                ? 'bg-white/10 text-white font-semibold'
+                : 'text-blue-100 hover:bg-white/5 hover:text-white' }}">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
              viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round"
