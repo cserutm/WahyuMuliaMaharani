@@ -31,6 +31,42 @@
             <span>Dashboard</span>
         </a>
 
+        <!-- Semester -->
+<a href="{{ route('guru.semester.index') }}"
+   class="group flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all duration-200
+   {{ request()->routeIs('guru.semester.*') 
+        ? 'bg-white/10 text-white font-semibold'
+        : 'text-blue-100 hover:bg-white/5 hover:text-white' }}">
+
+    <svg xmlns="http://www.w3.org/2000/svg" 
+         class="w-5 h-5 opacity-80 group-hover:opacity-100"
+         fill="none" viewBox="0 0 24 24" 
+         stroke="currentColor" stroke-width="1.8">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+    </svg>
+
+    <span>Kelola Semester</span>
+</a>
+
+<!-- Kelas -->
+<a href="{{ route('guru.classes.index') }}"
+   class="group flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all duration-200
+   {{ request()->routeIs('guru.classes.*') 
+        ? 'bg-white/10 text-white font-semibold'
+        : 'text-blue-100 hover:bg-white/5 hover:text-white' }}">
+
+    <svg xmlns="http://www.w3.org/2000/svg" 
+         class="w-5 h-5 opacity-80 group-hover:opacity-100"
+         fill="none" viewBox="0 0 24 24" 
+         stroke="currentColor" stroke-width="1.8">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M3 7h18M5 7v10a2 2 0 002 2h10a2 2 0 002-2V7M9 11h6"/>
+    </svg>
+
+    <span>Kelola Kelas</span>
+</a>
+
     <!-- Materi -->
         <a href="{{ route('guru.materi') }}"
            class="group flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all duration-200

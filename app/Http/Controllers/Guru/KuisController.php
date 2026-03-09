@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Guru;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kuis;
+use App\Models\Classes;
 use Illuminate\Http\Request;
 
 class KuisController extends Controller
@@ -14,8 +15,10 @@ class KuisController extends Controller
     public function index()
     {
          $kuis = Kuis::orderBy('id', 'asc')->get();
-        return view('guru.kuis.index', compact('kuis'));
-    }
+    $classes = Classes::all();
+
+    return view('guru.kuis.index', compact('kuis','classes'));
+}
 
     /**
      * Show the form for creating a new resource.
@@ -31,14 +34,17 @@ class KuisController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'judul' => 'required|string|max:255',
-            'kelas' => 'required|string',
-            'status' => 'required|in:aktif,draft,nonaktif',
-
-        ]);
+    'judul' => 'required|string|max:255',
+    'class_id' => 'required|exists:classes,id',
+    'status' => 'required|in:aktif,draft,nonaktif',
+]);
     
 
-        Kuis::create($request->all());
+       Kuis::create([
+    'judul' => $request->judul,
+    'class_id' => $request->class_id,
+    'status' => $request->status
+]);
 
         return redirect()->route('guru.kuis.index')->with('success', 'Kuis berhasil ditambahkan');
     }
@@ -67,7 +73,11 @@ class KuisController extends Controller
 
     {
         $kuis = Kuis::findOrFail($id);
-         $kuis->update($request->all());
+    $kuis->update([
+    'judul' => $request->judul,
+    'class_id' => $request->class_id,
+    'status' => $request->status
+]);
         return redirect()->route('guru.kuis.index')->with('success', 'Kuis diperbarui');
     }
 

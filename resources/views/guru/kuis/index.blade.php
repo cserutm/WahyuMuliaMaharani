@@ -105,7 +105,7 @@
                 </td>
 
                 <td class="px-6 py-4 text-gray-600">
-                    {{ $item->kelas }}
+                    {{ $item->class->nama_kelas ?? '-' }}
                 </td>
 
                 <td class="px-6 py-4">
@@ -222,9 +222,20 @@
        placeholder="Judul Kuis"
        class="w-full rounded-lg border-gray-300">
 
-<textarea name="kelas" rows="2"
-          class="w-full rounded-lg border-gray-300"
-          placeholder="kelas"></textarea>
+<div>
+<label class="block text-sm font-medium mb-2">Pilih Kelas</label>
+
+<div class="flex flex-col gap-2">
+
+@foreach($classes as $class)
+<label class="flex items-center gap-2">
+<input type="radio" name="class_id" value="{{ $class->id }}" required>
+{{ $class->nama_kelas }}
+</label>
+@endforeach
+
+</div>
+</div>
 
 <div>
     <label class="block text-sm font-medium mb-2">Status</label>
@@ -286,9 +297,19 @@
                 value="{{ $item->judul }}"
                 class="w-full rounded-lg border-gray-300">
 
-            <textarea name="kelas" rows="2"
-                class="w-full rounded-lg border-gray-300">{{ $item->kelas }}</textarea>
+                <div>
+<label class="block text-sm font-medium mb-2">Pilih Kelas</label>
 
+@foreach($classes as $class)
+<label class="flex items-center gap-2">
+<input type="radio" name="class_id"
+value="{{ $class->id }}"
+{{ $item->class_id == $class->id ? 'checked' : '' }}>
+{{ $class->nama_kelas }}
+</label>
+@endforeach
+
+</div>
             <div>
                 <label class="block text-sm font-medium mb-2">Status</label>
 

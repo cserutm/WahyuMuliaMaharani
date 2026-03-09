@@ -19,7 +19,7 @@
                     @include('profile.partials.delete-user-form')
                 </div>
             </div>
-            {{-- Button Kembali (Clean Style) --}}
+            {{-- Button Kembali--}}
         <div class="mt-10 flex justify-end">
             <a href="{{ url()->previous() }}"
                class="inline-flex items-center gap-2

@@ -15,6 +15,9 @@ use App\Http\Controllers\Guru\PertanyaanController;
 use App\Http\Controllers\GuruDashboardController;
 use App\Http\Controllers\SiswaMateriController;
 use App\Http\Controllers\DashboardSiswaController;
+use App\Http\Controllers\Guru\SemesterController;
+use App\Http\Controllers\Guru\ClassController;
+use App\Http\Controllers\Siswa\PilihKelasController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,6 +55,9 @@ Route::get('/siswa/dashboard', [DashboardSiswaController::class, 'index'])
     Route::get('siswa/evaluasi/{id}', [EvaluasiController::class, 'show'])->name('siswa.evaluasi.show');
     Route::post('siswa/evaluasi/{id}', [EvaluasiController::class, 'submit'])->name('siswa.evaluasi.submit');
 
+    Route::get('/pilih-kelas',[PilihKelasController::class,'index'])->name('siswa.pilih-kelas');
+    Route::post('/pilih-kelas',[PilihKelasController::class,'simpan'])->name('siswa.pilih-kelas.simpan');
+
     Route::prefix('siswa')->name('siswa.')->middleware(['auth'])->group(function () {
     Route::get('/leaderboard', [LeaderboardController::class, 'siswa'])
         ->name('leaderboard');
@@ -64,6 +70,16 @@ Route::get('/guru/dashboard', [GuruDashboardController::class, 'index'])
     ->name('guru.dashboard');
     
     Route::get('/guru/nilai_siswa', [NilaiController::class, 'nilai'])->name('guru.nilai');
+    
+    Route::get('guru/semester',[SemesterController::class,'index'])->name('guru.semester.index');
+    Route::post('guru/semester',[SemesterController::class,'store'])->name('guru.semester.store');
+    Route::put('/guru/semester/{id}', [SemesterController::class, 'update'])->name('guru.semester.update');
+    Route::delete('/guru/semester/{id}', [SemesterController::class, 'destroy'])->name('guru.semester.destroy');
+
+    Route::get('guru/classes', [ClassController::class, 'index'])->name('guru.classes.index');
+    Route::post('guru/classes', [ClassController::class, 'store'])->name('guru.classes.store');
+    Route::put('/guru/classes/{id}', [ClassController::class,'update'])->name('guru.classes.update');
+    Route::delete('/guru/classes/{id}', [ClassController::class,'destroy'])->name('guru.classes.destroy');
 
 
     Route::get('/guru/materi', [MateriGuruController::class, 'index'])

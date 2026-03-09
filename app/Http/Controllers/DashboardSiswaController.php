@@ -10,10 +10,17 @@ use App\Models\Kuis;
 class DashboardSiswaController extends Controller
 {
     public function index()
-    {
-        $totalMateri = modul::count() + video::count();
-        $totalKuis   = Kuis::count();
-
-        return view('dashboard-siswa', compact('totalMateri', 'totalKuis'));
+{
+    if(!session('class_id')){
+        return redirect()->route('siswa.pilih-kelas');
     }
+
+    $classId = session('class_id');
+
+    $totalKuis = Kuis::where('status','aktif')
+        ->where('class_id',$classId)
+        ->count();
+
+    return view('dashboard-siswa', compact('totalKuis'));
+}
 }

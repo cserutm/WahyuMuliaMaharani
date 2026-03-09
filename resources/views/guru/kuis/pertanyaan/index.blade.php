@@ -273,7 +273,7 @@
 </div>
  {{-- Button Kembali (Clean Style) --}}
         <div class="mt-10 flex justify-end">
-            <a href="{{ url()->previous() }}"
+            <a href="{{ route('guru.kuis.index') }}"
                class="inline-flex items-center gap-2
                       px-5 py-2.5 text-sm
                       bg-white border border-gray-300

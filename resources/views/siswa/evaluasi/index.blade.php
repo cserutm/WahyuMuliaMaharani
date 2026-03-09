@@ -59,7 +59,6 @@
                 </h3>
 
                 <div class="flex flex-wrap text-sm text-gray-500 gap-4 mt-2">
-                    <span>Kelas {{ $item->kelas }}</span>
                     <span>{{ $item->pertanyaan_count }} Soal</span>
                 </div>
             </div>

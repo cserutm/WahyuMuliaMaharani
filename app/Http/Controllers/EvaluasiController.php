@@ -9,20 +9,28 @@ use App\Models\QuizAttempt;
 
 class EvaluasiController extends Controller
 {
-    // 1️⃣ Halaman card kuis
     public function index()
-    {
-        $kuis = Kuis::where('status','aktif')
-        ->withCount('pertanyaan')->get();
-        return view('siswa.evaluasi.index', compact('kuis'));
-    }
+{
+    $classId = session('class_id');
+
+    $kuis = Kuis::where('status','aktif')
+        ->where('class_id', $classId)
+        ->withCount('pertanyaan')
+        ->get();
+
+    return view('siswa.evaluasi.index', compact('kuis'));
+}
 
     // 2️⃣ Halaman soal
     public function show($id)
     {
-       $kuis = Kuis::with(['Pertanyaan' => function ($q) {
+      $classId = session('class_id');
+
+$kuis = Kuis::with(['pertanyaan' => function ($q) {
     $q->inRandomOrder();
-    }])->findOrfail($id);
+}])
+->where('class_id', $classId)
+->findOrFail($id);
 
             if ($kuis->status !== 'aktif') {
         return redirect()
@@ -46,7 +54,11 @@ class EvaluasiController extends Controller
     // 3️⃣ Proses jawaban & tampilkan hasil
     public function submit(Request $request, $id)
 {
-    $kuis = Kuis::with('pertanyaan')->findOrFail($id);
+    $classId = session('class_id');
+
+$kuis = Kuis::with('pertanyaan')
+    ->where('class_id', $classId)
+    ->findOrFail($id);
 
      $already = QuizAttempt::where('user_id', auth()->id())
             ->where('kuis_id', $kuis->id)
