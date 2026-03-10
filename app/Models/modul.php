@@ -14,6 +14,7 @@ class modul extends Model
         'deskripsi',
         'tujuan_pembelajaran',
         'file_materi',
+        'video_url',
        
 
     ];

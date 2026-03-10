@@ -194,18 +194,27 @@
        placeholder="Judul Materi"
        class="w-full rounded-lg border-gray-300">
 
+       <textarea name="tujuan_pembelajaran" rows="2"
+          class="w-full rounded-lg border-gray-300"
+          placeholder="Tujuan Pembelajaran"></textarea>
+
 <textarea name="deskripsi" rows="2"
           class="w-full rounded-lg border-gray-300"
           placeholder="Deskripsi"></textarea>
 
-<textarea name="tujuan_pembelajaran" rows="2"
-          class="w-full rounded-lg border-gray-300"
-          placeholder="Tujuan Pembelajaran"></textarea>
+
 
 <label class="block text-sm font-medium">Upload File Materi (PDF / Word)</label>
 <input type="file" name="file_materi"
        accept=".pdf,.doc,.docx"
        class="w-full">
+
+      <label class="block text-sm font-medium">Link Video Youtube (Opsional)</label>
+<input type="url"
+       name="video_url"
+       accept="url"
+       placeholder="https://youtube.com/..."
+       class="w-full rounded-lg border-gray-300"> 
 
 <div class="flex justify-end gap-3">
     <button type="button" @click="open=false"
@@ -247,14 +256,22 @@
                 value="{{ $item->judul }}"
                 class="w-full rounded-lg border-gray-300">
 
+                <textarea name="tujuan_pembelajaran" rows="2"
+                class="w-full rounded-lg border-gray-300">{{ $item->tujuan_pembelajaran }}</textarea>
+
             <textarea name="deskripsi" rows="2"
                 class="w-full rounded-lg border-gray-300">{{ $item->deskripsi }}</textarea>
 
-            <textarea name="tujuan_pembelajaran" rows="2"
-                class="w-full rounded-lg border-gray-300">{{ $item->tujuan_pembelajaran }}</textarea>
+            
 
             <input type="file" name="file_materi"
                 class="w-full">
+
+                <input type="url"
+       name="video_url"
+       value="{{ $item->video_url }}"
+       placeholder="https://youtube.com/..."
+       class="w-full rounded-lg border-gray-300">
 
             <div class="flex justify-end gap-3">
                 <button type="button"

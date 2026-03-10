@@ -40,7 +40,7 @@
                     {{-- Pilihan Jawaban --}}
                     <div class="space-y-3">
 
-                        @foreach(['a','b','c','d'] as $opsi)
+                        @foreach(['a','b','c','d','e'] as $opsi)
 
                             @php
                                 $field = 'opsi_' . $opsi;

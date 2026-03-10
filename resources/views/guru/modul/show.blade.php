@@ -26,16 +26,6 @@
                 {{-- Detail Card --}}
                 <div class="bg-white rounded-2xl shadow-lg p-8 space-y-8">
 
-                    {{-- Deskripsi --}}
-                    <div>
-                        <h3 class="font-semibold text-gray-700 mb-2">
-                            Deskripsi
-                        </h3>
-                        <p class="text-gray-600 leading-relaxed">
-                            {{ $modul->deskripsi }}
-                        </p>
-                    </div>
-
                     {{-- Tujuan --}}
                     <div>
                         <h3 class="font-semibold text-gray-700 mb-2">
@@ -46,6 +36,16 @@
                         </p>
                     </div>
 
+                    {{-- Deskripsi --}}
+                    <div>
+                        <h3 class="font-semibold text-gray-700 mb-2">
+                            Deskripsi
+                        </h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            {{ $modul->deskripsi }}
+                        </p>
+                    </div>
+
                     {{-- File --}}
                     <div>
                         <h3 class="font-semibold text-gray-700 mb-4">
@@ -53,74 +53,64 @@
                         </h3>
 
                         @if($modul->file_materi)
+                        <div class="flex flex-wrap gap-3 mt-3">
 
-                        <div class="flex flex-wrap gap-3 mt-5">
+                            {{-- Lihat Materi --}}
+                            <a href="{{ asset('storage/' . $modul->file_materi) }}"
+                               target="_blank"
+                               class="inline-flex items-center gap-2
+                                      bg-white border border-blue-600
+                                      text-blue-600
+                                      hover:bg-blue-600 hover:text-white
+                                      text-sm font-medium
+                                      px-4 py-2
+                                      rounded-lg
+                                      transition duration-200">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="w-4 h-4"
+                                     fill="none"
+                                     viewBox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          stroke-width="2"
+                                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          stroke-width="2"
+                                          d="M2.458 12C3.732 7.943 7.523 5 12 5
+                                             c4.477 0 8.268 2.943 9.542 7
+                                             -1.274 4.057-5.065 7-9.542 7
+                                             -4.477 0-8.268-2.943-9.542-7z"/>
+                                </svg>
+                                Lihat Materi
+                            </a>
 
-    {{-- Lihat Materi (Primary Blue) --}}
-    <a href="{{ asset('storage/' . $modul->file_materi) }}"
-       target="_blank"
-            class="inline-flex items-center gap-2
-              bg-white
-              border border-blue-600
-              text-blue-600
-              hover:bg-blue-600 hover:text-white
-              text-sm font-medium
-              px-4 py-2
-              rounded-lg
-              transition duration-200">
+                            {{-- Download --}}
+                            <a href="{{ route('guru.modul.download', $modul->id) }}"
+                               class="inline-flex items-center gap-2
+                                      bg-white border border-blue-600
+                                      text-blue-600
+                                      hover:bg-blue-600 hover:text-white
+                                      text-sm font-medium
+                                      px-4 py-2
+                                      rounded-lg
+                                      transition duration-200">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="w-4 h-4"
+                                     fill="none"
+                                     viewBox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          stroke-width="2"
+                                          d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1
+                                             M7 10l5 5m0 0l5-5m-5 5V4"/>
+                                </svg>
+                                Download
+                            </a>
 
-        <svg xmlns="http://www.w3.org/2000/svg"
-             class="w-4 h-4"
-             fill="none"
-             viewBox="0 0 24 24"
-             stroke="currentColor">
-            <path stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-            <path stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M2.458 12C3.732 7.943 7.523 5 12 5
-                     c4.477 0 8.268 2.943 9.542 7
-                     -1.274 4.057-5.065 7-9.542 7
-                     -4.477 0-8.268-2.943-9.542-7z"/>
-        </svg>
-
-        Lihat Materi
-    </a>
-
-    {{-- Download (White Clean Secondary) --}}
-    <a href="{{ route('guru.modul.download', $modul->id) }}"
-       class="inline-flex items-center gap-2
-              bg-white
-              border border-blue-600
-              text-blue-600
-              hover:bg-blue-600 hover:text-white
-              text-sm font-medium
-              px-4 py-2
-              rounded-lg
-              transition duration-200">
-
-        <svg xmlns="http://www.w3.org/2000/svg"
-             class="w-4 h-4"
-             fill="none"
-             viewBox="0 0 24 24"
-             stroke="currentColor">
-            <path stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1
-                     M7 10l5 5m0 0l5-5m-5 5V4"/>
-        </svg>
-
-        Download
-    </a>
-
-</div>
-
-                              
-
+                        </div>
                         @else
                             <div class="bg-gray-50 rounded-xl p-4 text-gray-500">
                                 Tidak ada file materi
@@ -128,34 +118,82 @@
                         @endif
                     </div>
 
+                    {{-- Preview Video --}}
+                    @if($modul->video_url)
+                        @php
+                            $video = $modul->video_url;
+                            if(str_contains($video, 'youtu.be')){
+                                $video = str_replace('youtu.be/','www.youtube.com/embed/',explode('?',$video)[0]);
+                            } else {
+                                $video = str_replace('watch?v=','embed/',$video);
+                            }
+                        @endphp
+
+                        <div x-data="{ showVideo: false }" class="mt-6">
+                            <button
+                                @click="showVideo = !showVideo"
+                                class="inline-flex items-center gap-2
+                                       px-4 py-2
+                                       bg-blue-100 text-blue-600
+                                       rounded-xl
+                                       hover:bg-blue-200
+                                       transition shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="w-4 h-4"
+                                     fill="none"
+                                     viewBox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          stroke-width="2"
+                                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          stroke-width="2"
+                                          d="M2.458 12C3.732 7.943 7.523 5 12 5
+                                             c4.477 0 8.268 2.943 9.542 7
+                                             -1.274 4.057-5.065 7-9.542 7
+                                             -4.477 0-8.268-2.943-9.542-7z"/>
+                                </svg>
+                                <span x-text="showVideo ? 'Sembunyikan Video' : 'Preview Video'"></span>
+                            </button>
+
+                            <div x-show="showVideo"
+                                 x-transition
+                                 class="mt-3 w-full aspect-video rounded-2xl overflow-hidden border shadow-sm">
+                                <iframe class="w-full h-full"
+                                        src="{{ $video }}"
+                                        allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+                    @endif
+
                 </div>
 
-               {{-- Button Kembali (Clean Style) --}}
-        <div class="mt-10 flex justify-end">
-            <a href="{{ url()->previous() }}"
-               class="inline-flex items-center gap-2
-                      px-5 py-2.5 text-sm
-                      bg-white border border-gray-300
-                      text-gray-600
-                      rounded-full
-                      hover:bg-gray-50 hover:border-gray-400
-                      transition">
-
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="1.8"
-                     class="w-4 h-4">
-                    <path stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M15 18l-6-6 6-6"/>
-                </svg>
-
-                <span>Kembali</span>
-            </a>
-</div>
-
+                {{-- Button Kembali --}}
+                <div class="mt-10 flex justify-end">
+                    <a href="{{ route('guru.modul.index') }}"
+                       class="inline-flex items-center gap-2
+                              px-5 py-2.5 text-sm
+                              bg-white border border-gray-300
+                              text-gray-600
+                              rounded-full
+                              hover:bg-gray-50 hover:border-gray-400
+                              transition">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             class="w-4 h-4">
+                            <path stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  d="M15 18l-6-6 6-6"/>
+                        </svg>
+                        <span>Kembali</span>
+                    </a>
+                </div>
 
             </div>
 
