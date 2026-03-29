@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Models\Semester;
+use App\Models\Classes;
 
 class RegisteredUserController extends Controller
 {
@@ -19,14 +21,16 @@ class RegisteredUserController extends Controller
      * Display the registration view.
      */
     public function create(): View
-    {
-        return view('auth.register');
-    }
+{
+    $semesterAktif = \App\Models\Semester::where('is_active', 1)->first();
+
+    $classes = \App\Models\Classes::where('semester_id', $semesterAktif->id)->get();
+
+    return view('auth.register', compact('classes'));
+}
 
     /**
      * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): RedirectResponse
     {
@@ -34,24 +38,36 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'class_id' => ['required', 'exists:classes,id'], // 🔥 validasi kelas
         ]);
+
+        // 🔥 ambil semester aktif
+        $semesterAktif = Semester::where('is_active', 1)->first();
+
+        // ❗ kalau tidak ada semester aktif
+        if (!$semesterAktif) {
+            return back()->withErrors([
+                'semester' => 'Belum ada semester aktif, hubungi guru!'
+            ])->withInput();
+        }
 
         $user = User::create([
             'name' => $request->name,
-            'email' => strtolower ($request->email),
+            'email' => strtolower($request->email),
             'password' => Hash::make($request->password),
             'role' => 'siswa', // otomatis siswa
+            'class_id' => $request->class_id,
+            'semester_id' => $semesterAktif->id // 🔥 FIX DI SINI
         ]);
 
         event(new Registered($user));
 
-        Auth::login($user);
+       Auth::login($user);
 
-        if ($user->role === 'siswa') {
-        return redirect()->route('dashboard-siswa');
-    } elseif ($user->role === 'guru') {
-        return redirect()->route('guru.dashboard');
-    }
+// tambahan 
+session(['just_registered' => true]);
+
+return redirect()->route('dashboard-siswa');
 
         return redirect(RouteServiceProvider::HOME);
     }

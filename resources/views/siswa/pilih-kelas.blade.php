@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<title>Pilih Semester & Kelas</title>
+<x-app-layout>
 
-<script src="https://cdn.tailwindcss.com"></script>
-
-</head>
-
-<body class="min-h-screen flex items-center justify-center bg-gradient-white">
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
 
 <div class="bg-white shadow-xl rounded-2xl w-full max-w-md p-8">
 
@@ -71,6 +63,8 @@ Masuk
 
 </div>
 
+</div>
+
 
 <script>
 
@@ -105,5 +99,4 @@ ${kelas.nama_kelas}
 
 </script>
 
-</body>
-</html>
+</x-app-layout>

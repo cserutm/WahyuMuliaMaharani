@@ -28,4 +28,9 @@ public function semester()
     {
         return $this->hasMany(Kuis::class);
     }
+
+    public function modul()
+{
+    return $this->hasMany(Modul::class,'class_id');
+}
 }

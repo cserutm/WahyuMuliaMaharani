@@ -41,9 +41,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
-Route::get('/siswa/dashboard', [DashboardSiswaController::class, 'index'])
-    ->middleware(['auth', 'role:siswa'])
-    ->name('dashboard-siswa');
+Route::middleware(['auth', 'role:siswa', 'check.semester'])->group(function () {
+    Route::get('/siswa/dashboard', [DashboardSiswaController::class, 'index'])
+        ->name('dashboard-siswa');
+});
+
+
+Route::get('/semester-nonaktif', function () {
+    return view('siswa.semester');
+})->name('siswa.semester');
 
     Route::get('/siswa/materi', [SiswaMateriController::class, 'index'])->name('siswa.materi.index');
     Route::get('siswa/materi/file', [SiswaMateriController::class, 'modul'])->name('siswa.materi.modul');
@@ -55,8 +61,9 @@ Route::get('/siswa/dashboard', [DashboardSiswaController::class, 'index'])
     Route::get('siswa/evaluasi/{id}', [EvaluasiController::class, 'show'])->name('siswa.evaluasi.show');
     Route::post('siswa/evaluasi/{id}', [EvaluasiController::class, 'submit'])->name('siswa.evaluasi.submit');
 
-    Route::get('/pilih-kelas',[PilihKelasController::class,'index'])->name('siswa.pilih-kelas');
+   /* Route::get('/pilih-kelas',[PilihKelasController::class,'index'])->name('siswa.pilih-kelas');
     Route::post('/pilih-kelas',[PilihKelasController::class,'simpan'])->name('siswa.pilih-kelas.simpan');
+     */
 
     Route::prefix('siswa')->name('siswa.')->middleware(['auth'])->group(function () {
     Route::get('/leaderboard', [LeaderboardController::class, 'siswa'])
@@ -75,6 +82,9 @@ Route::get('/guru/dashboard', [GuruDashboardController::class, 'index'])
     Route::post('guru/semester',[SemesterController::class,'store'])->name('guru.semester.store');
     Route::put('/guru/semester/{id}', [SemesterController::class, 'update'])->name('guru.semester.update');
     Route::delete('/guru/semester/{id}', [SemesterController::class, 'destroy'])->name('guru.semester.destroy');
+    Route::post('/guru/semester/{id}/activate', [SemesterController::class,'activate'])->name('guru.semester.activate');
+    Route::post('/guru/semester/{id}/deactivate',[SemesterController::class,'deactivate'])->name('guru.semester.deactivate');
+
 
     Route::get('guru/classes', [ClassController::class, 'index'])->name('guru.classes.index');
     Route::post('guru/classes', [ClassController::class, 'store'])->name('guru.classes.store');

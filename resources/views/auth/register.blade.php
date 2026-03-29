@@ -16,6 +16,20 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
+        <!-- 🔥 TAMBAHAN KELAS -->
+        <div class="mt-4">
+            <x-input-label for="class_id" value="Kelas" />
+            <select name="class_id" id="class_id" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" required>
+                <option value="">-- Pilih Kelas --</option>
+                @foreach($classes as $class)
+                    <option value="{{ $class->id }}" {{ old('class_id') == $class->id ? 'selected' : '' }}>
+                        {{ $class->nama_kelas }}
+                    </option>
+                @endforeach
+            </select>
+            <x-input-error :messages="$errors->get('class_id')" class="mt-2" />
+        </div>
+
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />

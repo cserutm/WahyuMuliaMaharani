@@ -11,6 +11,8 @@ class Semester extends Model
         'nama_semester',
          'tahun_ajaran',
         'created_by',
+        'is_active'
+
     ];
 
     public function classes()

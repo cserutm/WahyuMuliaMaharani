@@ -24,24 +24,32 @@ class AuthenticatedSessionController extends Controller
      * Handle an incoming authentication request.
      */
 
-    public function store(LoginRequest $request): RedirectResponse
-    {
-        $request->authenticate();
+   public function store(LoginRequest $request): RedirectResponse
+{
+    $request->authenticate();
 
-        $request->session()->regenerate();
+    $request->session()->regenerate();
 
-         $user = $request->user();
+    $user = $request->user();
 
-          if ($user->role === 'siswa') {
-        return redirect()->route('siswa.pilih-kelas');
-        } elseif ($user->role === 'guru') {
-         return redirect()->route('guru.dashboard');
+    //  SISWA
+    if ($user->role === 'siswa') {
+
+        // cek semester
+        if (!$user->semester || $user->semester->is_active == 0) {
+            return redirect()->route('siswa.semester');
+        }
+
+        return redirect()->route('dashboard-siswa');
     }
 
-
-
-        return redirect('/');
+    //  GURU
+    if ($user->role === 'guru') {
+        return redirect()->route('guru.dashboard');
     }
+
+    return redirect('/');
+}
 
     /**
      * Destroy an authenticated session.
@@ -56,4 +64,19 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/');
     }
+    protected function authenticated(Request $request, $user)
+{
+    if ($user->role == 'siswa') {
+
+        if (!$user->semester || $user->semester->is_active == 0) {
+            return redirect()->route('semester.nonaktif');
+        }
+
+        return redirect()->route('dashboard.siswa');
+    }
+
+    if ($user->role == 'guru') {
+        return redirect()->route('dashboard.guru');
+    }
+}
 }

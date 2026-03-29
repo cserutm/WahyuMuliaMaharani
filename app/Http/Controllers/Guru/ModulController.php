@@ -4,35 +4,63 @@ namespace App\Http\Controllers\Guru;
 
 use App\Http\Controllers\Controller;
 use App\Models\modul;
+use App\Models\Classes;
+use App\Models\Semester;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ModulController extends Controller
 {
-    public function index()
+
+    public function index(Request $request)
     {
-        $modul = modul::paginate(10);
-        return view('guru.modul.index', compact('modul'));
+        // Ambil semester aktif
+        $semesterAktif = Semester::where('is_active', true)->first();
+
+        if (!$semesterAktif) {
+            return redirect()->back()->with('error', 'Semester aktif belum diatur');
+        }
+
+        // Ambil kelas berdasarkan semester aktif
+        $classes = Classes::where('semester_id', $semesterAktif->id)->get();
+
+        // Ambil modul hanya dari kelas semester aktif
+        $modul = modul::with('kelas')
+
+            ->whereHas('kelas', function ($query) use ($semesterAktif) {
+                $query->where('semester_id', $semesterAktif->id);
+            })
+
+            ->when($request->class_id, function ($query) use ($request) {
+                $query->where('class_id', $request->class_id);
+            })
+
+            ->latest()
+            ->paginate(10);
+
+        return view('guru.modul.index', compact(
+            'modul',
+            'classes',
+            'semesterAktif'
+        ));
     }
 
-    public function create()
-    {
-        return view('guru.modul.create');
-    }
 
     public function store(Request $request)
     {
         $request->validate([
+            'class_id' => 'required|exists:classes,id',
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'tujuan_pembelajaran' => 'required|string',
-            'file_materi' => 'required|file|mimes:pdf|max:10240',
+            'file_materi' => 'required|file|mimes:pdf,doc,docx|max:10240',
             'video_url' => 'nullable|url'
         ]);
 
         $path = $request->file('file_materi')->store('modul_materi', 'public');
 
         modul::create([
+            'class_id' => $request->class_id,
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
             'tujuan_pembelajaran' => $request->tujuan_pembelajaran,
@@ -44,31 +72,29 @@ class ModulController extends Controller
             ->with('success', 'Materi berhasil ditambahkan.');
     }
 
+
     public function show($id)
     {
-        $modul = modul::findOrFail($id);
+        $modul = modul::with('kelas')->findOrFail($id);
         return view('guru.modul.show', compact('modul'));
     }
 
-    public function edit($id)
-    {
-        $modul = modul::findOrFail($id);
-        return view('guru.modul.edit', compact('modul'));
-    }
 
     public function update(Request $request, $id)
     {
         $modul = modul::findOrFail($id);
 
         $request->validate([
+            'class_id' => 'required|exists:classes,id',
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'tujuan_pembelajaran' => 'required|string',
-            'file_materi' => 'nullable|file|mimes:pdf|max:10240',
+            'file_materi' => 'nullable|file|mimes:pdf,doc,docx|max:10240',
             'video_url' => 'nullable|url'
         ]);
 
         $data = [
+            'class_id' => $request->class_id,
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
             'tujuan_pembelajaran' => $request->tujuan_pembelajaran,
@@ -82,6 +108,7 @@ class ModulController extends Controller
             }
 
             $path = $request->file('file_materi')->store('modul_materi', 'public');
+
             $data['file_materi'] = $path;
         }
 
@@ -91,11 +118,6 @@ class ModulController extends Controller
             ->with('success', 'Materi berhasil diperbarui.');
     }
 
-    public function download($id)
-    {
-        $modul = modul::findOrFail($id);
-        return Storage::disk('public')->download($modul->file_materi);
-    }
 
     public function destroy($id)
     {

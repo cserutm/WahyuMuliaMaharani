@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Classes;
+use App\Models\Semester;
 
 class User extends Authenticatable
 {
@@ -23,6 +24,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'class_id',     
+    'semester_id'
     ];
 
          public function isSiswa() { return $this->role === 'siswa'; }
@@ -58,4 +61,8 @@ public function kelas()
     return $this->belongsTo(Classes::class,'class_id');
 }
 
+public function semester()
+{
+    return $this->belongsTo(Semester::class);
+}
 }

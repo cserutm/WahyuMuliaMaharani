@@ -54,5 +54,32 @@ class SemesterController extends Controller
 
         return back()->with('success','Semester berhasil dihapus');
     }
+
+    public function activate($id)
+{
+    // Nonaktifkan semua semester
+    Semester::query()->update([
+        'is_active' => 0
+    ]);
+
+    // Aktifkan semester yang dipilih
+    $semester = Semester::findOrFail($id);
+    $semester->update([
+        'is_active' => 1
+    ]);
+
+    return back()->with('success','Semester berhasil diaktifkan');
+}
+
+public function deactivate($id)
+{
+    $semester = Semester::findOrFail($id);
+
+    $semester->update([
+        'is_active' => 0
+    ]);
+
+    return back()->with('success','Semester berhasil dinonaktifkan');
+}
 }
 
