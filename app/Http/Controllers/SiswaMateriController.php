@@ -19,9 +19,14 @@ class SiswaMateriController extends Controller
 
     // List modul/file
    
-    public function modul()
+   public function modul()
 {
-    $moduls = \App\Models\modul::latest()->get();
+    $kelas = auth()->user()->kelas;
+
+    $moduls = \App\Models\modul::where('class_id', $kelas->id)
+        ->latest()
+        ->get();
+
     return view('siswa.materi.modul', compact('moduls'));
 }
 
@@ -36,8 +41,10 @@ public function download($id)
 {
     $modul = modul::findOrFail($id);
 
-    $path = $modul->file_materi;
+    if ($modul->class_id != auth()->user()->class_id) {
+        abort(403, 'Akses ditolak');
+    }
 
-    return Storage::disk('public')->download($path);
+    return Storage::disk('public')->download($modul->file_materi);
 }
 }

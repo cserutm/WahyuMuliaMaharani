@@ -11,7 +11,7 @@ class EvaluasiController extends Controller
 {
     public function index()
 {
-    $classId = session('class_id');
+    $classId = auth()->user()->class_id;
 
     $kuis = Kuis::where('status','aktif')
         ->where('class_id', $classId)
@@ -24,7 +24,7 @@ class EvaluasiController extends Controller
     // 2️⃣ Halaman soal
     public function show($id)
     {
-      $classId = session('class_id');
+      $classId = auth()->user()->class_id;
 
 $kuis = Kuis::with(['pertanyaan' => function ($q) {
     $q->inRandomOrder();
@@ -54,7 +54,7 @@ $kuis = Kuis::with(['pertanyaan' => function ($q) {
     // 3️⃣ Proses jawaban & tampilkan hasil
     public function submit(Request $request, $id)
 {
-    $classId = session('class_id');
+   $classId = auth()->user()->class_id;
 
 $kuis = Kuis::with('pertanyaan')
     ->where('class_id', $classId)

@@ -13,20 +13,31 @@ class DashboardSiswaController extends Controller
     {
         $user = auth()->user();
 
-        // 🔥 ambil class & semester dari user
+        // ambil class & semester dari user
         $classId = $user->class_id;
         $semesterId = $user->semester_id;
+
+        
 
         // ❗ safety (kalau belum ada data)
         if (!$classId || !$semesterId) {
             return redirect()->route('login')->withErrors('Data kelas/semester belum tersedia');
         }
 
-        // 🔥 hitung kuis sesuai kelas
+
+
+        // hitung kuis sesuai kelas
         $totalKuis = Kuis::where('status', 'aktif')
             ->where('class_id', $classId)
             ->count();
 
-        return view('dashboard-siswa', compact('totalKuis'));
-    }
+         
+       $totalMateri = modul::all()
+    ->where('class_id', $classId)
+    ->count();
+
+    return view('dashboard-siswa', compact('totalKuis', 'totalMateri'));
+
+   
+}
 }

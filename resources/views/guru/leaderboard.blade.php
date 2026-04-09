@@ -15,11 +15,27 @@
     </h3>
 
     <div class="overflow-x-auto">
+        <form method="GET" class="mb-6">
+    <select name="class_id" onchange="this.form.submit()"
+        class="border rounded-lg px-4 py-2 text-sm">
+
+        <option value="">Semua Kelas</option>
+
+        @foreach($classes as $class)
+            <option value="{{ $class->id }}"
+                {{ $classId == $class->id ? 'selected' : '' }}>
+                {{ $class->nama_kelas }}
+            </option>
+        @endforeach
+
+    </select>
+</form>
         <table class="w-full text-sm text-left">
             <thead class="bg-gray-100 text-blue-900 uppercase tracking-wider text-xs">
                 <tr>
                     <th class="px-6 py-3">Rank</th>
                     <th class="px-6 py-3">Nama</th>
+                     <th class="px-6 py-3">Kelas</th>
                     <th class="px-6 py-3 text-center">Total Kuis</th>
                     <th class="px-6 py-3 text-right">Total Nilai</th>
                 </tr>
@@ -51,6 +67,9 @@
                     {{-- Nama --}}
                     <td class="px-6 py-4 font-medium text-blue-900">
                         {{ $row->user->name }}
+                    </td>
+                     <td class="px-6 py-4 text-gray-700">
+                     {{ $row->user->kelas->nama_kelas ?? '-' }}
                     </td>
 
                     {{-- Total Kuis --}}
