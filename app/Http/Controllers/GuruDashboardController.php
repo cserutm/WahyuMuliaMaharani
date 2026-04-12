@@ -34,5 +34,6 @@ class GuruDashboardController extends Controller
             'totalSiswa',
             'totalAttempt'
         ));
+        
     }
 }

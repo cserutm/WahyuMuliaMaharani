@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Guru;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Semester;
+use App\Models\Classes;
+use App\Models\User;
 
 class SemesterController extends Controller
 {
-   public function index()
+    public function index()
     {
         $semesters = Semester::latest()->get();
         return view('guru.semester.index', compact('semesters'));
@@ -27,7 +29,7 @@ class SemesterController extends Controller
             'created_by' => auth()->id()
         ]);
 
-        return back()->with('success','Semester berhasil ditambahkan');
+        return back()->with('success', 'Semester berhasil ditambahkan');
     }
     public function update(Request $request, $id)
     {
@@ -43,43 +45,54 @@ class SemesterController extends Controller
             'tahun_ajaran' => $request->tahun_ajaran
         ]);
 
-        return back()->with('success','Semester berhasil diperbarui');
+        return back()->with('success', 'Semester berhasil diperbarui');
     }
 
     // DELETE
     public function destroy($id)
     {
-        $semester = Semester::findOrFail($id);
-        $semester->delete();
+        $classes = Classes::where('semester_id', $id)->get();
 
-        return back()->with('success','Semester berhasil dihapus');
+        foreach ($classes as $class) {
+            // PUTUSKAN relasi user dulu
+            User::where('class_id', $class->id)->update([
+                'class_id' => null
+            ]);
+        }
+
+        // Baru hapus class
+        Classes::where('semester_id', $id)->delete();
+
+        // Baru hapus semester
+        Semester::findOrFail($id)->delete();
+
+        return back()->with('success', 'Semester berhasil dihapus');
     }
 
     public function activate($id)
-{
-    // Nonaktifkan semua semester
-    Semester::query()->update([
-        'is_active' => 0
-    ]);
+    {
+        // Nonaktifkan semua semester
+        Semester::query()->update([
+            'is_active' => 0
+        ]);
 
-    // Aktifkan semester yang dipilih
-    $semester = Semester::findOrFail($id);
-    $semester->update([
-        'is_active' => 1
-    ]);
+        // Aktifkan semester yang dipilih
+        $semester = Semester::findOrFail($id);
+        $semester->update([
+            'is_active' => 1
+        ]);
 
-    return back()->with('success','Semester berhasil diaktifkan');
+        return back()->with('success', 'Semester berhasil diaktifkan');
+    }
+
+    public function deactivate($id)
+    {
+        $semester = Semester::findOrFail($id);
+
+        $semester->update([
+            'is_active' => 0
+        ]);
+
+        return back()->with('success', 'Semester berhasil dinonaktifkan');
+    }
 }
-
-public function deactivate($id)
-{
-    $semester = Semester::findOrFail($id);
-
-    $semester->update([
-        'is_active' => 0
-    ]);
-
-    return back()->with('success','Semester berhasil dinonaktifkan');
-}
-}
-

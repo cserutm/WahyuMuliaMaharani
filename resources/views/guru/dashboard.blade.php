@@ -25,6 +25,7 @@
                     <h2 class="text-3xl font-semibold mt-3">
                         {{ $totalSiswa ?? 0 }}
                     </h2>
+
                 </div>
 
                 <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
@@ -46,12 +47,12 @@
                         Rata-rata Nilai per Kuis
                     </h3>
 
-                    @if(!empty($labels) && count($labels) > 0)
-                        <canvas id="averageChart"></canvas>
+                    @if (!empty($labels) && count($labels) > 0)
+                    <canvas id="averageChart"></canvas>
                     @else
-                        <div class="text-gray-500 text-center py-10">
-                            Belum ada data kuis.
-                        </div>
+                    <div class="text-gray-500 text-center py-10">
+                        Belum ada data kuis.
+                    </div>
                     @endif
                 </div>
 
@@ -60,12 +61,12 @@
                         Partisipasi Siswa
                     </h3>
 
-                    @if(!empty($labels) && count($labels) > 0)
-                        <canvas id="attemptChart"></canvas>
+                    @if (!empty($labels) && count($labels) > 0)
+                    <canvas id="attemptChart"></canvas>
                     @else
-                        <div class="text-gray-500 text-center py-10">
-                            Belum ada aktivitas siswa.
-                        </div>
+                    <div class="text-gray-500 text-center py-10">
+                        Belum ada aktivitas siswa.
+                    </div>
                     @endif
                 </div>
 
@@ -78,144 +79,158 @@
     {{-- ===================== --}}
     {{-- 🔹 CHART JS --}}
     {{-- ===================== --}}
-    @if(!empty($labels) && count($labels) > 0)
+    @if (!empty($labels) && count($labels) > 0)
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const labels = @json($labels ?? []);
+        const averageScores = @json($averageScores ?? []);
+        const totalAttempts = @json($totalAttempts ?? []);
 
-<script>
-    const labels = @json($labels ?? []);
-    const averageScores = @json($averageScores ?? []);
-    const totalAttempts = @json($totalAttempts ?? []);
+        // =============================
+        // 🔹 GRADIENT FUNCTION
+        // =============================
+        function createGradient(ctx, color1, color2) {
+            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+            gradient.addColorStop(0, color1);
+            gradient.addColorStop(1, color2);
+            return gradient;
+        }
 
-    // =============================
-    // 🔹 GRADIENT FUNCTION
-    // =============================
-    function createGradient(ctx, color1, color2) {
-        const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-        gradient.addColorStop(0, color1);
-        gradient.addColorStop(1, color2);
-        return gradient;
-    }
+        // =============================
+        // 🔹 AVERAGE SCORE (BAR)
+        // =============================
+        const avgCtx = document.getElementById('averageChart').getContext('2d');
 
-    // =============================
-    // 🔹 AVERAGE SCORE (BAR)
-    // =============================
-    const avgCtx = document.getElementById('averageChart').getContext('2d');
+        const avgGradient = createGradient(
+            avgCtx,
+            "rgba(59, 130, 246, 0.8)", // biru
+            "rgba(99, 102, 241, 0.3)" // indigo
+        );
 
-    const avgGradient = createGradient(
-        avgCtx,
-        "rgba(59, 130, 246, 0.8)",   // biru
-        "rgba(99, 102, 241, 0.3)"    // indigo
-    );
-
-    new Chart(avgCtx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Rata-rata Nilai',
-                data: averageScores,
-                backgroundColor: avgGradient,
-                borderRadius: 10,
-                borderSkipped: false
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    labels: {
-                        color: "#374151",
-                        font: { size: 13 }
+        new Chart(avgCtx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Rata-rata Nilai',
+                    data: averageScores,
+                    backgroundColor: avgGradient,
+                    borderRadius: 10,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: "#374151",
+                            font: {
+                                size: 13
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: "#111827",
+                        titleColor: "#fff",
+                        bodyColor: "#fff",
+                        padding: 12,
+                        cornerRadius: 8
                     }
                 },
-                tooltip: {
-                    backgroundColor: "#111827",
-                    titleColor: "#fff",
-                    bodyColor: "#fff",
-                    padding: 12,
-                    cornerRadius: 8
-                }
-            },
-            scales: {
-                x: {
-                    grid: { display: false },
-                    ticks: { color: "#6B7280" }
-                },
-                y: {
-                    beginAtZero: true,
-                    max: 100,
-                    grid: {
-                        color: "rgba(0,0,0,0.05)"
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: "#6B7280"
+                        }
                     },
-                    ticks: { color: "#6B7280" }
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        grid: {
+                            color: "rgba(0,0,0,0.05)"
+                        },
+                        ticks: {
+                            color: "#6B7280"
+                        }
+                    }
                 }
             }
-        }
-    });
+        });
 
-    // =============================
-    // 🔹 PARTISIPASI SISWA (LINE)
-    // =============================
-    const attemptCtx = document.getElementById('attemptChart').getContext('2d');
+        // =============================
+        // 🔹 PARTISIPASI SISWA (LINE)
+        // =============================
+        const attemptCtx = document.getElementById('attemptChart').getContext('2d');
 
-    const attemptGradient = createGradient(
-        attemptCtx,
-        "rgba(16, 185, 129, 0.5)",   // emerald
-        "rgba(16, 185, 129, 0.05)"
-    );
+        const attemptGradient = createGradient(
+            attemptCtx,
+            "rgba(16, 185, 129, 0.5)", // emerald
+            "rgba(16, 185, 129, 0.05)"
+        );
 
-    new Chart(attemptCtx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Jumlah Siswa',
-                data: totalAttempts,
-                borderColor: "#10B981", // emerald
-                backgroundColor: attemptGradient,
-                fill: true,
-                tension: 0.4,
-                pointRadius: 5,
-                pointBackgroundColor: "#fff",
-                pointBorderColor: "#10B981",
-                pointBorderWidth: 2
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    labels: {
-                        color: "#374151",
-                        font: { size: 13 }
+        new Chart(attemptCtx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Jumlah Siswa',
+                    data: totalAttempts,
+                    borderColor: "#10B981", // emerald
+                    backgroundColor: attemptGradient,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 5,
+                    pointBackgroundColor: "#fff",
+                    pointBorderColor: "#10B981",
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: "#374151",
+                            font: {
+                                size: 13
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: "#111827",
+                        titleColor: "#fff",
+                        bodyColor: "#fff",
+                        padding: 12,
+                        cornerRadius: 8
                     }
                 },
-                tooltip: {
-                    backgroundColor: "#111827",
-                    titleColor: "#fff",
-                    bodyColor: "#fff",
-                    padding: 12,
-                    cornerRadius: 8
-                }
-            },
-            scales: {
-                x: {
-                    grid: { display: false },
-                    ticks: { color: "#6B7280" }
-                },
-                y: {
-                    beginAtZero: true,
-                    grid: {
-                        color: "rgba(0,0,0,0.05)"
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: "#6B7280"
+                        }
                     },
-                    ticks: { color: "#6B7280" }
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: "rgba(0,0,0,0.05)"
+                        },
+                        ticks: {
+                            color: "#6B7280"
+                        }
+                    }
                 }
             }
-        }
-    });
-</script>
-
+        });
+    </script>
     @endif
 
 </x-app-layout>
