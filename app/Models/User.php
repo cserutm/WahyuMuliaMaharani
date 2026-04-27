@@ -24,12 +24,18 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'class_id',     
-    'semester_id'
+        'class_id',
+        'semester_id'
     ];
 
-         public function isSiswa() { return $this->role === 'siswa'; }
-         public function isGuru() { return $this->role === 'guru'; }
+    public function isSiswa()
+    {
+        return $this->role === 'siswa';
+    }
+    public function isGuru()
+    {
+        return $this->role === 'guru';
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -52,17 +58,21 @@ class User extends Authenticatable
     ];
 
     public function quizAttempts()
-{
-    return $this->hasMany(QuizAttempt::class);
-}
+    {
+        return $this->hasMany(QuizAttempt::class);
+    }
 
-public function kelas()
-{
-    return $this->belongsTo(Classes::class,'class_id');
-}
+    public function kelas()
+    {
+        return $this->belongsTo(Classes::class, 'class_id');
+    }
 
-public function semester()
-{
-    return $this->belongsTo(Semester::class);
-}
+    public function semester()
+    {
+        return $this->belongsTo(Semester::class);
+    }
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'user_id')->latest();
+    }
 }

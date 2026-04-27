@@ -17,7 +17,8 @@ use App\Http\Controllers\SiswaMateriController;
 use App\Http\Controllers\DashboardSiswaController;
 use App\Http\Controllers\Guru\SemesterController;
 use App\Http\Controllers\Guru\ClassController;
-use App\Http\Controllers\Siswa\PilihKelasController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\NotifikasiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,6 +41,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::post('/komentar', [CommentController::class, 'store'])
+        ->name('komentar.store');
+    Route::get('/notif/read/{id}', [NotifikasiController::class, 'read'])->name('notif.read');
+    Route::get('/notif/read-all', [NotifikasiController::class, 'readAll'])->name('notif.readAll');
+
 
     Route::middleware(['auth', 'role:siswa', 'check.semester'])->group(function () {
         Route::get('/siswa/dashboard', [DashboardSiswaController::class, 'index'])
@@ -61,9 +67,7 @@ Route::middleware('auth')->group(function () {
     Route::get('siswa/evaluasi/{id}', [EvaluasiController::class, 'show'])->name('siswa.evaluasi.show');
     Route::post('siswa/evaluasi/{id}', [EvaluasiController::class, 'submit'])->name('siswa.evaluasi.submit');
 
-    /* Route::get('/pilih-kelas',[PilihKelasController::class,'index'])->name('siswa.pilih-kelas');
-    Route::post('/pilih-kelas',[PilihKelasController::class,'simpan'])->name('siswa.pilih-kelas.simpan');
-     */
+
 
     Route::prefix('siswa')->name('siswa.')->middleware(['auth'])->group(function () {
         Route::get('/leaderboard', [LeaderboardController::class, 'siswa'])

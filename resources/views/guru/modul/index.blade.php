@@ -1,306 +1,400 @@
 <x-app-layout>
 
-<div class="flex">
+      <div class="flex">
 
-@include('guru.sidebar')
+            @include('guru.sidebar')
 
-<main class="flex-1 ml-64 p-10 space-y-10"
-      x-data="{ open:false, openEdit:false, editId:null }">
+            <main class="flex-1 ml-64 p-10 space-y-10"
 
-{{-- HEADER --}}
-<div class="flex items-center justify-between mb-8">
+                  x-data="{ open:false, openEdit:false, editId:null }">
 
-<div>
-<h1 class="text-2xl font-bold text-gray-800">
-Kelola Materi File
-</h1>
+                  {{-- HEADER --}}
+                  <div class="flex items-center justify-between mb-8">
 
-<p class="text-sm text-gray-500">
-Kelola dan atur materi pembelajaran siswa
-</p>
-</div>
+                        <div>
+                              <h1 class="text-2xl font-bold text-gray-800">
+                                    Kelola Materi File
+                              </h1>
 
-<button
-@click="open = true; $nextTick(() => $refs.form?.reset())"
-class="inline-flex items-center gap-2
+                              <p class="text-sm text-gray-500">
+                                    Kelola dan atur materi pembelajaran siswa
+                              </p>
+                        </div>
+
+
+                        <button
+                              @click="open = true; $nextTick(() => $refs.form?.reset())"
+                              class="inline-flex items-center gap-2
 px-4 py-2
 bg-white border border-blue-200
 text-blue-600
 rounded-xl shadow-sm
 hover:bg-blue-50 transition">
 
-<svg xmlns="http://www.w3.org/2000/svg"
-viewBox="0 0 24 24"
-fill="none"
-stroke="currentColor"
-stroke-width="1.8"
-class="w-5 h-5">
-<path stroke-linecap="round"
-stroke-linejoin="round"
-d="M12 4v16m8-8H4"/>
-</svg>
+                              <svg xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    class="w-5 h-5">
+                                    <path stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          d="M12 4v16m8-8H4" />
+                              </svg>
 
-<span>Tambah Materi</span>
+                              <span>Tambah Materi</span>
 
-</button>
+                        </button>
 
-</div>
+                  </div>
 
-{{-- TABLE --}}
-<div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                  {{-- TABLE --}}
+                  <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
 
-<div class="overflow-x-auto">
+                        <div class="overflow-x-auto">
 
-<table class="w-full text-sm">
+                              <table class="w-full text-sm">
 
-<thead class="bg-gradient-to-r from-blue-50 to-purple-50">
+                                    <thead class="bg-gradient-to-r from-blue-50 to-purple-50">
 
-<tr class="text-gray-700">
+                                          <tr class="text-gray-700">
 
-<th class="px-6 py-4 text-left">No</th>
-<th class="px-6 py-4 text-left">Kelas</th>
-<th class="px-6 py-4 text-left">Judul</th>
-<th class="px-6 py-4 text-left">Deskripsi</th>
-<th class="px-6 py-4 text-center">Aksi</th>
+                                                <th class="px-6 py-4 text-left">No</th>
+                                                <th class="px-6 py-4 text-left">Kelas</th>
+                                                <th class="px-6 py-4 text-left">Judul</th>
+                                                <th class="px-6 py-4 text-left">Deskripsi</th>
+                                                <th class="px-6 py-4 text-center">Aksi</th>
 
-</tr>
+                                          </tr>
 
-</thead>
+                                    </thead>
 
-<tbody class="divide-y">
+                                    <tbody class="divide-y">
 
-@forelse ($modul as $item)
+                                          @forelse ($modul as $item)
 
-<tr class="hover:bg-gray-50 transition">
+                                          <tr class="hover:bg-gray-50 transition">
 
-<td class="px-6 py-4 text-gray-500">
-{{ $loop->iteration }}
-</td>
+                                                <td class="px-6 py-4 text-gray-500">
+                                                      {{ $loop->iteration }}
+                                                </td>
 
-<td class="px-6 py-4 text-gray-600">
-{{ $item->kelas->nama_kelas ?? '-' }}
-</td>
+                                                <td class="px-6 py-4 text-gray-600">
+                                                      {{ $item->kelas->nama_kelas ?? '-' }}
+                                                </td>
 
-<td class="px-6 py-4 font-semibold">
-{{ $item->judul }}
-</td>
+                                                <td class="px-6 py-4 font-semibold">
+                                                      {{ $item->judul }}
+                                                </td>
 
-<td class="px-6 py-4 text-gray-600">
-{{ $item->deskripsi }}
-</td>
+                                                <td class="px-6 py-4 text-gray-600">
+                                                      {{ $item->deskripsi }}
+                                                </td>
 
-<td class="px-6 py-4">
+                                                <td class="px-6 py-4">
 
-<div class="flex justify-center items-center gap-3">
+                                                      <div class="flex justify-center items-center gap-3">
 
-{{-- DETAIL --}}
-<a href="{{ route('guru.modul.show', $item->id) }}"
-class="p-2 rounded-full bg-green-100 text-green-600
+                                                            {{-- DETAIL --}}
+                                                            <a href="{{ route('guru.modul.show', $item->id) }}"
+                                                                  class="p-2 rounded-full bg-green-100 text-green-600
 hover:bg-green-200 transition shadow-sm">
 
-<svg xmlns="http://www.w3.org/2000/svg"
-class="w-4 h-4"
-fill="none"
-viewBox="0 0 24 24"
-stroke="currentColor">
+                                                                  <svg xmlns="http://www.w3.org/2000/svg"
+                                                                        class="w-4 h-4"
+                                                                        fill="none"
+                                                                        viewBox="0 0 24 24"
+                                                                        stroke="currentColor">
 
-<path stroke-linecap="round"
-stroke-linejoin="round"
-stroke-width="2"
-d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                                        <path stroke-linecap="round"
+                                                                              stroke-linejoin="round"
+                                                                              stroke-width="2"
+                                                                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
 
-<path stroke-linecap="round"
-stroke-linejoin="round"
-stroke-width="2"
-d="M2.458 12C3.732 7.943 7.523 5 12 5
+                                                                        <path stroke-linecap="round"
+                                                                              stroke-linejoin="round"
+                                                                              stroke-width="2"
+                                                                              d="M2.458 12C3.732 7.943 7.523 5 12 5
 c4.477 0 8.268 2.943 9.542 7
 -1.274 4.057-5.065 7-9.542 7
--4.477 0-8.268-2.943-9.542-7z"/>
+-4.477 0-8.268-2.943-9.542-7z" />
 
-</svg>
+                                                                  </svg>
 
-</a>
+                                                            </a>
 
-{{-- EDIT --}}
-<button
-@click="openEdit=true; editId={{ $item->id }}"
-class="p-2 rounded-full bg-blue-100 text-blue-600
+                                                            {{-- EDIT --}}
+                                                            <button
+                                                                  @click="openEdit=true; editId={{ $item->id }}"
+                                                                  class="p-2 rounded-full bg-blue-100 text-blue-600
 hover:bg-blue-200 transition shadow-sm">
 
-<svg xmlns="http://www.w3.org/2000/svg"
-class="w-4 h-4"
-fill="none"
-viewBox="0 0 24 24"
-stroke="currentColor">
+                                                                  <svg xmlns="http://www.w3.org/2000/svg"
+                                                                        class="w-4 h-4"
+                                                                        fill="none"
+                                                                        viewBox="0 0 24 24"
+                                                                        stroke="currentColor">
 
-<path stroke-linecap="round"
-stroke-linejoin="round"
-stroke-width="2"
-d="M11 5H6a2 2 0 00-2 2v11
+                                                                        <path stroke-linecap="round"
+                                                                              stroke-linejoin="round"
+                                                                              stroke-width="2"
+                                                                              d="M11 5H6a2 2 0 00-2 2v11
 a2 2 0 002 2h11a2 2 0 002-2v-5
 m-1.414-9.414
 a2 2 0 112.828 2.828L11.828 15
-H9v-2.828l8.586-8.586z"/>
+H9v-2.828l8.586-8.586z" />
 
-</svg>
+                                                                  </svg>
 
-</button>
+                                                            </button>
 
-{{-- DELETE --}}
-<form action="{{ route('guru.modul.destroy', $item->id) }}"
-method="POST"
-onsubmit="return confirm('Yakin hapus materi ini?')">
+                                                            {{-- DELETE --}}
+                                                            <form action="{{ route('guru.modul.destroy', $item->id) }}"
+                                                                  method="POST"
+                                                                  onsubmit="return confirm('Yakin hapus materi ini?')">
 
-@csrf
-@method('DELETE')
+                                                                  @csrf
+                                                                  @method('DELETE')
 
-<button type="submit"
-class="p-2 rounded-full bg-red-100 text-red-600
+                                                                  <button type="submit"
+                                                                        class="p-2 rounded-full bg-red-100 text-red-600
 hover:bg-red-200 transition shadow-sm">
 
-<svg xmlns="http://www.w3.org/2000/svg"
-class="w-4 h-4"
-fill="none"
-viewBox="0 0 24 24"
-stroke="currentColor">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                              class="w-4 h-4"
+                                                                              fill="none"
+                                                                              viewBox="0 0 24 24"
+                                                                              stroke="currentColor">
 
-<path stroke-linecap="round"
-stroke-linejoin="round"
-stroke-width="2"
-d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862
-a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6"/>
+                                                                              <path stroke-linecap="round"
+                                                                                    stroke-linejoin="round"
+                                                                                    stroke-width="2"
+                                                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862
+a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6" />
 
-</svg>
+                                                                        </svg>
 
-</button>
+                                                                  </button>
 
-</form>
+                                                            </form>
 
-</div>
+                                                      </div>
 
-</td>
+                                                </td>
 
-</tr>
+                                          </tr>
 
-@empty
+                                          @empty
 
-<tr>
-<td colspan="5"
-class="px-6 py-10 text-center text-gray-400">
-Belum ada materi
-</td>
-</tr>
+                                          <tr>
+                                                <td colspan="5"
+                                                      class="px-6 py-10 text-center text-gray-400">
+                                                      Belum ada materi
+                                                </td>
+                                          </tr>
 
-@endforelse
+                                          @endforelse
 
-</tbody>
+                                    </tbody>
 
-</table>
+                              </table>
 
-</div>
+                        </div>
 
-</div>
+                  </div>
 
-{{-- MODAL CREATE --}}
-<div
-x-cloak
-x-show ="open"
-class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                  {{-- MODAL CREATE --}}
+                  <div
+                        x-cloak
+                        x-show="open"
+                        class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 
-<div
-@click.away="open = false"
-class="bg-white w-full max-w-xl rounded-2xl shadow-xl p-6 max-h-[90vh] overflow-y-auto">
+                        <div
+                              @click.away="open = false"
+                              class="bg-white w-full max-w-xl rounded-2xl shadow-xl p-6 max-h-[90vh] overflow-y-auto">
 
-<h2 class="text-xl font-bold mb-4">
-Tambah Materi
-</h2>
+                              <h2 class="text-xl font-bold mb-4">
+                                    Tambah Materi
+                              </h2>
 
-<form x-ref="form"
-action="{{ route('guru.modul.store') }}"
-method="POST"
-enctype="multipart/form-data"
-class="space-y-4">
+                              <form x-ref="form"
+                                    action="{{ route('guru.modul.store') }}"
+                                    method="POST"
+                                    enctype="multipart/form-data"
+                                    class="space-y-4">
 
-@csrf
+                                    @csrf
 
-<label class="text-sm font-medium">Kelas</label>
+                                    <label class="text-sm font-medium">Kelas</label>
 
-<select name="class_id"
-required
-class="w-full rounded-lg border-gray-300">
+                                    <select name="class_id"
+                                          required
+                                          class="w-full rounded-lg border-gray-300">
 
-<option value="">Pilih Kelas</option>
+                                          <option value="">Pilih Kelas</option>
 
-@foreach($classes as $class)
+                                          @foreach($classes as $class)
 
-<option value="{{ $class->id }}">
-{{ $class->nama_kelas }}
-</option>
+                                          <option value="{{ $class->id }}">
+                                                {{ $class->nama_kelas }}
+                                          </option>
 
-@endforeach
+                                          @endforeach
 
-</select>
+                                    </select>
 
-<input type="text"
-name="judul"
-required
-placeholder="Judul Materi"
-class="w-full rounded-lg border-gray-300">
+                                    <input type="text"
+                                          name="judul"
+                                          required
+                                          placeholder="Judul Materi"
+                                          class="w-full rounded-lg border-gray-300">
 
-<textarea name="tujuan_pembelajaran"
-rows="2"
-class="w-full rounded-lg border-gray-300"
-placeholder="Tujuan Pembelajaran"></textarea>
+                                    <textarea name="tujuan_pembelajaran"
+                                          rows="2"
+                                          class="w-full rounded-lg border-gray-300"
+                                          placeholder="Tujuan Pembelajaran"></textarea>
 
-<textarea name="deskripsi"
-rows="2"
-class="w-full rounded-lg border-gray-300"
-placeholder="Deskripsi"></textarea>
+                                    <textarea name="deskripsi"
+                                          rows="2"
+                                          class="w-full rounded-lg border-gray-300"
+                                          placeholder="Deskripsi"></textarea>
 
-<label class="block text-sm font-medium">
-Upload File Materi (PDF / Word)
-</label>
+                                    <label class="block text-sm font-medium">
+                                          Upload File Materi (PDF / Word)
+                                    </label>
 
-<input type="file"
-name="file_materi"
-accept=".pdf,.doc,.docx"
-class="w-full">
+                                    <input type="file"
+                                          name="file_materi"
+                                          accept=".pdf,.doc,.docx"
+                                          class="w-full">
 
-<label class="block text-sm font-medium">
-Link Video Youtube (Opsional)
-</label>
+                                    <label class="block text-sm font-medium">
+                                          Link Video Youtube (Opsional)
+                                    </label>
 
-<input type="url"
-name="video_url"
-placeholder="https://youtube.com/..."
-class="w-full rounded-lg border-gray-300">
+                                    <input type="url"
+                                          name="video_url"
+                                          placeholder="https://youtube.com/..."
+                                          class="w-full rounded-lg border-gray-300">
 
-<div class="flex justify-end gap-3">
+                                    <div class="flex justify-end gap-3">
 
-<button type="button"
-@click="open=false"
-class="px-4 py-2 border rounded-lg">
-Batal
-</button>
+                                          <button type="button"
+                                                @click="open=false"
+                                                class="px-4 py-2 border rounded-lg">
+                                                Batal
+                                          </button>
 
-<button type="submit"
-class="px-4 py-2 bg-blue-600 text-white rounded-lg">
-Simpan
-</button>
+                                          <button type="submit"
+                                                class="px-4 py-2 bg-blue-600 text-white rounded-lg">
+                                                Simpan
+                                          </button>
 
-</div>
+                                    </div>
 
-</form>
+                              </form>
 
-</div>
+                        </div>
 
-</div>
+                  </div>
+                  {{-- MODAL EDIT --}}
+                  <div
+                        x-cloak
+                        x-show="openEdit"
+                        class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 
-{{-- BUTTON KEMBALI --}}
-<div class="mt-10 flex justify-end">
+                        <div
+                              @click.away="openEdit = false"
+                              class="bg-white w-full max-w-xl rounded-2xl shadow-xl p-6 max-h-[90vh] overflow-y-auto">
 
-<a href="{{ url()->previous() }}"
-class="inline-flex items-center gap-2
+                              <h2 class="text-xl font-bold mb-4">
+                                    Edit Materi
+                              </h2>
+
+                              {{-- looping biar data sesuai id --}}
+                              @foreach ($modul as $item)
+
+                              <div x-show="editId === {{ $item->id }}">
+
+                                    <form
+                                          action="{{ route('guru.modul.update', $item->id) }}"
+                                          method="POST"
+                                          enctype="multipart/form-data"
+                                          class="space-y-4">
+
+                                          @csrf
+                                          @method('PUT')
+
+                                          {{-- KELAS --}}
+                                          <label class="text-sm font-medium">Kelas</label>
+                                          <select name="class_id"
+                                                class="w-full rounded-lg border-gray-300">
+
+                                                @foreach($classes as $class)
+                                                <option value="{{ $class->id }}"
+                                                      {{ $item->class_id == $class->id ? 'selected' : '' }}>
+                                                      {{ $class->nama_kelas }}
+                                                </option>
+                                                @endforeach
+
+                                          </select>
+
+                                          {{-- JUDUL --}}
+                                          <input type="text"
+                                                name="judul"
+                                                value="{{ $item->judul }}"
+                                                class="w-full rounded-lg border-gray-300">
+
+                                          {{-- TUJUAN --}}
+                                          <textarea name="tujuan_pembelajaran"
+                                                class="w-full rounded-lg border-gray-300">{{ $item->tujuan_pembelajaran }}</textarea>
+
+                                          {{-- DESKRIPSI --}}
+                                          <textarea name="deskripsi"
+                                                class="w-full rounded-lg border-gray-300">{{ $item->deskripsi }}</textarea>
+
+                                          {{-- FILE --}}
+                                          <label class="text-sm">Ganti File (opsional)</label>
+                                          <input type="file"
+                                                name="file_materi"
+                                                class="w-full">
+
+                                          {{-- VIDEO --}}
+                                          <input type="url"
+                                                name="video_url"
+                                                value="{{ $item->video_url }}"
+                                                class="w-full rounded-lg border-gray-300">
+
+                                          {{-- BUTTON --}}
+                                          <div class="flex justify-end gap-3">
+
+                                                <button type="button"
+                                                      @click="openEdit=false"
+                                                      class="px-4 py-2 border rounded-lg">
+                                                      Batal
+                                                </button>
+
+                                                <button type="submit"
+                                                      class="px-4 py-2 bg-blue-600 text-white rounded-lg">
+                                                      Update
+                                                </button>
+
+                                          </div>
+
+                                    </form>
+
+                              </div>
+
+                              @endforeach
+
+                        </div>
+                  </div>
+
+                  {{-- BUTTON KEMBALI --}}
+                  <div class="mt-10 flex justify-end">
+
+                        <a href="{{ url()->previous() }}"
+                              class="inline-flex items-center gap-2
 px-5 py-2.5 text-sm
 bg-white border border-gray-300
 text-gray-600
@@ -308,27 +402,27 @@ rounded-full
 hover:bg-gray-50 hover:border-gray-400
 transition">
 
-<svg xmlns="http://www.w3.org/2000/svg"
-viewBox="0 0 24 24"
-fill="none"
-stroke="currentColor"
-stroke-width="1.8"
-class="w-4 h-4">
+                              <svg xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    class="w-4 h-4">
 
-<path stroke-linecap="round"
-stroke-linejoin="round"
-d="M15 18l-6-6 6-6"/>
+                                    <path stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          d="M15 18l-6-6 6-6" />
 
-</svg>
+                              </svg>
 
-<span>Kembali</span>
+                              <span>Kembali</span>
 
-</a>
+                        </a>
 
-</div>
+                  </div>
 
-</main>
+            </main>
 
-</div>
+      </div>
 
 </x-app-layout>

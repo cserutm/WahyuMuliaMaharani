@@ -19,26 +19,46 @@ class PertanyaanController extends Controller
     // ================= STORE =================
     public function store(Request $request, $kuis_id)
     {
-        $request->validate([
+        $data = $request->validate([
             'soal' => 'required',
+            'gambar_soal' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+
             'opsi_a' => 'required',
+            'gambar_opsi_a' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+
             'opsi_b' => 'required',
+            'gambar_opsi_b' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+
             'opsi_c' => 'required',
+            'gambar_opsi_c' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+
             'opsi_d' => 'required',
-            'opsi_e' => 'required',
+            'gambar_opsi_d' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+
+            'opsi_e' => 'nullable',
+            'gambar_opsi_e' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+
             'jawaban_benar' => 'required|in:a,b,c,d,e',
         ]);
 
-        Pertanyaan::create([
-            'kuis_id' => $kuis_id,
-            'soal' => $request->soal,
-            'opsi_a' => $request->opsi_a,
-            'opsi_b' => $request->opsi_b,
-            'opsi_c' => $request->opsi_c,
-            'opsi_d' => $request->opsi_d,
-            'opsi_e' => $request->opsi_e,
-            'jawaban_benar' => $request->jawaban_benar,
-        ]);
+        $data['kuis_id'] = $kuis_id;
+
+        foreach (
+            [
+                'gambar_soal',
+                'gambar_opsi_a',
+                'gambar_opsi_b',
+                'gambar_opsi_c',
+                'gambar_opsi_d',
+                'gambar_opsi_e'
+            ] as $field
+        ) {
+            if ($request->hasFile($field)) {
+                $data[$field] = $request->file($field)->store('kuis/pertanyaan', 'public');
+            }
+        }
+
+        Pertanyaan::create($data);
 
         return redirect()
             ->route('guru.kuis.pertanyaan.index', $kuis_id)
@@ -57,27 +77,46 @@ class PertanyaanController extends Controller
     // ================= UPDATE =================
     public function update(Request $request, $kuis_id, $id)
     {
-        $request->validate([
+        $data = $request->validate([
             'soal' => 'required',
+            'gambar_soal' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+
             'opsi_a' => 'required',
+            'gambar_opsi_a' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+
             'opsi_b' => 'required',
+            'gambar_opsi_b' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+
             'opsi_c' => 'required',
+            'gambar_opsi_c' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+
             'opsi_d' => 'required',
-            'opsi_e' => 'required',
+            'gambar_opsi_d' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+
+            'opsi_e' => 'nullable',
+            'gambar_opsi_e' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+
             'jawaban_benar' => 'required|in:a,b,c,d,e',
         ]);
 
         $pertanyaan = Pertanyaan::findOrFail($id);
 
-        $pertanyaan->update([
-            'soal' => $request->soal,
-            'opsi_a' => $request->opsi_a,
-            'opsi_b' => $request->opsi_b,
-            'opsi_c' => $request->opsi_c,
-            'opsi_d' => $request->opsi_d,
-            'opsi_e' => $request->opsi_e,
-            'jawaban_benar' => $request->jawaban_benar,
-        ]);
+        foreach (
+            [
+                'gambar_soal',
+                'gambar_opsi_a',
+                'gambar_opsi_b',
+                'gambar_opsi_c',
+                'gambar_opsi_d',
+                'gambar_opsi_e'
+            ] as $field
+        ) {
+            if ($request->hasFile($field)) {
+                $data[$field] = $request->file($field)->store('kuis/pertanyaan', 'public');
+            }
+        }
+
+        $pertanyaan->update($data);
 
         return redirect()
             ->route('guru.kuis.pertanyaan.index', $kuis_id)

@@ -24,4 +24,8 @@ class modul extends Model
     {
         return $this->belongsTo(Classes::class, 'class_id');
     }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
