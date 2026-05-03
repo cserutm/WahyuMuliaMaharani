@@ -2,186 +2,202 @@
 
     <div class="flex">
 
-        {{-- Sidebar --}}
+        {{-- Sidebar Desktop --}}
         @include('guru.sidebar')
 
         {{-- Konten --}}
-        <main class="flex-1 ml-64 p-10 space-y-10">
+        <main class="flex-1 ml-0 lg:ml-64 p-4 sm:p-6 lg:p-8 space-y-8">
 
-            {{-- ===================== --}}
-            {{-- 🔹 STATISTIK --}}
-            {{-- ===================== --}}
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {{-- HEADER --}}
+            <section class="relative overflow-hidden rounded-[2rem] bg-gradient-to-r from-blue-900 via-blue-800 to-indigo-800 p-5 sm:p-8 lg:p-10 text-white shadow-2xl">
+                <div class="absolute top-0 right-0 w-72 h-72 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                <div class="absolute bottom-0 left-0 w-72 h-72 bg-blue-400/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
 
-                <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-                    <p class="text-sm text-gray-400">Total Kuis</p>
-                    <h2 class="text-3xl font-semibold mt-3">
-                        {{ $totalKuis ?? 0 }}
-                    </h2>
+                <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 sm:gap-6">
+                    <div>
+                        <p class="uppercase tracking-[3px] text-blue-200 text-xs font-semibold mb-2">
+                            Dashboard Monitoring Guru
+                        </p>
+                        <h1 class="text-xl sm:text-3xl lg:text-4xl font-black mb-3 leading-tight">
+                            Selamat Datang, Guru 👋
+                        </h1>
+                        <p class="text-blue-100 max-w-2xl text-sm sm:text-base">
+                            Pantau perkembangan evaluasi siswa, rata-rata nilai kuis, dan partisipasi pembelajaran secara real time melalui panel analitik ini.
+                        </p>
+                    </div>
+
+                    <div class="bg-white/10 backdrop-blur-md rounded-2xl px-5 py-4 border border-white/10 w-fit">
+                        <p class="text-xs uppercase text-blue-200 font-semibold">Tanggal Hari Ini</p>
+                        <p id="liveDate" class="text-base sm:text-lg font-bold mt-1"></p>
+                    </div>
+                </div>
+            </section>
+
+            {{-- STATISTIK --}}
+            <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6">
+
+                <div class="rounded-3xl bg-white p-5 sm:p-6 shadow-sm border border-slate-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-slate-400">Total Kuis</p>
+                            <h2 class="text-3xl sm:text-4xl font-black text-blue-900 mt-3">{{ $totalKuis ?? 0 }}</h2>
+                        </div>
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-blue-100 flex items-center justify-center text-xl sm:text-2xl">📝</div>
+                    </div>
                 </div>
 
-                <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-                    <p class="text-sm text-gray-400">Total Siswa</p>
-                    <h2 class="text-3xl font-semibold mt-3">
-                        {{ $totalSiswa ?? 0 }}
-                    </h2>
-
+                <div class="rounded-3xl bg-white p-5 sm:p-6 shadow-sm border border-slate-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-slate-400">Total Siswa</p>
+                            <h2 class="text-3xl sm:text-4xl font-black text-blue-900 mt-3">{{ $totalSiswa ?? 0 }}</h2>
+                        </div>
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-indigo-100 flex items-center justify-center text-xl sm:text-2xl">👨‍🎓</div>
+                    </div>
                 </div>
 
-                <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-                    <p class="text-sm text-gray-400">Total Pengerjaan</p>
-                    <h2 class="text-3xl font-semibold mt-3">
-                        {{ $totalAttempt ?? 0 }}
-                    </h2>
+                <div class="rounded-3xl bg-white p-5 sm:p-6 shadow-sm border border-slate-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 sm:col-span-2 xl:col-span-1">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-slate-400">Total Pengerjaan</p>
+                            <h2 class="text-3xl sm:text-4xl font-black text-blue-900 mt-3">{{ $totalAttempt ?? 0 }}</h2>
+                        </div>
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-emerald-100 flex items-center justify-center text-xl sm:text-2xl">📊</div>
+                    </div>
                 </div>
 
-            </div>
+            </section>
 
-            {{-- ===================== --}}
-            {{-- 🔹 GRAFIK --}}
-            {{-- ===================== --}}
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {{-- QUICK INSIGHT --}}
+            <section class="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6">
 
-                <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-                    <h3 class="text-lg font-semibold mb-6">
-                        Rata-rata Nilai per Kuis
-                    </h3>
+                <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm lg:col-span-2">
+                    <h3 class="font-bold text-slate-800 text-lg mb-4">Insight Sistem Pembelajaran</h3>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="rounded-2xl bg-blue-50 p-5">
+                            <p class="text-xs text-blue-500 font-semibold uppercase">Aktivitas</p>
+                            <p class="text-2xl font-black text-blue-900 mt-2">{{ $totalAttempt ?? 0 }}</p>
+                        </div>
+
+                        <div class="rounded-2xl bg-indigo-50 p-5">
+                            <p class="text-xs text-indigo-500 font-semibold uppercase">Koleksi Kuis</p>
+                            <p class="text-2xl font-black text-indigo-900 mt-2">{{ $totalKuis ?? 0 }}</p>
+                        </div>
+
+                        <div class="rounded-2xl bg-emerald-50 p-5">
+                            <p class="text-xs text-emerald-500 font-semibold uppercase">Peserta</p>
+                            <p class="text-2xl font-black text-emerald-900 mt-2">{{ $totalSiswa ?? 0 }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-blue-900 to-indigo-800 rounded-3xl p-5 sm:p-6 text-white shadow-xl">
+                    <p class="text-blue-200 uppercase text-xs font-semibold">Status Sistem</p>
+                    <h3 class="text-xl sm:text-2xl font-black mt-3">Online & Aktif</h3>
+                    <p class="text-sm text-blue-100 mt-3">
+                        Dashboard memonitor performa pembelajaran siswa secara real time.
+                    </p>
+                </div>
+
+            </section>
+
+            {{-- CHART --}}
+            <section class="grid grid-cols-1 xl:grid-cols-2 gap-5 sm:gap-6 pb-8">
+
+                <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-bold text-slate-800 mb-6">Rata-rata Nilai per Kuis</h3>
 
                     @if (!empty($labels) && count($labels) > 0)
-                    <canvas id="averageChart"></canvas>
-                    @else
-                    <div class="text-gray-500 text-center py-10">
-                        Belum ada data kuis.
+                    <div class="w-full overflow-x-auto">
+                        <canvas id="averageChart" class="min-w-[500px]"></canvas>
                     </div>
+                    @else
+                    <div class="text-slate-400 text-center py-16">Belum ada data kuis.</div>
                     @endif
                 </div>
 
-                <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-                    <h3 class="text-lg font-semibold mb-6">
-                        Partisipasi Siswa
-                    </h3>
+                <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-bold text-slate-800 mb-6">Partisipasi Siswa</h3>
 
                     @if (!empty($labels) && count($labels) > 0)
-                    <canvas id="attemptChart"></canvas>
-                    @else
-                    <div class="text-gray-500 text-center py-10">
-                        Belum ada aktivitas siswa.
+                    <div class="w-full overflow-x-auto">
+                        <canvas id="attemptChart" class="min-w-[500px]"></canvas>
                     </div>
+                    @else
+                    <div class="text-slate-400 text-center py-16">Belum ada aktivitas siswa.</div>
                     @endif
                 </div>
 
-            </div>
+            </section>
 
         </main>
-
     </div>
 
-    {{-- ===================== --}}
-    {{-- 🔹 CHART JS --}}
-    {{-- ===================== --}}
     @if (!empty($labels) && count($labels) > 0)
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <script>
         const labels = @json($labels ?? []);
         const averageScores = @json($averageScores ?? []);
         const totalAttempts = @json($totalAttempts ?? []);
 
-        // =============================
-        // 🔹 GRADIENT FUNCTION
-        // =============================
-        function createGradient(ctx, color1, color2) {
+        function createGradient(ctx, c1, c2) {
             const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-            gradient.addColorStop(0, color1);
-            gradient.addColorStop(1, color2);
+            gradient.addColorStop(0, c1);
+            gradient.addColorStop(1, c2);
             return gradient;
         }
 
-        // =============================
-        // 🔹 AVERAGE SCORE (BAR)
-        // =============================
         const avgCtx = document.getElementById('averageChart').getContext('2d');
-
-        const avgGradient = createGradient(
-            avgCtx,
-            "rgba(59, 130, 246, 0.8)", // biru
-            "rgba(99, 102, 241, 0.3)" // indigo
-        );
+        const avgGradient = createGradient(avgCtx, "rgba(30,58,138,0.9)", "rgba(99,102,241,0.2)");
 
         new Chart(avgCtx, {
             type: 'bar',
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Rata-rata Nilai',
                     data: averageScores,
                     backgroundColor: avgGradient,
-                    borderRadius: 10,
+                    borderRadius: 12,
                     borderSkipped: false
                 }]
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: true,
                 plugins: {
                     legend: {
-                        labels: {
-                            color: "#374151",
-                            font: {
-                                size: 13
-                            }
-                        }
-                    },
-                    tooltip: {
-                        backgroundColor: "#111827",
-                        titleColor: "#fff",
-                        bodyColor: "#fff",
-                        padding: 12,
-                        cornerRadius: 8
+                        display: false
                     }
                 },
                 scales: {
                     x: {
+                        ticks: {
+                            autoSkip: false
+                        },
                         grid: {
                             display: false
-                        },
-                        ticks: {
-                            color: "#6B7280"
                         }
                     },
                     y: {
                         beginAtZero: true,
-                        max: 100,
-                        grid: {
-                            color: "rgba(0,0,0,0.05)"
-                        },
-                        ticks: {
-                            color: "#6B7280"
-                        }
+                        max: 100
                     }
                 }
             }
         });
 
-        // =============================
-        // 🔹 PARTISIPASI SISWA (LINE)
-        // =============================
-        const attemptCtx = document.getElementById('attemptChart').getContext('2d');
+        const atCtx = document.getElementById('attemptChart').getContext('2d');
+        const atGradient = createGradient(atCtx, "rgba(16,185,129,0.5)", "rgba(16,185,129,0.03)");
 
-        const attemptGradient = createGradient(
-            attemptCtx,
-            "rgba(16, 185, 129, 0.5)", // emerald
-            "rgba(16, 185, 129, 0.05)"
-        );
-
-        new Chart(attemptCtx, {
+        new Chart(atCtx, {
             type: 'line',
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Jumlah Siswa',
                     data: totalAttempts,
-                    borderColor: "#10B981", // emerald
-                    backgroundColor: attemptGradient,
+                    borderColor: "#10B981",
+                    backgroundColor: atGradient,
                     fill: true,
                     tension: 0.4,
                     pointRadius: 5,
@@ -192,43 +208,34 @@
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: true,
                 plugins: {
                     legend: {
-                        labels: {
-                            color: "#374151",
-                            font: {
-                                size: 13
-                            }
-                        }
-                    },
-                    tooltip: {
-                        backgroundColor: "#111827",
-                        titleColor: "#fff",
-                        bodyColor: "#fff",
-                        padding: 12,
-                        cornerRadius: 8
+                        display: false
                     }
                 },
                 scales: {
                     x: {
+                        ticks: {
+                            autoSkip: false
+                        },
                         grid: {
                             display: false
-                        },
-                        ticks: {
-                            color: "#6B7280"
                         }
                     },
                     y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: "rgba(0,0,0,0.05)"
-                        },
-                        ticks: {
-                            color: "#6B7280"
-                        }
+                        beginAtZero: true
                     }
                 }
             }
+        });
+
+        const today = new Date();
+        document.getElementById('liveDate').innerHTML = today.toLocaleDateString('id-ID', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
         });
     </script>
     @endif

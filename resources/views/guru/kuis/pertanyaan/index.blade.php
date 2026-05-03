@@ -6,7 +6,7 @@
         @include('guru.sidebar')
 
         {{-- Konten --}}
-        <main class="flex-1 ml-64 p-10 space-y-10"
+        <main class="flex-1 ml-0 lg:ml-64 p-4 sm:p-6 lg:p-8 space-y-8"
             x-data="{
                 open:false,
                 openEdit:false,
@@ -18,59 +18,72 @@
                 opsiDEdit:'',
                 opsiEEdit:'',
                 jawabanEdit:'',
-
                 gambarSoalLama:'',
                 gambarAEdit:'',
                 gambarBEdit:'',
                 gambarCEdit:'',
                 gambarDEdit:'',
                 gambarEEdit:''
-              }">
+            }">
 
-            {{-- Header --}}
-            <div class="flex items-center justify-between">
-                <div>
-                    <h1 class="text-2xl font-bold text-gray-800">
-                        Kelola Soal
-                    </h1>
-                    <p class="text-sm text-gray-500">
-                        {{ $kuis->judul }}
+            {{-- ================= HEADER ================= --}}
+            <section class="relative overflow-hidden rounded-[2rem] bg-gradient-to-r from-blue-900 via-blue-700 to-indigo-700 p-6 sm:p-8 text-white shadow-xl">
+
+                <div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+
+                    <div>
+                        <h1 class="text-2xl sm:text-3xl font-bold">
+                            Kelola Soal
+                        </h1>
+                        <p class="text-blue-100 mt-2 text-sm sm:text-base">
+                            {{ $kuis->judul }}
+                        </p>
+                    </div>
+
+                    <button
+                        @click="open=true"
+                        class="inline-flex items-center justify-center gap-2
+                               px-5 py-3
+                               bg-white/15 backdrop-blur-md
+                               border border-white/20
+                               text-white rounded-2xl
+                               hover:bg-white/25 transition">
+
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            class="w-5 h-5">
+                            <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M12 4v16m8-8H4" />
+                        </svg>
+
+                        Tambah Soal
+                    </button>
+
+                </div>
+            </section>
+
+
+            {{-- ================= TABLE CARD ================= --}}
+            <section class="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
+
+                <div class="p-6 border-b">
+                    <h2 class="text-lg font-semibold text-gray-800">
+                        Daftar Pertanyaan Kuis
+                    </h2>
+                    <p class="text-sm text-gray-500 mt-1">
+                        Kelola semua soal evaluasi yang akan dikerjakan siswa
                     </p>
                 </div>
 
-                {{-- Tombol Tambah --}}
-                <button
-                    @click="open=true"
-                    class="inline-flex items-center gap-2
-                           px-4 py-2
-                           bg-white border border-blue-200
-                           text-blue-600
-                           rounded-xl shadow-sm
-                           hover:bg-blue-50 transition">
-
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        class="w-5 h-5">
-                        <path stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M12 4v16m8-8H4" />
-                    </svg>
-
-                    Tambah Soal
-                </button>
-            </div>
-
-            {{-- Card Table --}}
-            <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
+                    <table class="w-full min-w-[700px] text-sm">
 
-                        <thead class="bg-gradient-to-r from-blue-50 to-blue-100">
-                            <tr class="text-gray-700">
+                        <thead class="bg-gray-50 border-b">
+                            <tr class="text-gray-600">
                                 <th class="px-6 py-4 text-left">No</th>
                                 <th class="px-6 py-4 text-left">Soal</th>
                                 <th class="px-6 py-4 text-left">Jawaban</th>
@@ -81,30 +94,35 @@
                         <tbody class="divide-y">
 
                             @forelse($kuis->pertanyaan as $index => $item)
-                            <tr class="hover:bg-gray-50 transition">
+                            <tr class="hover:bg-blue-50/30 transition">
 
-                                <td class="px-6 py-4 text-gray-500">
+                                <td class="px-6 py-5 text-gray-500 align-top">
                                     {{ $index+1 }}
                                 </td>
 
-                                <td class="px-6 py-4 font-medium text-gray-700">
-                                    {{ $item->soal }}
+                                <td class="px-6 py-5 text-gray-700 align-top">
+                                    <div class="max-w-xl">
+                                        <p class="font-medium leading-relaxed">
+                                            {{ $item->soal }}
+                                        </p>
 
-                                    @if($item->gambar_soal)
-                                    <img src="{{ asset('storage/'.$item->gambar_soal) }}"
-                                        class="w-28 mt-2 rounded-lg border shadow">
-                                    @endif
+                                        @if($item->gambar_soal)
+                                        <img src="{{ asset('storage/'.$item->gambar_soal) }}"
+                                            class="w-28 mt-3 rounded-xl border shadow-sm">
+                                        @endif
+                                    </div>
                                 </td>
 
-                                <td class="px-6 py-4 uppercase font-semibold text-blue-600">
-                                    {{ $item->jawaban_benar }}
+                                <td class="px-6 py-5 align-top">
+                                    <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 font-semibold uppercase">
+                                        {{ $item->jawaban_benar }}
+                                    </span>
                                 </td>
 
-                                {{-- Aksi --}}
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-5 align-top">
                                     <div class="flex items-center justify-center gap-3">
 
-                                        {{-- Edit --}}
+                                        {{-- EDIT --}}
                                         <button
                                             @click="openEdit=true; 
                                                     editId={{ $item->id }};
@@ -115,15 +133,13 @@
                                                     opsiDEdit=`{{ $item->opsi_d }}`;
                                                     opsiEEdit=`{{ $item->opsi_e }}`;
                                                     jawabanEdit=`{{ $item->jawaban_benar }}`;
-
                                                     gambarSoalLama=`{{ $item->gambar_soal }}`;
                                                     gambarAEdit=`{{ $item->gambar_opsi_a }}`;
                                                     gambarBEdit=`{{ $item->gambar_opsi_b }}`;
                                                     gambarCEdit=`{{ $item->gambar_opsi_c }}`;
                                                     gambarDEdit=`{{ $item->gambar_opsi_d }}`;
                                                     gambarEEdit=`{{ $item->gambar_opsi_e }}`"
-                                            class="p-2 rounded-full bg-blue-100 text-blue-600
-                                                   hover:bg-blue-200 transition shadow-sm">
+                                            class="p-2 rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-100 transition">
 
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                 class="w-4 h-4"
@@ -141,7 +157,7 @@
                                             </svg>
                                         </button>
 
-                                        {{-- Hapus --}}
+                                        {{-- DELETE --}}
                                         <form action="{{ route('guru.kuis.pertanyaan.destroy', [$kuis->id, $item->id]) }}"
                                             method="POST"
                                             onsubmit="return confirm('Yakin hapus soal ini?')">
@@ -149,8 +165,7 @@
                                             @method('DELETE')
 
                                             <button type="submit"
-                                                class="p-2 rounded-full bg-red-100 text-red-600
-                                                       hover:bg-red-200 transition shadow-sm">
+                                                class="p-2 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition">
 
                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                     class="w-4 h-4"
@@ -172,9 +187,8 @@
 
                             @empty
                             <tr>
-                                <td colspan="4"
-                                    class="px-6 py-10 text-center text-gray-400">
-                                    Belum ada soal
+                                <td colspan="4" class="px-6 py-14 text-center text-gray-400">
+                                    Belum ada soal tersedia
                                 </td>
                             </tr>
                             @endforelse
@@ -182,220 +196,147 @@
                         </tbody>
                     </table>
                 </div>
+            </section>
 
-                {{-- Modal Tambah Soal --}}
-                <div x-show="open"
-                    x-transition
-                    class="fixed inset-0 z-50 bg-black bg-opacity-50 overflow-y-auto"
-                    style="min-height:100vh;">
 
-                    <div class="bg-white w-full max-w-3xl p-6 rounded-xl shadow-lg mx-auto mt-10 mb-10"
-                        @click.away="open=false">
+            {{-- ================= MODAL TAMBAH ================= --}}
+            <div x-show="open" x-transition class="fixed inset-0 z-50 bg-black/50 overflow-y-auto p-4">
 
-                        <h2 class="text-xl font-bold mb-5">Tambah Soal</h2>
+                <div class="bg-white w-full max-w-4xl rounded-[2rem] shadow-2xl mx-auto mt-8 mb-8 p-6 sm:p-8"
+                    @click.away="open=false">
 
-                        <form action="{{ route('guru.kuis.pertanyaan.store', $kuis->id) }}"
-                            method="POST"
-                            enctype="multipart/form-data">
-                            @csrf
+                    <h2 class="text-xl font-bold text-gray-800 mb-6">Tambah Soal</h2>
 
-                            {{-- Soal --}}
-                            <label class="font-semibold text-sm text-gray-700">Soal</label>
-                            <textarea name="soal"
-                                class="w-full border rounded p-3 mb-3 mt-1"
-                                rows="3"
-                                placeholder="Tulis soal..."
-                                required></textarea>
+                    <form action="{{ route('guru.kuis.pertanyaan.store', $kuis->id) }}"
+                        method="POST"
+                        enctype="multipart/form-data"
+                        class="space-y-5">
+                        @csrf
 
-                            <label class="font-semibold text-sm text-gray-700">Gambar Soal (Opsional)</label>
-                            <input type="file" name="gambar_soal" class="w-full border p-2 mb-5 rounded mt-1">
+                        <textarea name="soal" rows="3" required
+                            class="w-full rounded-xl border-gray-300"
+                            placeholder="Tulis soal..."></textarea>
 
-                            {{-- Opsi --}}
-                            <div class="space-y-4">
+                        <input type="file" name="gambar_soal" class="w-full text-sm">
 
-                                <div class="grid grid-cols-3 gap-3 items-center">
-                                    <input type="text" name="opsi_a" class="col-span-2 border p-2 rounded" placeholder="Opsi A" required>
-                                    <input type="file" name="gambar_opsi_a" class="border p-2 rounded">
-                                </div>
-
-                                <div class="grid grid-cols-3 gap-3 items-center">
-                                    <input type="text" name="opsi_b" class="col-span-2 border p-2 rounded" placeholder="Opsi B" required>
-                                    <input type="file" name="gambar_opsi_b" class="border p-2 rounded">
-                                </div>
-
-                                <div class="grid grid-cols-3 gap-3 items-center">
-                                    <input type="text" name="opsi_c" class="col-span-2 border p-2 rounded" placeholder="Opsi C" required>
-                                    <input type="file" name="gambar_opsi_c" class="border p-2 rounded">
-                                </div>
-
-                                <div class="grid grid-cols-3 gap-3 items-center">
-                                    <input type="text" name="opsi_d" class="col-span-2 border p-2 rounded" placeholder="Opsi D" required>
-                                    <input type="file" name="gambar_opsi_d" class="border p-2 rounded">
-                                </div>
-
-                                <div class="grid grid-cols-3 gap-3 items-center">
-                                    <input type="text" name="opsi_e" class="col-span-2 border p-2 rounded" placeholder="Opsi E">
-                                    <input type="file" name="gambar_opsi_e" class="border p-2 rounded">
-                                </div>
-
+                        <div class="space-y-4">
+                            @foreach(['a','b','c','d','e'] as $opsi)
+                            <div class="grid md:grid-cols-3 gap-3">
+                                <input type="text" name="opsi_{{ $opsi }}"
+                                    class="md:col-span-2 rounded-xl border-gray-300"
+                                    placeholder="Opsi {{ strtoupper($opsi) }}"
+                                    {{ $opsi != 'e' ? 'required' : '' }}>
+                                <input type="file" name="gambar_opsi_{{ $opsi }}" class="text-sm">
                             </div>
+                            @endforeach
+                        </div>
 
-                            <select name="jawaban_benar"
-                                class="w-full border p-2 mt-5 mb-5 rounded"
-                                required>
-                                <option value="">-- Pilih Jawaban Benar --</option>
-                                <option value="a">A</option>
-                                <option value="b">B</option>
-                                <option value="c">C</option>
-                                <option value="d">D</option>
-                                <option value="e">E</option>
-                            </select>
+                        <select name="jawaban_benar" required class="w-full rounded-xl border-gray-300">
+                            <option value="">-- Pilih Jawaban Benar --</option>
+                            <option value="a">A</option>
+                            <option value="b">B</option>
+                            <option value="c">C</option>
+                            <option value="d">D</option>
+                            <option value="e">E</option>
+                        </select>
 
-                            <div class="flex justify-end gap-2">
-                                <button type="button"
-                                    @click="open=false"
-                                    class="px-4 py-2 bg-gray-400 text-white rounded">
-                                    Batal
-                                </button>
+                        <div class="flex justify-end gap-3 pt-4">
+                            <button type="button" @click="open=false"
+                                class="px-5 py-2.5 rounded-xl border">
+                                Batal
+                            </button>
 
-                                <button type="submit"
-                                    class="px-4 py-2 bg-blue-600 text-white rounded">
-                                    Simpan
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                            <button type="submit"
+                                class="px-5 py-2.5 rounded-xl bg-blue-600 text-white hover:bg-blue-700">
+                                Simpan
+                            </button>
+                        </div>
+                    </form>
                 </div>
+            </div>
 
-                {{-- Modal Edit Soal --}}
-                <div x-show="openEdit"
-                    x-transition
-                    class="fixed inset-0 z-50 bg-black bg-opacity-50 overflow-y-auto"
-                    style="min-height:100vh;">
 
-                    <div class="bg-white w-full max-w-3xl p-6 rounded-xl shadow-lg mx-auto mt-10 mb-10"
-                        @click.away="openEdit=false">
+            {{-- ================= MODAL EDIT ================= --}}
+            <div x-show="openEdit" x-transition class="fixed inset-0 z-50 bg-black/50 overflow-y-auto p-4">
 
-                        <h2 class="text-xl font-bold mb-5">Edit Soal</h2>
+                <div class="bg-white w-full max-w-4xl rounded-[2rem] shadow-2xl mx-auto mt-8 mb-8 p-6 sm:p-8"
+                    @click.away="openEdit=false">
 
-                        <form :action="'/guru/kuis/{{ $kuis->id }}/pertanyaan/' + editId"
-                            method="POST"
-                            enctype="multipart/form-data">
+                    <h2 class="text-xl font-bold text-gray-800 mb-6">Edit Soal</h2>
 
-                            @csrf
-                            @method('PUT')
+                    <form :action="'/guru/kuis/{{ $kuis->id }}/pertanyaan/' + editId"
+                        method="POST"
+                        enctype="multipart/form-data"
+                        class="space-y-5">
 
-                            {{-- Soal --}}
-                            <label class="font-semibold text-sm text-gray-700">Soal</label>
-                            <textarea name="soal"
-                                x-model="soalEdit"
-                                rows="3"
-                                class="w-full border rounded p-3 mb-3 mt-1"
-                                required></textarea>
+                        @csrf
+                        @method('PUT')
 
-                            <template x-if="gambarSoalLama">
-                                <img :src="'/storage/' + gambarSoalLama" class="w-24 mb-2 rounded border">
-                            </template>
+                        <textarea name="soal" x-model="soalEdit" rows="3"
+                            class="w-full rounded-xl border-gray-300"></textarea>
 
-                            <label class="font-semibold text-sm text-gray-700">Ganti Gambar Soal</label>
-                            <input type="file" name="gambar_soal" class="w-full border p-2 mb-5 rounded mt-1">
+                        <template x-if="gambarSoalLama">
+                            <img :src="'/storage/' + gambarSoalLama" class="w-24 rounded-xl border">
+                        </template>
 
-                            {{-- Opsi --}}
-                            <div class="space-y-4">
+                        <input type="file" name="gambar_soal" class="w-full text-sm">
 
-                                <div class="grid grid-cols-3 gap-3 items-center">
-                                    <input type="text" name="opsi_a" x-model="opsiAEdit" class="col-span-2 border p-2 rounded" required>
-                                    <div>
-                                        <template x-if="gambarAEdit"><img :src="'/storage/' + gambarAEdit" class="w-16 mb-1 rounded border"></template>
-                                        <input type="file" name="gambar_opsi_a" class="border p-2 rounded w-full">
-                                    </div>
-                                </div>
-
-                                <div class="grid grid-cols-3 gap-3 items-center">
-                                    <input type="text" name="opsi_b" x-model="opsiBEdit" class="col-span-2 border p-2 rounded" required>
-                                    <div>
-                                        <template x-if="gambarBEdit"><img :src="'/storage/' + gambarBEdit" class="w-16 mb-1 rounded border"></template>
-                                        <input type="file" name="gambar_opsi_b" class="border p-2 rounded w-full">
-                                    </div>
-                                </div>
-
-                                <div class="grid grid-cols-3 gap-3 items-center">
-                                    <input type="text" name="opsi_c" x-model="opsiCEdit" class="col-span-2 border p-2 rounded" required>
-                                    <div>
-                                        <template x-if="gambarCEdit"><img :src="'/storage/' + gambarCEdit" class="w-16 mb-1 rounded border"></template>
-                                        <input type="file" name="gambar_opsi_c" class="border p-2 rounded w-full">
-                                    </div>
-                                </div>
-
-                                <div class="grid grid-cols-3 gap-3 items-center">
-                                    <input type="text" name="opsi_d" x-model="opsiDEdit" class="col-span-2 border p-2 rounded" required>
-                                    <div>
-                                        <template x-if="gambarDEdit"><img :src="'/storage/' + gambarDEdit" class="w-16 mb-1 rounded border"></template>
-                                        <input type="file" name="gambar_opsi_d" class="border p-2 rounded w-full">
-                                    </div>
-                                </div>
-
-                                <div class="grid grid-cols-3 gap-3 items-center">
-                                    <input type="text" name="opsi_e" x-model="opsiEEdit" class="col-span-2 border p-2 rounded">
-                                    <div>
-                                        <template x-if="gambarEEdit"><img :src="'/storage/' + gambarEEdit" class="w-16 mb-1 rounded border"></template>
-                                        <input type="file" name="gambar_opsi_e" class="border p-2 rounded w-full">
-                                    </div>
-                                </div>
-
+                        <div class="space-y-4">
+                            @foreach(['A','B','C','D','E'] as $opsi)
+                            <div class="grid md:grid-cols-3 gap-3">
+                                <input type="text"
+                                    :name="'opsi_{{ strtolower($opsi) }}'"
+                                    x-model="opsi{{ $opsi }}Edit"
+                                    class="md:col-span-2 rounded-xl border-gray-300">
+                                <input type="file" :name="'gambar_opsi_{{ strtolower($opsi) }}'" class="text-sm">
                             </div>
+                            @endforeach
+                        </div>
 
-                            <select name="jawaban_benar"
-                                x-model="jawabanEdit"
-                                class="w-full border p-2 mt-5 mb-5 rounded"
-                                required>
-                                <option value="a">A</option>
-                                <option value="b">B</option>
-                                <option value="c">C</option>
-                                <option value="d">D</option>
-                                <option value="e">E</option>
-                            </select>
+                        <select name="jawaban_benar" x-model="jawabanEdit" class="w-full rounded-xl border-gray-300">
+                            <option value="a">A</option>
+                            <option value="b">B</option>
+                            <option value="c">C</option>
+                            <option value="d">D</option>
+                            <option value="e">E</option>
+                        </select>
 
-                            <div class="flex justify-end gap-2">
-                                <button type="button"
-                                    @click="openEdit=false"
-                                    class="px-4 py-2 bg-gray-400 text-white rounded">
-                                    Batal
-                                </button>
+                        <div class="flex justify-end gap-3 pt-4">
+                            <button type="button" @click="openEdit=false"
+                                class="px-5 py-2.5 rounded-xl border">
+                                Batal
+                            </button>
 
-                                <button type="submit"
-                                    class="px-4 py-2 bg-blue-600 text-white rounded">
-                                    Update
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                            <button type="submit"
+                                class="px-5 py-2.5 rounded-xl bg-blue-600 text-white hover:bg-blue-700">
+                                Update
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                {{-- Button Kembali (Clean Style) --}}
-                <div class="mt-10 flex justify-end">
-                    <a href="{{ route('guru.kuis.index') }}"
-                        class="inline-flex items-center gap-2
-                      px-5 py-2.5 text-sm
-                      bg-white border border-gray-300
-                      text-gray-600
-                      rounded-full
-                      hover:bg-gray-50 hover:border-gray-400
-                      transition">
+            </div>
 
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            class="w-4 h-4">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M15 18l-6-6 6-6" />
-                        </svg>
 
-                        <span>Kembali</span>
-                    </a>
-                </div>
+            {{-- BUTTON KEMBALI --}}
+            <div class="flex justify-end">
+                <a href="{{ route('guru.kuis.index') }}"
+                    class="inline-flex items-center gap-2 px-5 py-2.5 text-sm bg-white border border-gray-300 text-gray-600 rounded-full hover:bg-gray-50 transition">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        class="w-4 h-4">
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M15 18l-6-6 6-6" />
+                    </svg>
+
+                    Kembali
+                </a>
+            </div>
+
         </main>
     </div>
 </x-app-layout>

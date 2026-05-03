@@ -1,103 +1,142 @@
 <x-app-layout>
-   
-    {{-- Sidebar --}}
+
     @include('layouts.sidebar')
 
-    {{-- Konten Utama --}}
     <main class="ml-64 pt-16 px-10 pb-16 min-h-screen bg-gray-100">
 
-    <div class="max-w-4xl mx-auto space-y-8">
+        <div class="max-w-4xl mx-auto space-y-8">
 
-        {{-- Header --}}
-        <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-            <h2 class="text-xl font-semibold text-gray-800">
-                {{ $kuis->judul }}
-            </h2>
-            <p class="text-sm text-gray-500 mt-1">
-                Silakan pilih jawaban yang paling tepat.
-            </p>
-        </div>
+            {{-- HEADER --}}
+            <div class="bg-white border rounded-2xl p-6 shadow-sm">
+                <h2 class="text-xl font-semibold">{{ $kuis->judul }}</h2>
+                <p class="text-sm text-gray-500">Tarik jawaban yang benar ke kotak jawaban pada masing-masing soal</p>
+            </div>
 
-        {{-- Form --}}
-        <form action="{{ route('siswa.evaluasi.submit', $kuis->id) }}" method="POST" class="space-y-6">
-            @csrf
+            <form action="{{ route('siswa.evaluasi.submit', $kuis->id) }}" method="POST" id="quizForm">
+                @csrf
 
-            @foreach($kuis->pertanyaan as $index => $q)
+                <input type="hidden" name="jawaban_data" id="jawaban_data">
 
-                <div class="bg-white border border-gray-200 
-                            rounded-2xl p-6 shadow-sm">
+                {{-- LOOP SEMUA SOAL --}}
+                @foreach($kuis->pertanyaan as $index => $q)
+
+                <div class="bg-white border rounded-2xl p-6 shadow-sm mb-8">
 
                     {{-- Nomor Soal --}}
-                    <p class="text-sm text-gray-400 mb-2">
-                        Soal {{ $index + 1 }}
-                    </p>
+                    <p class="text-sm text-gray-400 mb-1">Soal {{ $index + 1 }}</p>
 
                     {{-- Pertanyaan --}}
-                    <p class="font-medium text-gray-800 mb-4">
+                    <p class="font-medium text-gray-800 mb-4 text-lg">
                         {{ $q->soal }}
                     </p>
 
-                    {{-- Pilihan Jawaban --}}
-                    <div class="space-y-3">
+                    {{-- Gambar jika ada --}}
+                    @if($q->gambar_soal)
+                    <img src="{{ asset('storage/'.$q->gambar_soal) }}"
+                        class="w-48 rounded-xl border mb-5 shadow-sm">
+                    @endif
 
-                        @foreach(['a','b','c','d','e'] as $opsi)
+                    {{-- DROP ZONE --}}
+                    <div class="mb-5">
+                        <p class="text-sm text-gray-500 mb-2">Tempatkan jawaban di sini:</p>
 
+                        <div class="drop-zone border-2 border-dashed border-blue-300 rounded-xl p-4 min-h-[65px] bg-blue-50 flex items-center justify-center text-gray-400 font-semibold"
+                            data-question="{{ $q->id }}">
+                            Tarik jawaban ke sini
+                        </div>
+                    </div>
+
+                    {{-- PILIHAN JAWABAN KHUSUS SOAL INI --}}
+                    <div>
+                        <p class="text-sm text-gray-500 mb-3">Pilihan Jawaban:</p>
+
+                        <div class="flex flex-wrap gap-3">
+                            @foreach(['a','b','c','d','e'] as $opsi)
                             @php
-                                $field = 'opsi_' . $opsi;
+                            $field = 'opsi_'.$opsi;
                             @endphp
 
-                            <label class="flex items-center gap-3 
-                                           p-3 rounded-xl border border-gray-200
-                                           cursor-pointer
-                                           hover:border-blue-300 hover:bg-blue-50
-                                           transition">
+                            @if($q->$field)
+                            <div class="drag-item bg-blue-100 hover:bg-blue-200 px-4 py-2 rounded-xl cursor-move shadow-sm transition"
+                                draggable="true"
+                                data-value="{{ $opsi }}"
+                                data-question="{{ $q->id }}"
+                                data-text="{{ $q->$field }}">
 
-                                <input type="radio"
-                                       name="jawaban[{{ $q->id }}]"
-                                       value="{{ $opsi }}"
-                                       class="text-blue-600 focus:ring-blue-500">
-
-                                <span class="text-gray-700">
-                                    {{ $q->$field }}
-                                </span>
-
-                            </label>
-
-                        @endforeach
-
+                                {{ $q->$field }}
+                            </div>
+                            @endif
+                            @endforeach
+                        </div>
                     </div>
 
                 </div>
 
-            @endforeach
+                @endforeach
 
-            {{-- Submit Button --}}
-            <div class="flex justify-end pt-4">
-                <button type="submit"
-                        class="inline-flex items-center gap-2
-                               px-6 py-2.5 text-sm
-                               bg-blue-600 text-white
-                               rounded-full
-                               hover:bg-blue-700
-                               transition">
+                {{-- BUTTON --}}
+                <div class="flex justify-end">
+                    <button class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow">
+                        Submit Jawaban
+                    </button>
+                </div>
 
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         fill="none" viewBox="0 0 24 24"
-                         stroke-width="1.8" stroke="currentColor"
-                         class="w-4 h-4">
-                        <path stroke-linecap="round"
-                              stroke-linejoin="round"
-                              d="M5 13l4 4L19 7"/>
-                    </svg>
+            </form>
 
-                    Submit Jawaban
-                </button>
-            </div>
+        </div>
+    </main>
 
-        </form>
 
-    </div>
+    {{-- SCRIPT DRAG DROP --}}
+    <script>
+        let jawaban = {};
 
-</main>
+        document.querySelectorAll('.drag-item').forEach(item => {
+
+            item.addEventListener('dragstart', e => {
+                e.dataTransfer.setData('value', item.dataset.value);
+                e.dataTransfer.setData('question', item.dataset.question);
+                e.dataTransfer.setData('text', item.dataset.text);
+            });
+
+        });
+
+        document.querySelectorAll('.drop-zone').forEach(zone => {
+
+            zone.addEventListener('dragover', e => {
+                e.preventDefault();
+                zone.classList.add('bg-blue-100');
+            });
+
+            zone.addEventListener('dragleave', () => {
+                zone.classList.remove('bg-blue-100');
+            });
+
+            zone.addEventListener('drop', e => {
+                e.preventDefault();
+
+                const value = e.dataTransfer.getData('value');
+                const question = e.dataTransfer.getData('question');
+                const text = e.dataTransfer.getData('text');
+
+                if (zone.dataset.question == question) {
+                    zone.innerHTML = `
+                        <div class="bg-green-100 text-green-700 px-4 py-2 rounded-lg">
+                            ${text}
+                        </div>
+                    `;
+
+                    jawaban[question] = value;
+                }
+
+                zone.classList.remove('bg-blue-100');
+            });
+
+        });
+
+        document.getElementById('quizForm').addEventListener('submit', function() {
+            document.getElementById('jawaban_data').value = JSON.stringify(jawaban);
+        });
+    </script>
 
 </x-app-layout>

@@ -97,8 +97,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/guru/classes/{id}', [ClassController::class, 'destroy'])->name('guru.classes.destroy');
 
 
-    Route::get('/guru/materi', [MateriGuruController::class, 'index'])
-        ->name('guru.materi');
+
     Route::get('/guru/materi_file', [ModulController::class, 'index'])
         ->name('guru.modul.index');
     Route::post('/guru/materi_file', [ModulController::class, 'store'])

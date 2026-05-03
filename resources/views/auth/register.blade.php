@@ -16,7 +16,7 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <!-- 🔥 TAMBAHAN KELAS -->
+        <!-- TAMBAHAN KELAS -->
         <div class="mt-4">
             <x-input-label for="class_id" value="Kelas" />
             <select name="class_id" id="class_id" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" required>
