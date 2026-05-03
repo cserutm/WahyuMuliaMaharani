@@ -1,5 +1,6 @@
 {{-- Sidebar --}}
-<aside class="fixed top-0 left-0 w-64 h-screen bg-blue-900 text-blue-50 px-6 py-8 overflow-y-auto z-40">
+<aside class="hidden lg:block fixed top-16 left-0 w-64 h-[calc(100vh-4rem)]
+             bg-blue-900 text-blue-50 px-6 py-6 overflow-y-auto">
 
     {{-- Logo / Section Title --}}
     <div class="mb-8">
@@ -29,7 +30,7 @@
         </a>
 
         <!-- Materi -->
-        <a href="{{ route('siswa.materi.index') }}"
+        <a href="{{ route('siswa.materi.modul') }}"
             class="group flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all duration-200
            {{ request()->routeIs('siswa.materi.*') 
                 ? 'bg-white/10 text-white font-semibold'

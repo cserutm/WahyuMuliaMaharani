@@ -57,11 +57,10 @@ Route::middleware('auth')->group(function () {
         return view('siswa.semester');
     })->name('siswa.semester');
 
-    Route::get('/siswa/materi', [SiswaMateriController::class, 'index'])->name('siswa.materi.index');
     Route::get('siswa/materi/file', [SiswaMateriController::class, 'modul'])->name('siswa.materi.modul');
     Route::get('siswa/materi_file/{id}/download', [SiswaMateriController::class, 'download'])
         ->name('siswa.modul.download');
-    Route::get('siswa/materi/video', [SiswaMateriController::class, 'video'])->name('siswa.materi.video');
+
 
     Route::get('siswa/evaluasi', [EvaluasiController::class, 'index'])->name('siswa.evaluasi.index');
     Route::get('siswa/evaluasi/{id}', [EvaluasiController::class, 'show'])->name('siswa.evaluasi.show');

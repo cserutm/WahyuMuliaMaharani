@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Kuis;
 use App\Models\QuizAttempt;
 
-
 class EvaluasiController extends Controller
 {
+    // 1️⃣ List kuis
     public function index()
     {
         $classId = auth()->user()->class_id;
@@ -21,7 +21,7 @@ class EvaluasiController extends Controller
         return view('siswa.evaluasi.index', compact('kuis'));
     }
 
-    // 2️⃣ Halaman soal
+    // 2️⃣ Show soal
     public function show($id)
     {
         $classId = auth()->user()->class_id;
@@ -38,19 +38,10 @@ class EvaluasiController extends Controller
                 ->with('error', 'Kuis belum tersedia');
         }
 
-        $already = QuizAttempt::where('user_id', auth()->id())
-            ->where('kuis_id', $kuis->id)
-            ->exists();
-
-        if ($already) {
-            return redirect()
-                ->route('siswa.evaluasi.index')
-                ->with('error', 'Kuis ini sudah pernah dikerjakan');
-        }
-
         return view('siswa.evaluasi.show', compact('kuis'));
     }
 
+    // 3️⃣ Submit jawaban (FIX UTAMA)
     public function submit(Request $request, $id)
     {
         $classId = auth()->user()->class_id;
@@ -59,25 +50,13 @@ class EvaluasiController extends Controller
             ->where('class_id', $classId)
             ->findOrFail($id);
 
-        // cek sudah pernah mengerjakan
-        $already = QuizAttempt::where('user_id', auth()->id())
-            ->where('kuis_id', $kuis->id)
-            ->exists();
-
-        if ($already) {
-            return redirect()->route('siswa.evaluasi.index')
-                ->with('error', 'Kamu sudah mengerjakan kuis ini');
-        }
-
-        // 🔥 INI PERUBAHAN UTAMA (DRAG & DROP)
+        // ambil jawaban drag & drop
         $jawaban = json_decode($request->jawaban_data, true) ?? [];
 
         $correct = 0;
-        $total = $kuis->pertanyaan->count();
+        $total = $kuis->pertanyaan()->count();
 
         foreach ($kuis->pertanyaan as $q) {
-
-            // ambil jawaban dari drag & drop
             $userAnswer = $jawaban[$q->id] ?? null;
 
             if ($userAnswer && $userAnswer == $q->jawaban_benar) {
@@ -87,7 +66,8 @@ class EvaluasiController extends Controller
 
         $score = $total > 0 ? round(($correct / $total) * 100) : 0;
 
-        QuizAttempt::create([
+        //  SIMPAN HASIL (TANPA BLOCKING)
+        $attempt = QuizAttempt::create([
             'user_id' => auth()->id(),
             'kuis_id' => $kuis->id,
             'score'   => $score,
@@ -95,6 +75,11 @@ class EvaluasiController extends Controller
             'total'   => $total,
         ]);
 
-        return view('siswa.evaluasi.result', compact('score', 'correct', 'total'));
+        //  LANGSUNG KE RESULT (WAJIB)
+        return view('siswa.evaluasi.result', [
+            'score' => $attempt->score,
+            'correct' => $attempt->correct,
+            'total' => $attempt->total,
+        ]);
     }
 }

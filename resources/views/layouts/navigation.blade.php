@@ -9,10 +9,10 @@
 
     <div class="w-full h-16 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
 
-        {{-- KIRI --}}
+        {{-- LEFT --}}
         <div class="flex items-center gap-3">
 
-            {{-- HAMBURGER HP --}}
+            {{-- HAMBURGER MOBILE --}}
             <button @click="open = !open"
                 class="lg:hidden p-2 rounded-md text-gray-500 hover:bg-gray-100 transition">
                 <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -23,11 +23,12 @@
                 </svg>
             </button>
 
+            {{-- LOGO --}}
             <x-application-logo class="w-8" />
 
             <div class="h-8 w-px bg-gray-200"></div>
 
-            <div class="leading-tight max-w-[170px] sm:max-w-none">
+            <div class="leading-tight max-w-[180px] sm:max-w-none">
                 <p class="text-[10px] sm:text-xs uppercase tracking-widest text-blue-600 font-semibold">
                     Media Pembelajaran
                 </p>
@@ -57,7 +58,9 @@
                 </x-slot>
 
                 <x-slot name="content">
-                    <x-dropdown-link :href="route('profile.edit')">Profile</x-dropdown-link>
+                    <x-dropdown-link :href="route('profile.edit')">
+                        Profile
+                    </x-dropdown-link>
 
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
@@ -71,32 +74,49 @@
         </div>
     </div>
 
-    {{-- MENU MOBILE --}}
+    {{-- MOBILE MENU --}}
     <div x-show="open"
         x-cloak
         @click.away="open = false"
         class="lg:hidden fixed top-16 left-0 w-full h-[calc(100vh-4rem)] bg-white z-[9999] overflow-y-auto shadow-xl border-t">
 
+        {{-- USER INFO --}}
         <div class="px-4 py-4 border-b bg-gray-50">
             <div class="font-semibold text-gray-800">{{ Auth::user()->name }}</div>
             <div class="text-sm text-gray-500">{{ Auth::user()->email }}</div>
         </div>
 
         <div class="py-2">
-            <a href="{{ route('guru.dashboard') }}" class="block px-4 py-3 border-b">Dashboard</a>
-            <a href="{{ route('guru.semester.index') }}" class="block px-4 py-3 border-b">Kelola Semester</a>
-            <a href="{{ route('guru.classes.index') }}" class="block px-4 py-3 border-b">Kelola Kelas</a>
-            <a href="{{ route('guru.modul.index') }}" class="block px-4 py-3 border-b">Kelola Materi</a>
-            <a href="{{ route('guru.kuis.index') }}" class="block px-4 py-3 border-b">Kelola Evaluasi</a>
-            <a href="{{ route('guru.nilai') }}" class="block px-4 py-3 border-b">Lihat Nilai</a>
-            <a href="{{ route('guru.leaderboard') }}" class="block px-4 py-3 border-b">Leaderboard Siswa</a>
-            <a href="{{ route('profile.edit') }}" class="block px-4 py-3 border-b">Profile</a>
+
+            {{-- ================= MENU GURU ================= --}}
+            @if(Auth::user()->role == 'guru')
+
+            <a href="{{ route('guru.dashboard') }}" class="block px-4 py-3 border-b hover:bg-gray-50">Dashboard</a>
+            <a href="{{ route('guru.semester.index') }}" class="block px-4 py-3 border-b hover:bg-gray-50">Kelola Semester</a>
+            <a href="{{ route('guru.classes.index') }}" class="block px-4 py-3 border-b hover:bg-gray-50">Kelola Kelas</a>
+            <a href="{{ route('guru.modul.index') }}" class="block px-4 py-3 border-b hover:bg-gray-50">Kelola Materi</a>
+            <a href="{{ route('guru.kuis.index') }}" class="block px-4 py-3 border-b hover:bg-gray-50">Kelola Evaluasi</a>
+            <a href="{{ route('guru.nilai') }}" class="block px-4 py-3 border-b hover:bg-gray-50">Lihat Nilai</a>
+            <a href="{{ route('guru.leaderboard') }}" class="block px-4 py-3 border-b hover:bg-gray-50">Leaderboard Siswa</a>
+
+            {{-- ================= MENU SISWA ================= --}}
+            @elseif(Auth::user()->role == 'siswa')
+
+            <a href="{{ route('dashboard-siswa') }}" class="block px-4 py-3 border-b hover:bg-gray-50">Dashboard</a>
+            <a href="{{ route('siswa.materi.modul') }}" class="block px-4 py-3 border-b hover:bg-gray-50">Materi Pembelajaran</a>
+            <a href="{{ route('siswa.evaluasi.index') }}" class="block px-4 py-3 border-b hover:bg-gray-50">Evaluasi</a>
+            <a href="{{ route('siswa.leaderboard') }}" class="block px-4 py-3 border-b hover:bg-gray-50">Leaderboard</a>
+
+            @endif
+
+            {{-- MENU UMUM --}}
+            <a href="{{ route('profile.edit') }}" class="block px-4 py-3 border-b hover:bg-gray-50">Profile</a>
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <a href="{{ route('logout') }}"
                     onclick="event.preventDefault();this.closest('form').submit();"
-                    class="block px-4 py-3 text-red-500">
+                    class="block px-4 py-3 text-red-500 hover:bg-red-50">
                     Log Out
                 </a>
             </form>
