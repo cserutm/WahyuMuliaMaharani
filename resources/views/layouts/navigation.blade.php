@@ -97,7 +97,7 @@
             <a href="{{ route('guru.modul.index') }}" class="block px-4 py-3 border-b hover:bg-gray-50">Kelola Materi</a>
             <a href="{{ route('guru.kuis.index') }}" class="block px-4 py-3 border-b hover:bg-gray-50">Kelola Evaluasi</a>
             <a href="{{ route('guru.nilai') }}" class="block px-4 py-3 border-b hover:bg-gray-50">Lihat Nilai</a>
-            <a href="{{ route('guru.leaderboard') }}" class="block px-4 py-3 border-b hover:bg-gray-50">Leaderboard Siswa</a>
+            <a href="{{ route('guru.leaderboard') }}" class="block px-4 py-3 border-b hover:bg-gray-50">Progress Belajar Siswa</a>
 
             {{-- ================= MENU SISWA ================= --}}
             @elseif(Auth::user()->role == 'siswa')
@@ -105,7 +105,7 @@
             <a href="{{ route('dashboard-siswa') }}" class="block px-4 py-3 border-b hover:bg-gray-50">Dashboard</a>
             <a href="{{ route('siswa.materi.modul') }}" class="block px-4 py-3 border-b hover:bg-gray-50">Materi Pembelajaran</a>
             <a href="{{ route('siswa.evaluasi.index') }}" class="block px-4 py-3 border-b hover:bg-gray-50">Evaluasi</a>
-            <a href="{{ route('siswa.leaderboard') }}" class="block px-4 py-3 border-b hover:bg-gray-50">Leaderboard</a>
+            <a href="{{ route('siswa.leaderboard') }}" class="block px-4 py-3 border-b hover:bg-gray-50">Progress Belajar</a>
 
             @endif
 

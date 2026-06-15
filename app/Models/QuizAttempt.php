@@ -16,6 +16,7 @@ class QuizAttempt extends Model
         'submitted_at'
     ];
 
+
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -13,6 +13,7 @@ class PertanyaanController extends Controller
     public function index($kuis_id)
     {
         $kuis = Kuis::with('pertanyaan')->findOrFail($kuis_id);
+
         return view('guru.kuis.pertanyaan.index', compact('kuis'));
     }
 
@@ -21,27 +22,22 @@ class PertanyaanController extends Controller
     {
         $data = $request->validate([
             'soal' => 'required',
+            'tipe_soal' => 'required|in:drag_drop,susun_balok,card_choice',
+            'kategori_hots' => 'required|in:HOTS,LOTS',
+
+            'jawaban_benar' => 'required|json',
+
             'gambar_soal' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
 
             'opsi_a' => 'required',
-            'gambar_opsi_a' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-
             'opsi_b' => 'required',
-            'gambar_opsi_b' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-
             'opsi_c' => 'required',
-            'gambar_opsi_c' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-
             'opsi_d' => 'required',
-            'gambar_opsi_d' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-
             'opsi_e' => 'nullable',
-            'gambar_opsi_e' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-
-            'jawaban_benar' => 'required|in:a,b,c,d,e',
         ]);
 
         $data['kuis_id'] = $kuis_id;
+        $data['jawaban_benar'] = json_decode($request->jawaban_benar, true);
 
         foreach (
             [
@@ -60,73 +56,51 @@ class PertanyaanController extends Controller
 
         Pertanyaan::create($data);
 
-        return redirect()
-            ->route('guru.kuis.pertanyaan.index', $kuis_id)
-            ->with('success', 'Soal berhasil ditambahkan');
+        return back()->with('success', 'Soal berhasil ditambahkan');
     }
 
     // ================= EDIT =================
     public function edit($kuis_id, $id)
     {
         $kuis = Kuis::findOrFail($kuis_id);
+
         $pertanyaan = Pertanyaan::findOrFail($id);
 
-        return view('guru.kuis.pertanyaan.edit', compact('kuis', 'pertanyaan'));
+        return view(
+            'guru.kuis.pertanyaan.edit',
+            compact('kuis', 'pertanyaan')
+        );
     }
 
-    // ================= UPDATE =================
     public function update(Request $request, $kuis_id, $id)
     {
         $data = $request->validate([
             'soal' => 'required',
-            'gambar_soal' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'tipe_soal' => 'required|in:drag_drop,susun_balok,card_choice',
+            'kategori_hots' => 'required|in:HOTS,LOTS',
+            'jawaban_benar' => 'required|json',
 
             'opsi_a' => 'required',
-            'gambar_opsi_a' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-
             'opsi_b' => 'required',
-            'gambar_opsi_b' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-
             'opsi_c' => 'required',
-            'gambar_opsi_c' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-
             'opsi_d' => 'required',
-            'gambar_opsi_d' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-
             'opsi_e' => 'nullable',
-            'gambar_opsi_e' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-
-            'jawaban_benar' => 'required|in:a,b,c,d,e',
         ]);
 
         $pertanyaan = Pertanyaan::findOrFail($id);
 
-        foreach (
-            [
-                'gambar_soal',
-                'gambar_opsi_a',
-                'gambar_opsi_b',
-                'gambar_opsi_c',
-                'gambar_opsi_d',
-                'gambar_opsi_e'
-            ] as $field
-        ) {
-            if ($request->hasFile($field)) {
-                $data[$field] = $request->file($field)->store('kuis/pertanyaan', 'public');
-            }
-        }
+        $data['jawaban_benar'] = json_decode($request->jawaban_benar, true);
 
         $pertanyaan->update($data);
 
-        return redirect()
-            ->route('guru.kuis.pertanyaan.index', $kuis_id)
-            ->with('success', 'Soal berhasil diupdate');
+        return back()->with('success', 'Soal berhasil diupdate');
     }
 
     // ================= DELETE =================
     public function destroy($kuis_id, $id)
     {
         $pertanyaan = Pertanyaan::findOrFail($id);
+
         $pertanyaan->delete();
 
         return redirect()

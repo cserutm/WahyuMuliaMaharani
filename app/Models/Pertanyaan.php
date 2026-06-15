@@ -25,8 +25,14 @@ class Pertanyaan extends Model
         'opsi_e',
         'gambar_opsi_e',
 
-        'jawaban_benar'
+        'jawaban_benar',
+        'tipe_soal',
+        'kategori_hots',
     ];
+    protected $casts = [
+        'jawaban_benar' => 'array', // 🔥 PENTING
+    ];
+
 
     public function kuis()
     {

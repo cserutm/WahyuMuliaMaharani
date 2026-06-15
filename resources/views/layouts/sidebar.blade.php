@@ -80,7 +80,7 @@
                     d="M8 21h8m-4-4v4m5-10a5 5 0 01-10 0V4h10v7z" />
             </svg>
 
-            <span>Leaderboard</span>
+            <span>Progress Belajar</span>
         </a>
 
     </nav>

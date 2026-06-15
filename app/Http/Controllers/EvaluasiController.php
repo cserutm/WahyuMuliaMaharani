@@ -21,7 +21,6 @@ class EvaluasiController extends Controller
         return view('siswa.evaluasi.index', compact('kuis'));
     }
 
-    // 2️⃣ Show soal
     public function show($id)
     {
         $classId = auth()->user()->class_id;
@@ -38,10 +37,16 @@ class EvaluasiController extends Controller
                 ->with('error', 'Kuis belum tersedia');
         }
 
+        // =========================
+        // NORMALISASI SAJA (TIDAK FILTER)
+        // =========================
+        $kuis->pertanyaan = $kuis->pertanyaan->map(function ($q) {
+            $q->label = strtoupper(trim($q->label ?? ''));
+            return $q;
+        });
+
         return view('siswa.evaluasi.show', compact('kuis'));
     }
-
-    // 3️⃣ Submit jawaban (FIX UTAMA)
     public function submit(Request $request, $id)
     {
         $classId = auth()->user()->class_id;
@@ -50,32 +55,57 @@ class EvaluasiController extends Controller
             ->where('class_id', $classId)
             ->findOrFail($id);
 
-        // ambil jawaban drag & drop
+        $existing = QuizAttempt::where('user_id', auth()->id())
+            ->where('kuis_id', $kuis->id)
+            ->first();
+
+        if ($existing) {
+            return view('siswa.evaluasi.result', [
+                'score' => $existing->score,
+                'correct' => $existing->correct,
+                'total' => $existing->total,
+            ]);
+        }
+
         $jawaban = json_decode($request->jawaban_data, true) ?? [];
 
         $correct = 0;
-        $total = $kuis->pertanyaan()->count();
+        $total = $kuis->pertanyaan->count();
 
         foreach ($kuis->pertanyaan as $q) {
-            $userAnswer = $jawaban[$q->id] ?? null;
 
-            if ($userAnswer && $userAnswer == $q->jawaban_benar) {
-                $correct++;
+            $userAnswer = $jawaban[$q->id] ?? null;
+            $correctAnswer = $q->jawaban_benar;
+
+            if ($q->tipe_soal == 'card_choice') {
+
+                if ($userAnswer == $correctAnswer) {
+                    $correct++;
+                }
+            } elseif ($q->tipe_soal == 'drag_drop') {
+
+                if ($userAnswer == $correctAnswer) {
+                    $correct++;
+                }
+            } elseif ($q->tipe_soal == 'susun_balok') {
+
+                if (is_array($userAnswer) && $userAnswer == $correctAnswer) {
+                    $correct++;
+                }
             }
         }
 
-        $score = $total > 0 ? round(($correct / $total) * 100) : 0;
+        $score = $total ? round(($correct / $total) * 100) : 0;
 
-        //  SIMPAN HASIL (TANPA BLOCKING)
         $attempt = QuizAttempt::create([
             'user_id' => auth()->id(),
             'kuis_id' => $kuis->id,
-            'score'   => $score,
+            'score' => $score,
             'correct' => $correct,
-            'total'   => $total,
+            'total' => $total,
+            'submitted_at' => now(),
         ]);
 
-        //  LANGSUNG KE RESULT (WAJIB)
         return view('siswa.evaluasi.result', [
             'score' => $attempt->score,
             'correct' => $attempt->correct,
