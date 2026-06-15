@@ -31,12 +31,7 @@ class SiswaMateriController extends Controller
         return view('siswa.materi.modul', compact('moduls'));
     }
 
-    // List video
-    public function video()
-    {
-        $videos = \App\Models\video::latest()->get();
-        return view('siswa.materi.video', compact('videos'));
-    }
+  
 
     public function download($id)
     {

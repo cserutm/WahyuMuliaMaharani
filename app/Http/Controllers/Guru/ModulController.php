@@ -53,17 +53,37 @@ class ModulController extends Controller
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'tujuan_pembelajaran' => 'required|string',
+            'ringkasan' => 'nullable|string',
+            'poin_penting' => 'nullable|string',
+            'fakta_menarik' => 'nullable|string',
+
+            'gambar_materi' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+
             'file_materi' => 'required|file|mimes:pdf,doc,docx|max:10240',
             'video_url' => 'nullable|url'
+
         ]);
 
         $path = $request->file('file_materi')->store('modul_materi', 'public');
+        $gambar = null;
 
+        if ($request->hasFile('gambar_materi')) {
+            $gambar = $request->file('gambar_materi')
+                ->store('gambar_materi', 'public');
+        }
         modul::create([
             'class_id' => $request->class_id,
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
             'tujuan_pembelajaran' => $request->tujuan_pembelajaran,
+
+
+            'ringkasan' => $request->ringkasan,
+            'poin_penting' => $request->poin_penting,
+            'fakta_menarik' => $request->fakta_menarik,
+
+            'gambar_materi' => $gambar,
+
             'file_materi' => $path,
             'video_url' => $request->video_url
         ]);
@@ -89,6 +109,11 @@ class ModulController extends Controller
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'tujuan_pembelajaran' => 'required|string',
+            'ringkasan' => 'nullable|string',
+            'poin_penting' => 'nullable|string',
+            'fakta_menarik' => 'nullable|string',
+            'gambar_materi' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+
             'file_materi' => 'nullable|file|mimes:pdf,doc,docx|max:10240',
             'video_url' => 'nullable|url'
         ]);
@@ -98,8 +123,25 @@ class ModulController extends Controller
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
             'tujuan_pembelajaran' => $request->tujuan_pembelajaran,
+            'ringkasan' => $request->ringkasan,
+            'poin_penting' => $request->poin_penting,
+            'fakta_menarik' => $request->fakta_menarik,
             'video_url' => $request->video_url
         ];
+
+        if ($request->hasFile('gambar_materi')) {
+
+            if (
+                $modul->gambar_materi &&
+                Storage::disk('public')->exists($modul->gambar_materi)
+            ) {
+                Storage::disk('public')->delete($modul->gambar_materi);
+            }
+
+            $data['gambar_materi'] =
+                $request->file('gambar_materi')
+                ->store('gambar_materi', 'public');
+        }
 
         if ($request->hasFile('file_materi')) {
 

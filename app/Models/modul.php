@@ -12,12 +12,21 @@ class modul extends Model
     protected $table = 'modul';
 
     protected $fillable = [
+
+
         'class_id',
         'judul',
         'deskripsi',
         'tujuan_pembelajaran',
+
+        'ringkasan',
+        'poin_penting',
+        'fakta_menarik',
+        'gambar_materi',
+
         'file_materi',
-        'video_url',
+        'video_url'
+
     ];
 
     public function kelas()

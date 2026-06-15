@@ -174,7 +174,7 @@
                     download="Panduan Media Pembelajaran.pdf"
                     class="px-5 py-2.5 bg-emerald-500 text-white rounded-full hover:bg-emerald-600 transition shadow-lg">
 
-                    Download Panduan PDF
+                    Download Panduan Penggunaan Website
                 </a>
 
                 @auth

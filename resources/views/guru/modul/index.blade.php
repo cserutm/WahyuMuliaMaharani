@@ -238,6 +238,34 @@
                                     <textarea name="deskripsi" rows="2" class="w-full rounded-xl border-slate-300"
                                           placeholder="Deskripsi"></textarea>
 
+
+                                    <textarea
+                                          name="ringkasan"
+                                          rows="4"
+                                          placeholder="Ringkasan Materi"
+                                          class="w-full rounded-xl border-slate-300">
+</textarea>
+
+                                    <textarea
+                                          name="poin_penting"
+                                          rows="4"
+                                          placeholder="Poin Penting (satu poin satu baris)"
+                                          class="w-full rounded-xl border-slate-300">
+</textarea>
+
+                                    <textarea
+                                          name="fakta_menarik"
+                                          rows="3"
+                                          placeholder="Tahukah Kamu?"
+                                          class="w-full rounded-xl border-slate-300">
+</textarea>
+
+                                    <input
+                                          type="file"
+                                          name="gambar_materi"
+                                          accept="image/*"
+                                          class="w-full">
+
                                     <input type="file" name="file_materi" accept=".pdf,.doc,.docx" class="w-full">
 
                                     <input type="url" name="video_url"
@@ -284,23 +312,91 @@
                                           <input type="text" name="judul" value="{{ $item->judul }}"
                                                 class="w-full rounded-xl border-slate-300">
 
-                                          <textarea name="tujuan_pembelajaran"
-                                                class="w-full rounded-xl border-slate-300">{{ $item->tujuan_pembelajaran }}</textarea>
+                                          <div>
+                                                <label class="block mb-2 font-semibold text-slate-700">
+                                                      Tujuan Pembelajaran
+                                                </label>
 
-                                          <textarea name="deskripsi"
-                                                class="w-full rounded-xl border-slate-300">{{ $item->deskripsi }}</textarea>
-
-                                          <input type="file" name="file_materi" class="w-full">
-
-                                          <input type="url" name="video_url" value="{{ $item->video_url }}"
-                                                class="w-full rounded-xl border-slate-300">
-
-                                          <div class="flex justify-end gap-3 pt-2">
-                                                <button type="button" @click="openEdit=false"
-                                                      class="px-4 py-2 border rounded-xl">Batal</button>
-                                                <button type="submit"
-                                                      class="px-5 py-2 bg-blue-700 text-white rounded-xl hover:bg-blue-800">Update</button>
+                                                <textarea name="tujuan_pembelajaran"
+                                                      class="w-full rounded-xl border-slate-300">{{ $item->tujuan_pembelajaran }}</textarea>
                                           </div>
+                                          <div>
+                                                <label class="block mb-2 font-semibold text-slate-700">
+                                                      Deskripsi
+                                                </label>
+
+                                                <textarea name="deskripsi"
+                                                      class="w-full rounded-xl border-slate-300">{{ $item->deskripsi }}</textarea>
+                                                <div>
+                                                      {{-- Ringkasan Materi --}}
+                                                      <div>
+                                                            <label class="block mb-2 font-semibold text-slate-700">
+                                                                  Ringkasan Materi
+                                                            </label>
+
+                                                            <textarea
+                                                                  name="ringkasan"
+                                                                  rows="4"
+                                                                  class="w-full rounded-xl border-slate-300"
+                                                                  placeholder="Tuliskan ringkasan singkat materi yang akan dipelajari siswa">{{ $item->ringkasan ?? '' }}</textarea>
+                                                      </div>
+
+                                                      {{-- Poin Penting --}}
+                                                      <div>
+                                                            <label class="block mb-2 font-semibold text-slate-700">
+                                                                  Poin Penting
+                                                            </label>
+
+                                                            <textarea
+                                                                  name="poin_penting"
+                                                                  rows="4"
+                                                                  class="w-full rounded-xl border-slate-300"
+                                                                  placeholder="Satu poin satu baris&#10;Contoh:&#10;Algoritma adalah langkah penyelesaian masalah&#10;Flowchart digunakan untuk menggambarkan algoritma">{{ $item->poin_penting ?? '' }}</textarea>
+                                                      </div>
+
+                                                      {{-- Fakta Menarik --}}
+                                                      <div>
+                                                            <label class="block mb-2 font-semibold text-slate-700">
+                                                                  Tahukah Kamu? (Fakta Menarik)
+                                                            </label>
+
+                                                            <textarea
+                                                                  name="fakta_menarik"
+                                                                  rows="3"
+                                                                  class="w-full rounded-xl border-slate-300"
+                                                                  placeholder="Contoh: Istilah algoritma berasal dari nama ilmuwan Al-Khawarizmi">{{ $item->fakta_menarik ?? '' }}</textarea>
+                                                      </div>
+
+                                                      {{-- Gambar Ilustrasi --}}
+                                                      <div>
+                                                            <label class="block mb-2 font-semibold text-slate-700">
+                                                                  Ilustrasi Materi
+                                                            </label>
+
+                                                            <input
+                                                                  type="file"
+                                                                  name="gambar_materi"
+                                                                  accept="image/*"
+                                                                  class="w-full">
+
+                                                            @if(!empty($item->gambar_materi))
+                                                            <img
+                                                                  src="{{ asset('storage/'.$item->gambar_materi) }}"
+                                                                  class="mt-3 w-40 rounded-xl border">
+                                                            @endif
+                                                      </div>
+
+                                                      <input type="file" name="file_materi" class="w-full">
+
+                                                      <input type="url" name="video_url" value="{{ $item->video_url }}"
+                                                            class="w-full rounded-xl border-slate-300">
+
+                                                      <div class="flex justify-end gap-3 pt-2">
+                                                            <button type="button" @click="openEdit=false"
+                                                                  class="px-4 py-2 border rounded-xl">Batal</button>
+                                                            <button type="submit"
+                                                                  class="px-5 py-2 bg-blue-700 text-white rounded-xl hover:bg-blue-800">Update</button>
+                                                      </div>
                                     </form>
                               </div>
                               @endforeach
