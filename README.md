@@ -150,4 +150,4 @@ Media pembelajaran ini dikembangkan untuk:
 
 ## Lisensi
 
-Produk ini dikembangkan sebagai bagian dari penelitian skripsi pada Program Studi S1 Pendidikan Informatika Universitas Trunojoyo Madura dan digunakan untuk kepentingan akademik.
+Produk ini dikembangkan sebagai bagian dari penelitian skripsi pada Program Studi S1 Pendidikan Informatika Universitas Trunodjoyo Madura dan digunakan untuk kepentingan akademik.
